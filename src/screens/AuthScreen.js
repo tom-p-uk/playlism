@@ -10,28 +10,23 @@ import {
 } from 'react-native';
 import { Button, Card, Icon } from 'react-native-elements';
 import qs from 'qs';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+import registerForNotifications from '../services/push_notifications';
 
-const HOST = Platform.select({
-    ios: 'localhost',
-    android: '192.168.0.14',
-});
 
-const FACEBOOK_AUTH_URL = `http://${HOST}:3000/auth/facebook`;
-const GOOGLE_AUTH_URL = `http://${HOST}:3000/auth/google`;
+const HOST = 'https://playlism.herokuapp.com';
+const FACEBOOK_AUTH_URL = `${HOST}/api/auth/facebook`;
+const GOOGLE_AUTH_URL = `${HOST}/api/auth/google`;
 
-export default class AuthScreen extends Component {
 
-  state = {
-    user: null,
-    token: null
-  };
-
+class AuthScreen extends Component {
+  // Opens browser internally in order to access the backend OAuth routes
   openWebBrowserAsync = async authUrl => {
+    this.props.loginStart();
     this.addLinkingListener();
-    let result = await WebBrowser.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
+    await WebBrowser.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
     this.removeLinkingListener();
-    this.setState({ result });
-
   }
 
   addLinkingListener = () => {
@@ -42,25 +37,29 @@ export default class AuthScreen extends Component {
     Linking.removeEventListener('url', this.handleRedirect);
   }
 
+  // Pull user object and JWT from following redirect from backend
   handleRedirect = (event) => {
     WebBrowser.dismissBrowser();
-    console.log(event.url);
-    const query = event.url.replace(`${Constants.linkingUri}?`, '');
-    // console.log(query);
+
+    const query = event.url.replace(`${Constants.linkingUri}?`, ''); // Pull data from redirect URL
     const data = qs.parse(query);
-    // console.log(data);
+
     let { user, token } = data;
-    user = JSON.parse(decodeURI(user));
-    console.log(user.profileImg);
-    this.setState({ user, token });
+
+    token = token.split('#')[0]; // Strips token of erroneous # symbol
+    user = JSON.parse(decodeURI(user)); // Convert to object after decoding
+
+    this.props.loginSuccess({ user, token }); //
+    registerForNotifications(token);
   }
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
+
     return (
       <View style={styles.container}>
         { user
-          ? 
+          ?
             <View style={styles.content}>
               <Text style={styles.header}>
                 Welcome {user.firstName}!
@@ -75,9 +74,6 @@ export default class AuthScreen extends Component {
               <Text style={styles.header}>
                 Welcome to Playlism!
               </Text>
-              {/* <View style={styles.avatar}>
-                <Icon name="user-circle" size={100} color="rgba(0,0,0,.09)" />
-              </View> */}
               <Text style={styles.text}>
                 Login using your Facebook{'\n'}
                 or Google account to continue
@@ -104,17 +100,24 @@ export default class AuthScreen extends Component {
       </View>
     );
   }
-}
-
-const iconStyles = {
-  borderRadius: 10,
-  iconStyle: { paddingVertical: 5 },
 };
 
-const styles = StyleSheet.create({
+const mapStateToProps = ({ auth: { user, token, loading } }) => {
+  return {
+    user,
+    token,
+    loading,
+  };
+};
+
+export default connect(mapStateToProps, actions)(AuthScreen);
+
+const styles = {
   container: {
     flex: 1,
-    backgroundColor: '#FFF',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     flex: 1,
@@ -145,4 +148,8 @@ const styles = StyleSheet.create({
     margin: 20,
     marginBottom: 30,
   },
-});
+  icon: {
+    borderRadius: 10,
+    iconStyle: { paddingVertical: 5 },
+  },
+};

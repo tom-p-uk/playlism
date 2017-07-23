@@ -1,25 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Expo from 'expo';
+import Expo, { Notifications } from 'expo';
 import AuthScreen from './src/screens/AuthScreen';
+import { Provider } from 'react-redux'
+import store from './src/store';
+import Router from './src/router';
 
-console.log(Expo.Constants.linkingUri)
-export default class App extends React.Component {
+export default class App extends Component {
+  componentDidMount() {
+    Notifications.addListener(notification => {
+      const { data: { text }, origin } = notification; // const text, origin = notification.data.text
+
+      if (origin === 'received' && text) {
+        Alert.alert(
+          'New Push Notification', // title
+          text,
+          [{ test: 'OK' }] // button
+        );
+      }
+    });
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        {/* <Text>Open up ddd.js to start working on your app!</Text> */}
-        <AuthScreen />
-      </View>
+      <Provider store={store}>
+        <Router />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
