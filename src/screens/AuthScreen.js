@@ -8,7 +8,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { Button, Card, Icon } from 'react-native-elements';
+import { Button, Card, SocialIcon } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -21,6 +21,18 @@ const GOOGLE_AUTH_URL = `${HOST}/api/auth/google`;
 
 
 class AuthScreen extends Component {
+  componentDidMount() {
+    if (this.props.token) {
+      this.props.navigation.navigate('dashboard');
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.token) {
+      this.props.navigation.navigate('dashboard');
+    }
+  }
+
   // Opens browser internally in order to access the backend OAuth routes
   openWebBrowserAsync = async authUrl => {
     this.props.loginStart();
@@ -37,7 +49,7 @@ class AuthScreen extends Component {
     Linking.removeEventListener('url', this.handleRedirect);
   }
 
-  // Pull user object and JWT from following redirect from backend
+  // Pull user object and JWT from url following redirect from backend
   handleRedirect = (event) => {
     WebBrowser.dismissBrowser();
 
@@ -64,8 +76,8 @@ class AuthScreen extends Component {
               <Text style={styles.header}>
                 Welcome {user.firstName}!
               </Text>
-              <View style={styles.avatar}>
-                <Image source={{ uri: user.profileImg }} style={styles.avatarImage} />
+              <View style={styles.profileImgContainer}>
+                <Image source={{ uri: user.profileImg }} style={styles.profileImg} />
               </View>
             </View>
           :
@@ -75,24 +87,51 @@ class AuthScreen extends Component {
                 Welcome to Playlism!
               </Text>
               <Text style={styles.text}>
-                Login using your Facebook{'\n'}
-                or Google account to continue
+                Log in using your Facebook{'\n'}
+                or Google account to continue.
 
               </Text>
             </View>
-            <View style={styles.buttons}>
-              <Icon
-                type="font-awesome"
-                name="facebook-square"
-                size={30}
-                color="#3b5998"
+            <View style={styles.buttonsContainer}>
+              {/* <SocialIcon
+                title="Log In With Facebook"
+                type="facebook"
+                // name="facebook-square"
+                // light
+                button
+                // raised
+                // size={30}
+                // color="#3b5998"
                 onPress={() => this.openWebBrowserAsync(FACEBOOK_AUTH_URL)}
+              /> */}
+              <Button
+                style={styles.buttons}
+                // raised
+                fontSize={15}
+                title="Log In With Facebook"
+                icon={{ name: 'facebook-square', type: 'font-awesome' }}
+                backgroundColor="#3b5998"
+                onPress={() => this.openWebBrowserAsync(FACEBOOK_AUTH_URL)}
+                borderRadius={6}
               />
-              <Icon
-                type="font-awesome"
-                name="google"
+              {/* <SocialIcon
+                title="Log In With Google"
+                type="google-plus-official"
+                // name="google"
+                // backgroundColor="#DD4B39"
+                loading
+                button
+                onPress={() => this.openWebBrowserAsync(GOOGLE_AUTH_URL)}
+              /> */}
+              <Button
+                style={styles.buttons}
+                // raised
+                fontSize={15}
+                title="Log In With Google"
+                icon={{ name: 'google', type: 'font-awesome' }}
                 backgroundColor="#DD4B39"
                 onPress={() => this.openWebBrowserAsync(GOOGLE_AUTH_URL)}
+                borderRadius={6}
               />
             </View>
           </View>
@@ -101,16 +140,6 @@ class AuthScreen extends Component {
     );
   }
 };
-
-const mapStateToProps = ({ auth: { user, token, loading } }) => {
-  return {
-    user,
-    token,
-    loading,
-  };
-};
-
-export default connect(mapStateToProps, actions)(AuthScreen);
 
 const styles = {
   container: {
@@ -124,10 +153,10 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  avatar: {
+  profileImgContainer: {
     margin: 20,
   },
-  avatarImage: {
+  profileImg: {
     borderRadius: 50,
     height: 100,
     width: 100,
@@ -135,21 +164,36 @@ const styles = {
   header: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 50,
   },
   text: {
     textAlign: 'center',
     color: '#333',
     marginBottom: 5,
   },
-  buttons: {
+  buttonsContainer: {
     justifyContent: 'space-between',
-    flexDirection: 'row',
-    margin: 20,
+    // flexDirection: 'row',
+    // margin: 20,
     marginBottom: 30,
+    // borderRadius: 6
+  },
+  buttons: {
+    // padding: 10,
+    marginTop: 30
   },
   icon: {
     borderRadius: 10,
     iconStyle: { paddingVertical: 5 },
   },
 };
+
+const mapStateToProps = ({ auth: { user, token, loading } }) => {
+  return {
+    user,
+    token,
+    loading,
+  };
+};
+
+export default connect(mapStateToProps, actions)(AuthScreen);

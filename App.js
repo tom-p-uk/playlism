@@ -4,7 +4,7 @@ import Expo, { Notifications } from 'expo';
 import AuthScreen from './src/screens/AuthScreen';
 import { Provider } from 'react-redux'
 import store from './src/store';
-import Router from './src/router';
+import Navigator from './src';
 
 export default class App extends Component {
   componentDidMount() {
@@ -24,7 +24,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router />
+        <Navigator />
       </Provider>
     );
   }
