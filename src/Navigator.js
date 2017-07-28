@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabNavigator, StackNavigator } from 'react-navigation'
+import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Platform } from 'react-native';
 import AllSongsScreen from './screens/AllSongsScreen';
 import AuthScreen from './screens/AuthScreen';
@@ -20,7 +20,7 @@ const Navigator = TabNavigator({
   // welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
   main: {
-    screen: TabNavigator({
+    screen: StackNavigator({
       dashboard: { screen: DashboardScreen },
       allSongs: { screen: AllSongsScreen },
       likedSongs: { screen: LikedSongsScreen },
@@ -28,7 +28,7 @@ const Navigator = TabNavigator({
         TabNavigator({
           userPlaylists: { screen: UserPlaylistsScreen },
           otherUserPlaylists: { screen: OtherUserPlaylistsScreen },
-          createNewPlaylist: { screen:
+          createPlaylist: { screen:
             StackNavigator({
               playlistForm: { screen: PlaylistFormScreen },
               searchSong: { screen: SearchSongScreen }

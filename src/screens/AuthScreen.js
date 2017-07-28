@@ -21,17 +21,17 @@ const GOOGLE_AUTH_URL = `${HOST}/api/auth/google`;
 
 
 class AuthScreen extends Component {
-  componentDidMount() {
-    if (this.props.token) {
-      this.props.navigation.navigate('dashboard');
-    }
-  }
+  // componentDidMount() {
+  //   if (this.props.token) {
+  //     setTimeout(() => this.props.navigation.navigate('dashboard'), 800);
+  //   }
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.token) {
-      this.props.navigation.navigate('dashboard');
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.token) {
+  //     setTimeout(() => this.props.navigation.navigate('dashboard'), 800);
+  //   }
+  // }
 
   // Opens browser internally in order to access the backend OAuth routes
   openWebBrowserAsync = async authUrl => {
@@ -79,6 +79,7 @@ class AuthScreen extends Component {
               <View style={styles.profileImgContainer}>
                 <Image source={{ uri: user.profileImg }} style={styles.profileImg} />
               </View>
+              <Button title="Next" onPress={() => this.props.navigation.navigate('dashboard')} />
             </View>
           :
             <View>
