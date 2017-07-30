@@ -1,7 +1,7 @@
 import React from 'react';
 import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import AuthScreen from '../screens/AuthScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import SongsTabNav from './SongsTabNav';
@@ -12,15 +12,13 @@ import DrawerButton from '../components/DrawerButton';
 import CustomDrawerMenu from '../components/CustomDrawerMenu';
 
 const navigationOptions = ({ navigation, tintColor }) => ({
-  headerLeft: (
+  headerRight: (
     <DrawerButton
       navigation={navigation}
       tintColor='#FFFFFF'
     />
   ),
-  headerRight: (
-    <View></View>
-  ),
+  // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
   headerStyle: {
     backgroundColor: '#F26C4F',
     marginTop: Platform.OS === 'android' ? 24 : 0
@@ -108,6 +106,7 @@ const DrawerNav = DrawerNavigator({
 }, {
   contentComponent: CustomDrawerMenu,
   drawerWidth: 260,
+  drawerPosition: 'right',
   contentOptions: {
     activeTintColor: '#F26C4F',
     style: {
@@ -125,7 +124,7 @@ const MainNav = TabNavigator({
 }, {
   swipeEnabled: false,
   navigationOptions: { tabBarVisible: false },
-  // lazy: true,
+  lazy: true,
 });
 
 export default MainNav;

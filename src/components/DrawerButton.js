@@ -25,7 +25,7 @@ class DrawerButton extends Component {
 
 const styles = {
   button: {
-    paddingLeft: 10,
+    paddingRight: 10,
   }
 };
 export default DrawerButton;

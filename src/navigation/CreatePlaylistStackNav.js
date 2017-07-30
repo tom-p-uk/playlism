@@ -8,7 +8,6 @@ const CreatePlaylistStackNav = StackNavigator({
   searchSong: { screen: SearchSongScreen }
 }, {
   headerMode: 'none',
-  navigationOptions: { tabBarVisible: false },
   lazy: true,
 });
 

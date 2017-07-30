@@ -61,7 +61,9 @@ const styles = {
     alignSelf: 'center',
   },
   items: {
-    paddingTop: 15
+    paddingTop: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 };
 

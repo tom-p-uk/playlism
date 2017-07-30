@@ -37,21 +37,10 @@ const FriendsTabNav = TabNavigator({
   },
   addFriend: {
     screen: AddFriendStackNav,
-    navigationOptions: {
-      title: 'Add Friends',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='account-plus'
-          color={tintColor}
-        />
-      ),
-    }
   },
 }, {
   tabBarPosition: 'bottom',
-  swipeEnabled: true,
+  swipeEnabled: false,
   tabBarOptions: {
     style: { },
     labelStyle: { fontSize: 12 },
