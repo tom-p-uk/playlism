@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Hamburger from '../components/Hamburger';
-import * as actions from '../actions';
+import { updateLastLogin } from '../actions';
 import FullWidthButton from '../components/FullWidthButton';
 
 const SCREEN_WIDTH = Dimensions.get('window');
@@ -21,18 +21,6 @@ class DashboardScreen extends Component {
     ),
   };
 
-  onHamburgerPress = () => {
-    const { drawerIsOpen, openDrawer, closeDrawer, navigation } = this.props;
-
-    if (drawerIsOpen) {
-      closeDrawer();
-      navigation.navigate('DrawerClose')
-    } else {
-      openDrawer();
-      navigation.navigate('DrawerOpen')
-    }
-  }
-
   render() {
     const { user, drawerIsOpen } = this.props;
     if (!user) return <View />
@@ -44,7 +32,7 @@ class DashboardScreen extends Component {
             onPress={this.onHamburgerPress}
           /> */}
           <View>
-            <Image source={{ uri: user.profileImg }} style={styles.profileImg} />
+            <Image source={{ uri: decodeURIComponent(user.profileImg) }} style={styles.profileImg} />
           </View>
           <Text style={styles.displayName}>
             {user.displayName}
@@ -78,6 +66,7 @@ class DashboardScreen extends Component {
             name='account-multiple'
             label=' Friends '
             backgroundColor='#9CC4E4'
+            onPress={() => this.props.navigation.navigate('addFriend')}
           />
           {/* <Button
             style={styles.buttons}
@@ -159,11 +148,10 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ auth: { user }, nav: { drawerIsOpen } }) => {
+const mapStateToProps = ({ auth: { user } }) => {
   return {
     user,
-    drawerIsOpen,
   };
 };
 
-export default connect(mapStateToProps, actions)(DashboardScreen);
+export default connect(mapStateToProps)(DashboardScreen);

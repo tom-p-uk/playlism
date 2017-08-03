@@ -2,28 +2,45 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGIN_START,
+  UPDATE_LAST_LOGIN,
+  LOGOUT,
 } from '../actions/types';
 
-const initialState = { user: null, token: null, loading: null };
+const initialState = {
+  user: null,
+  authToken: null,
+  loading: null,
+  error: ''
+};
 
 export default (state = initialState, action) => {
   switch(action.type) {
     case (LOGIN_SUCCESS):
       return {
+        ...state,
         user: action.payload.user,
-        token: action.payload.token,
+        authToken: action.payload.authToken,
         loading: false,
+        error: '',
       };
 
     case (LOGIN_FAILURE):
       return {
+        ...state,
         user: null,
-        token: null,
+        authToken: null,
         loading: false,
+        error: action.payload.error,
       };
 
     case (LOGIN_START):
-      return { loading: true };
+      return {
+        ...state,
+        loading: true
+      };
+
+    case (LOGOUT):
+      return { ...initialState };
 
     default:
       return state;

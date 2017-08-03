@@ -1,9 +1,18 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, LayoutAnimation, UIManager } from 'react-native';
 import moment from 'moment';
 
 class FriendsList extends Component {
+  componentWillUpdate() {
+    // next line for Android compatiblity
+    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    // when LayoutAnimation.spring() is run, it tells the component that any updates
+    // to the layout of the component - which in this case will be the upward shift of the
+    // underlying card cascade - should be animated
+    LayoutAnimation.easeInEaseOut();
+  }
+
   renderSeparator = () => {
     return (
       <View
@@ -12,19 +21,35 @@ class FriendsList extends Component {
     );
   };
 
-  onPress = item => {
-    this.props.navigation.navigate('user', { user: item });
+  renderSubtitle = item => {
+    if (item.friendsSince) {
+      return `Friends since ${moment(item.friendsSince).format('MMM Do, YYYY')}`;
+    } else if (item.dateReceived) {
+      return `Received on ${moment(item.dateReceived).format('MMM Do, YYYY')}`;
+    } else {
+      return `Member since ${moment(item.dateJoined).format('MMM Do, YYYY')}`;
+    }
+  };
+
+  determineOnPress = item => {
+    if (item.friendsSince) {
+      return () => this.props.navigation.navigate('user', { user: item });
+    } else if (item.dateReceived) {
+      return () => this.props.navigation.navigate('user', { user: item });
+    } else {
+      return () => this.props.navigation.navigate('user', { user: item });
+    }
   };
 
   render() {
-    const { searchResults, renderHeader } = this.props;
+    const { data, renderHeader, subtitle } = this.props;
 
     return (
       <List
         containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
       >
         <FlatList
-          data={searchResults}
+          data={data}
           keyExtractor={item => item._id}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
@@ -32,10 +57,10 @@ class FriendsList extends Component {
             <ListItem
               roundAvatar
               title={item.displayName}
-              subtitle={`Joined on ${moment(item.dateJoined).format('MMM Do, YYYY')}`}
+              subtitle={this.renderSubtitle(item)}
               avatar={{ uri: decodeURIComponent(item.profileImg) }}
               containerStyle={{ borderBottomWidth: 0 }}
-              onPress={() => this.props.navigation.navigate('user', { user: item })}
+              onPress={this.determineOnPress(item)}
             />
           )}
         />

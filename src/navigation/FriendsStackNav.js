@@ -2,18 +2,18 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
 import UserScreen from '../screens/UserScreen';
-import SearchFriendScreen from '../screens/friends/SearchFriendScreen';
+import FriendsScreen from '../screens/friends/FriendsScreen';
 
 const navigationOptions = ({ navigation, tintColor }) => ({
   title: navigation.state.params.user.displayName,
   headerLeft: <BackButton color='#FFFFFF' navigation={navigation} />
 });
 
-const AddFriendStackNav = StackNavigator({
-  searchFriends: {
-    screen: SearchFriendScreen,
+const FriendsStackNav = StackNavigator({
+  friends: {
+    screen: FriendsScreen,
     navigationOptions: {
-      title: 'Search Friends'
+      title: 'Friends'
     }
   },
   user: { screen: UserScreen },
@@ -25,11 +25,11 @@ const AddFriendStackNav = StackNavigator({
       <Icon
         // style={styles.icon}
         type='material-community'
-        name='account-plus'
+        name='account-multiple'
         color={tintColor}
       />
     ),
   }
 });
 
-export default AddFriendStackNav;
+export default FriendsStackNav;

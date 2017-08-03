@@ -1,39 +1,19 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import { Icon } from 'react-native-elements';
 import FriendsScreen from '../screens/friends/FriendsScreen';
 import FriendRequestsScreen from '../screens/friends/FriendRequestsScreen';
+import FriendsStackNav from './FriendsStackNav';
+import FriendRequestsStackNav from './FriendRequestsStackNav';
 import AddFriendStackNav from './AddFriendStackNav';
+import { enhance } from 'react-navigation-addons';
 
 const FriendsTabNav = TabNavigator({
   friends: {
-    screen: FriendsScreen,
-    navigationOptions: {
-      title: 'Friends',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='account-multiple'
-          color={tintColor}
-        />
-      ),
-    }
+    screen: FriendsStackNav,
   },
   friendRequests: {
-    screen: FriendRequestsScreen,
-    navigationOptions: {
-      title: 'Requests',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='account-alert'
-          color={tintColor}
-        />
-      ),
-    }
+    screen: FriendRequestsStackNav,
   },
   addFriend: {
     screen: AddFriendStackNav,
@@ -41,19 +21,23 @@ const FriendsTabNav = TabNavigator({
 }, {
   tabBarPosition: 'bottom',
   swipeEnabled: false,
+  lazy: false,
   tabBarOptions: {
-    style: { },
-    labelStyle: { fontSize: 12 },
+    labelStyle: { fontSize: 11, marginBottom: Platform.OS === 'android' ? -5 : 0 },
+    iconStyle: {
+      marginTop: Platform.OS === 'android' ? -5 : 0,
+      marginBottom: Platform.OS === 'android' ? -5 : 0,
+    },
+    upperCaseLabel: false,
     activeTintColor: '#F26C4F',
     inactiveTintColor:'#999999',
     showIcon: true,
     style: {
         backgroundColor: '#FFFFFF',
-        marginTop: Platform.OS === 'android' ? 24 : 0
     },
     indicatorStyle: {
         backgroundColor: '#FFFFFF'
-    }
+    },
   }
 });
 

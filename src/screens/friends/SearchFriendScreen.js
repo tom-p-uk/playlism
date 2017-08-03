@@ -2,41 +2,50 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
-import { onChangeFriendsSearchBar, searchFriends } from '../../actions';
+import { debounce, isNull } from 'lodash';
+import { searchFriendsStart, searchFriends, clearSearchFriendsResults } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
 import SearchBar from '../../components/SearchBar';
 import FriendsList from '../../components/FriendsList';
+import Message from '../../components/Message';
+import * as actions from '../../actions';
 
 class SearchFriendScreen extends Component {
+  static navigationOptions = {
+    title: 'Search Friends'
+  };
+
   renderHeader = () => {
-    const { handleSubmit } = this.props;
+    const { awaitingSearchResults } = this.props;
+    // console.log(awaitingSearchResults);
 
     return (
       <Field
-        name={'searchFriends'}
+        name={'friendsSearchBar'}
         component={SearchBar}
-        x='y'
+        showLoadingIcon={this.props.awaitingSearchResults}
       />
     );
   };
 
   renderNoSearchResults = () => {
-    if (this.props.hasSearched && this.props.searchResults.length === 0) {
-      return (
-        <View>
-          <Text>No search results found.</Text>
-        </View>
-      );
-    }
+
   };
 
-  renderErrorMessage = () => {
-    if (this.props.searchError) {
+  renderMessage = () => {
+    const { dirty, awaitingSearchResults, searchResults, searchError } = this.props;
+
+    if (dirty && !awaitingSearchResults && searchResults && searchResults.length === 0) {
       return (
-        <View>
-          <Text>{this.props.searchError}</Text>
-        </View>
+        <Message color='#F26C4F'>
+          No search results found.
+        </Message>
+      );
+    } else if (searchError) {
+      return (
+        <Message>
+          {searchError}
+        </Message>
       );
     }
   };
@@ -45,13 +54,11 @@ class SearchFriendScreen extends Component {
     return (
       <View>
         <FriendsList
-          searchResults={this.props.searchResults}
-          renderHeader={this.renderHeader}
+          data={this.props.searchResults}
+          renderHeader={this.renderHeader()}
           navigation={this.props.navigation}
         />
-        {/* <Button title='user' onPress={() => this.props.navigation.navigate('user', { user: 'Tom Price' })} /> */}
-        {this.renderNoSearchResults()}
-        {this.renderErrorMessage()}
+        {this.renderMessage()}
       </View>
     );
   }
@@ -61,9 +68,14 @@ const styles = {
   color: 'white'
 };
 
-const onChange = debounce((values, dispatch, props) => {
-  if (values.searchFriends) {
-    props.searchFriends(values.searchFriends, props.authToken);
+const onChange = debounce(({ friendsSearchBar }, dispatch, props) => {
+  const { searchFriends, searchFriendsStart, clearSearchFriendsResults, authToken } = props;
+
+  if (friendsSearchBar) {
+    searchFriendsStart();
+    searchFriends(friendsSearchBar, authToken);
+  } else if (!friendsSearchBar) {
+    clearSearchFriendsResults();
   }
 }, 650);
 
@@ -72,13 +84,13 @@ const Form = reduxForm({
   form: 'searchFriends',
 })(SearchFriendScreen);
 
-const mapStateToProps = ({ friends: { searchResults, searchError, hasSearched }, auth: { token } }) => {
+const mapStateToProps = ({ friends: { searchResults, searchError, awaitingSearchResults }, auth: { authToken } }) => {
   return {
     searchResults,
     searchError,
-    hasSearched,
-    authToken: token,
+    awaitingSearchResults,
+    authToken,
   };
 };
 
-export default connect(mapStateToProps, { onChangeFriendsSearchBar, searchFriends })(Form);
+export default connect(mapStateToProps, actions)(Form);

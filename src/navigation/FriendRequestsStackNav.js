@@ -2,34 +2,33 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
 import UserScreen from '../screens/UserScreen';
-import SearchFriendScreen from '../screens/friends/SearchFriendScreen';
+import FriendRequestsScreen from '../screens/friends/FriendRequestsScreen';
 
 const navigationOptions = ({ navigation, tintColor }) => ({
   title: navigation.state.params.user.displayName,
   headerLeft: <BackButton color='#FFFFFF' navigation={navigation} />
 });
 
-const AddFriendStackNav = StackNavigator({
-  searchFriends: {
-    screen: SearchFriendScreen,
+const FriendRequestsStackNav = StackNavigator({
+  friendRequests: {
+    screen: FriendRequestsScreen,
     navigationOptions: {
-      title: 'Search Friends'
+      title: 'FriendRequests'
     }
   },
   user: { screen: UserScreen },
 }, {
   headerMode: 'none',
-  lazy: true,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
       <Icon
         // style={styles.icon}
         type='material-community'
-        name='account-plus'
+        name='account-alert'
         color={tintColor}
       />
     ),
   }
 });
 
-export default AddFriendStackNav;
+export default FriendRequestsStackNav;

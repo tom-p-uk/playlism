@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ class CustomDrawerMenu extends Component {
       <View style={styles.container}>
         <View style={styles.profileImgContainer}>
           <View>
-            <Image source={{ uri: user.profileImg }} style={styles.profileImg} />
+            <Image source={{ uri: decodeURIComponent(user.profileImg) }} style={styles.profileImg} />
           </View>
           <Text style={styles.displayName}>
             {user.displayName}
@@ -24,6 +24,9 @@ class CustomDrawerMenu extends Component {
         />
         {/* <Divider style={{ backgroundColor: '#F26C4F' }} /> */}
         <DrawerItems style={styles.items} {...this.props} />
+        <TouchableOpacity>
+          <Text>Logout</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -43,9 +46,9 @@ const styles = {
     // flex: 1
   },
   profileImg: {
-    borderRadius: 50,
-    height: 100,
-    width: 100,
+    borderRadius: 40,
+    height: 80,
+    width: 80,
   },
   displayName: {
     color: '#000000',
@@ -62,7 +65,7 @@ const styles = {
   },
   items: {
     paddingTop: 15,
-    alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
   }
 };
