@@ -16,9 +16,10 @@ import registerForNotifications from '../services/push_notifications';
 import SpinnerOverlay from '../components/SpinnerOverlay';
 
 // const HOST = 'http://192.168.0.14:3000';
-const HOST = 'http://192.168.0.14:3000';
-const FACEBOOK_AUTH_URL = `${HOST}/api/auth/facebook`;
-const GOOGLE_AUTH_URL = `${HOST}/api/auth/google`;
+const URL = 'http://192.168.0.14:3000';
+// const URL = 'https://playlism.herokuapp.com';
+const FACEBOOK_AUTH_URL = `${URL}/api/auth/facebook`;
+const GOOGLE_AUTH_URL = `${URL}/api/auth/google`;
 
 
 class AuthScreen extends Component {

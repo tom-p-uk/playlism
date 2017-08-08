@@ -2,13 +2,14 @@ import React from 'react';
 import { TabNavigator } from 'react-navigation'
 import { Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
-import OtherUserPlaylistsScreen from '../screens/playlist/OtherUserPlaylistsScreen';
-import UserPlaylistsScreen from '../screens/playlist/UserPlaylistsScreen';
+import MyPlaylistsScreen from '../screens/playlist/MyPlaylistsScreen';
+import FriendsPlaylistScreen from '../screens/playlist/FriendsPlaylistScreen';
 import CreatePlaylistStackNav from './CreatePlaylistStackNav';
+import FriendsPlaylistsStackNav from './FriendsPlaylistsStackNav';
 
 const PlaylistTabNav = TabNavigator({
-  userPlaylists: {
-    screen: UserPlaylistsScreen,
+  myPlaylists: {
+    screen: MyPlaylistsScreen,
     navigationOptions: {
       title: 'My Playlists',
       tabBarIcon: ({ tintColor }) => (
@@ -20,10 +21,10 @@ const PlaylistTabNav = TabNavigator({
       ),
     }
   },
-  otherUserPlaylists: {
-    screen: OtherUserPlaylistsScreen,
+  friendsPlaylists: {
+    screen: FriendsPlaylistsStackNav,
     navigationOptions: {
-      title: "Friends' Playlists",
+      // title: "Friends' Playlists",
       tabBarIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}
@@ -37,7 +38,6 @@ const PlaylistTabNav = TabNavigator({
   createNewPlaylist: {
     screen: CreatePlaylistStackNav,
     navigationOptions: {
-      title: 'Create Playlist',
       tabBarIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}

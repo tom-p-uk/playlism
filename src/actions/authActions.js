@@ -8,6 +8,7 @@ import {
   LOGOUT,
 } from './types';
 const URL = 'http://192.168.0.14:3000/api';
+// const URL = 'https://playlism.herokuapp.com/api';
 
 export const loginSuccess = (user, authToken) => async dispatch => {
   await AsyncStorage.setItem('authToken', authToken);
@@ -32,7 +33,7 @@ export const loginStart = () => {
 };
 
 export const jwtLogin = () => async dispatch => {
-  const authToken = await AsyncStorage.removeItem('authToken');
+  const authToken = await AsyncStorage.getItem('authToken');
   console.log(authToken);
   if (authToken) {
     dispatch(loginStart())

@@ -66,7 +66,6 @@ class UserCard extends Component {
             {this.renderSecondButton()}
           </View>
         </View>
-
       </Card>
     );
   }
@@ -106,13 +105,6 @@ const styles = {
     marginBottom: 15,
   },
   buttonContainer: {
-    // position: 'absolute',
-    // top: 20,
-    // left: 0,
-    // right: 20,
-    // bottom: 0,
-    // borderRadius: 60,
-    // width: 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 15,

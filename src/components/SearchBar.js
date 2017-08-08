@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-const SearchBarComponent = ({ input, ...inputProps, showLoadingIcon }) => {
+const SearchBarComponent = ({ input, inputProps, showLoadingIcon }) => {
   // const  = props;
 
   return (
@@ -11,7 +11,7 @@ const SearchBarComponent = ({ input, ...inputProps, showLoadingIcon }) => {
         {...inputProps}
         round
         lightTheme
-        autoFocus
+        // autoFocus
         // autoCapitalize={false}
         autoCorrect={false}
         // onChangeText={text => this.onChangeText(text)}

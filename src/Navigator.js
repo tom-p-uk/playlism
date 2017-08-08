@@ -11,7 +11,7 @@ import FriendRequestsScreen from './screens/friends/FriendRequestsScreen';
 import FriendsScreen from './screens/friends/FriendsScreen';
 import SearchFriendScreen from './screens/friends/SearchFriendScreen';
 import OtherUserPlaylistsScreen from './screens/playlist/OtherUserPlaylistsScreen';
-import PlaylistFormScreen from './screens/playlist/PlaylistFormScreen';
+import CreatePlaylistScreen from './screens/playlist/CreatePlaylistScreen';
 import SearchSongScreen from './screens/playlist/SearchSongScreen';
 import UserPlaylistsScreen from './screens/playlist/UserPlaylistsScreen';
 
@@ -30,7 +30,7 @@ const Navigator = TabNavigator({
           otherUserPlaylists: { screen: OtherUserPlaylistsScreen },
           createPlaylist: { screen:
             StackNavigator({
-              playlistForm: { screen: PlaylistFormScreen },
+              createPlaylistForm: { screen: CreatePlaylistScreen },
               searchSong: { screen: SearchSongScreen }
             })
           },

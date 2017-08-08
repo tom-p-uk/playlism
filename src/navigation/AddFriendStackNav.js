@@ -4,11 +4,6 @@ import { Icon } from 'react-native-elements';
 import UserScreen from '../screens/UserScreen';
 import SearchFriendScreen from '../screens/friends/SearchFriendScreen';
 
-const navigationOptions = ({ navigation, tintColor }) => ({
-  title: navigation.state.params.user.displayName,
-  headerLeft: <BackButton color='#FFFFFF' navigation={navigation} />
-});
-
 const AddFriendStackNav = StackNavigator({
   searchFriends: {
     screen: SearchFriendScreen,

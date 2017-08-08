@@ -14,9 +14,12 @@
     "react": "16.0.0-alpha.12",
     "react-native": "https://github.com/expo/react-native/archive/sdk-18.0.1.tar.gz",
     "react-native-elements": "^0.13.0",
+    "react-native-file-download": "0.0.10",
     "react-native-hamburger": "0.0.2",
     "react-native-loading-spinner-overlay": "^0.5.1",
+    "react-native-md-textinput": "^2.0.4",
     "react-native-vector-icons": "^4.2.0",
+    "react-native-youtube": "^1.0.0-beta.2",
     "react-navigation": "^1.0.0-beta.11",
     "react-navigation-addons": "satya164/react-navigation-addons",
     "react-navigation-is-focused-hoc": "^1.0.0",
@@ -24,6 +27,10 @@
     "redux": "^3.7.0",
     "redux-form": "^7.0.3",
     "redux-persist": "^4.8.2",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "youtube-api-search": "0.0.5",
+    "youtube-api-search-promise": "^0.2.0",
+    "youtube-api-search-reloaded": "^1.1.0",
+    "youtube-search": "^1.0.10"
   }
 }

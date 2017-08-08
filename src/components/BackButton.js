@@ -2,13 +2,13 @@ import React from 'react';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 
-const BackButton = props => {
+const BackButton = ({ navigation, color }) => {
   return (
     <TouchableOpacity
-      onPress={() => props.navigation.goBack()}
+      onPress={() => navigation.goBack(null)}
       style={styles.opacity}
     >
-      <Icon name='keyboard-arrow-left' color={props.color}/>
+      <Icon name='keyboard-arrow-left' color={color}/>
     </TouchableOpacity>
   );
 };

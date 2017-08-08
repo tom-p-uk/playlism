@@ -30,19 +30,19 @@ class FriendsList extends Component {
       return `Member since ${moment(item.dateJoined).format('MMM Do, YYYY')}`;
     }
   };
-
-  determineOnPress = item => {
-    if (item.friendsSince) {
-      return () => this.props.navigation.navigate('user', { user: item });
-    } else if (item.dateReceived) {
-      return () => this.props.navigation.navigate('user', { user: item });
-    } else {
-      return () => this.props.navigation.navigate('user', { user: item });
-    }
-  };
+  //
+  // determineOnPress = item => {
+  //   if (item.friendsSince) {
+  //     return () => this.props.navigation.navigate('user', { user: item });
+  //   } else if (item.dateReceived) {
+  //     return () => this.props.navigation.navigate('user', { user: item });
+  //   } else {
+  //     return () => this.props.navigation.navigate('user', { user: item });
+  //   }
+  // };
 
   render() {
-    const { data, renderHeader, subtitle } = this.props;
+    const { data, renderHeader, subtitle, navigate } = this.props;
 
     return (
       <List
@@ -60,7 +60,7 @@ class FriendsList extends Component {
               subtitle={this.renderSubtitle(item)}
               avatar={{ uri: decodeURIComponent(item.profileImg) }}
               containerStyle={{ borderBottomWidth: 0 }}
-              onPress={this.determineOnPress(item)}
+              onPress={() => this.props.navigation.navigate('user', { user: item })}
             />
           )}
         />

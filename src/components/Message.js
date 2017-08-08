@@ -22,6 +22,7 @@ const styles = {
   text: {
     alignSelf: 'center',
     textAlign: 'center',
+    fontSize: 14,
   }
 };
 

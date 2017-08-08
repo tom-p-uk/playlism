@@ -1,14 +1,26 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation'
-import PlaylistFormScreen from '../screens/playlist/PlaylistFormScreen';
-import SearchSongScreen from '../screens/playlist/SearchSongScreen';
+import { Icon } from 'react-native-elements';
+import UserScreen from '../screens/UserScreen';
+import FriendsScreen from '../screens/friends/FriendsScreen';
+import CreatePlaylistScreen from '../screens/playlist/CreatePlaylistScreen';
 
 const CreatePlaylistStackNav = StackNavigator({
-  playlistForm: { screen: PlaylistFormScreen },
-  searchSong: { screen: SearchSongScreen }
+  selectFriend: {
+    screen: FriendsScreen,
+    navigationOptions: {
+      title: 'Create Playlist'
+    }
+  },
+  user: { screen: UserScreen },
+  createPlaylistForm: {
+    screen: CreatePlaylistScreen,
+    navigationOptions: {
+      title: 'Create Playlist'
+    }
+  }
 }, {
   headerMode: 'none',
-  lazy: true,
 });
 
 export default CreatePlaylistStackNav;

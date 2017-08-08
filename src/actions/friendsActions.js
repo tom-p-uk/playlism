@@ -25,7 +25,7 @@ import {
   DELETE_FRIEND_FAILURE,
 } from './types';
 
-const URL = 'http://localhost:3000/api';
+const URL = 'http://192.168.0.14:3000/api';
 // const URL = Platform.OS === 'android' ? 'http://192.168.0.14:3000/api' : 'http://localhost:3000/api';
 
 export const searchFriends = (searchTerm, authToken) => async dispatch => {
@@ -71,6 +71,7 @@ export const clearSearchFriendsResults = () => {
 
 
 export const getFriends = authToken => async dispatch => {
+  dispatch(getFriendsStart());
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/user/friends`);

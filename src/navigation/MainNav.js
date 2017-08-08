@@ -10,6 +10,7 @@ import PlaylistTabNav from './PlaylistTabNav';
 import Hamburger from '../components/Hamburger';
 import DrawerButton from '../components/DrawerButton';
 import CustomDrawerMenu from '../components/CustomDrawerMenu';
+import BackButton from '../components/BackButton';
 
 const navigationOptions = ({ navigation, tintColor }) => ({
   headerRight: (
@@ -79,7 +80,29 @@ const PlaylistsStack = StackNavigator({
       ),
     }
   }
-}, { navigationOptions });
+}, {
+  navigationOptions: ({ navigation, tintColor }) => ({
+    headerRight: (
+      <DrawerButton
+        navigation={navigation}
+        tintColor='#FFFFFF'
+      />
+    ),
+    headerLeft: (
+      <BackButton color='#FFFFFF' navigation={navigation} />
+    ),
+    // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
+    headerStyle: {
+      backgroundColor: '#F26C4F',
+      marginTop: Platform.OS === 'android' ? 24 : 0
+     },
+     headerTitleStyle: {
+      alignSelf:'center',
+      color: '#FFFFFF'
+     },
+    headerTintColor: '#FFFFFF',
+  })
+});
 
 const FriendsStack = StackNavigator({
   friendsStack: {

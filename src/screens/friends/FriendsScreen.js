@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
 import { getFriends, loadFriendRequestsSent } from '../../actions';
 import FriendsList from '../../components/FriendsList';
@@ -24,16 +25,28 @@ class FriendsScreen extends Component {
   componentDidMount() {
     const { getFriends, user, authToken, navigation, loadFriendRequestsSent } = this.props;
     getFriends(authToken);
-
   }
 
-  renderSpinner() {
+  renderSelectFriendText = () => {
+    const { routeName } = this.props.navigation.state;
+    const { friends, friendsError, awaitingFriends } = this.props;
+    if (!awaitingFriends && friends && friends.length !== 0 && routeName === 'selectFriend') {
+      return (
+        <Text style={styles.selectFriendMessage}>
+          Select a user from your friends list.
+        </Text>
+
+      );
+    }
+  };
+
+  renderSpinner = () => {
     const { friends, awaitingFriends } = this.props;
 
-    if ((friends === null || friends === undefined) && awaitingFriends) {
+    if ((_.isNull(friends) || friends === undefined) && awaitingFriends) {
       return <Spinner size='large'/>;
     }
-  }
+  };
 
   renderMessage = () => {
     const { friends, friendsError, awaitingFriends } = this.props;
@@ -69,15 +82,27 @@ class FriendsScreen extends Component {
 
     return (
       <View>
+        {this.renderSelectFriendText()}
         <FriendsList
           data={data}
           navigation={this.props.navigation}
+          // renderHeader=
         />
         {this.renderMessage()}
         {this.renderSpinner()}
       </View>
     );
   }
+};
+
+const styles = {
+  selectFriendMessage: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontSize: 14,
+    color: '#F26C4F',
+    marginTop: 20,
+  },
 };
 
 const mapStateToProps = ({ friends: { friends, friendsError, awaitingFriends }, auth: { user, authToken } }) => {
