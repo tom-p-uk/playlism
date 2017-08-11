@@ -47,12 +47,12 @@ class AddSongsScreen extends Component {
   };
 
   render() {
-    const { searchResults, songsInPlaylist, navigation } = this.props;
+    const { searchResults, songsInFriendsPlaylist, navigation } = this.props;
     return (
       <View>
         <SongResultsList
           data={searchResults}
-          extraData={songsInPlaylist}
+          extraData={songsInFriendsPlaylist}
           renderHeader={this.renderHeader()}
           navigation={navigation}
         />
@@ -83,7 +83,7 @@ const Form = reduxForm({
 })(AddSongsScreen);
 
 const mapStateToProps = ({
-  playlist: { searchResults, searchError, awaitingSearchResults, songsInPlaylist },
+  playlist: { searchResults, searchError, awaitingSearchResults, songsInFriendsPlaylist },
   auth: { authToken }
 }) => {
   return {
@@ -91,7 +91,7 @@ const mapStateToProps = ({
     searchError,
     awaitingSearchResults,
     authToken,
-    songsInPlaylist,
+    songsInFriendsPlaylist,
   };
 };
 

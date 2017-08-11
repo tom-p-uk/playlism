@@ -5,10 +5,10 @@ import YouTube from 'react-native-youtube';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getSongsInPlaylist } from '../../actions';
+import { getSongsInFriendsPlaylist, deleteSong } from '../../actions';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
-import SongsInPlaylistList from '../../components/SongsInPlaylistList';
+import SongsInFriendsPlaylistList from '../../components/SongsInFriendsPlaylistList';
 
 class FriendsPlaylistScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -16,57 +16,86 @@ class FriendsPlaylistScreen extends Component {
     headerLeft: <Text>Done</Text>
   });
 
+  state = {
+    sortedBy: 'addedOnDesc',
+  };
+
   componentDidMount() {
-    const { getSongsInPlaylist, user, authToken, navigation } = this.props;
+    const { getSongsInFriendsPlaylist, user, authToken, navigation } = this.props;
     const { playlist } = navigation.state.params;
 
-    getSongsInPlaylist(playlist._id, authToken);
+    getSongsInFriendsPlaylist(playlist._id, authToken);
   }
 
-  renderSpinner = () => {
-    const { songsInPlaylist, awaitingSongsInPlaylist } = this.props;
+  sortData = data => {
+    if (!data) {
+      return data;
+    }
 
-    if ((_.isNull(songsInPlaylist) || songsInPlaylist === undefined) && awaitingSongsInPlaylist) {
+    const { sortedBy } = this.state;
+
+    switch (sortedBy) {
+      case 'addedOnAsc':
+        return _.sortBy(data, 'dateAdded');
+      case 'addedOnDesc':
+        return _.sortBy(data, 'dateAdded').reverse();
+      case 'titleAsc':
+        return _.sortBy(data, 'title');
+      case 'titleDesc':
+        return _.sortBy(data, 'title').reverse();
+    }
+  };
+
+  renderSpinner = () => {
+    const { songsInFriendsPlaylist, awaitingSongsInFriendsPlaylist } = this.props;
+
+    if ((_.isNull(songsInFriendsPlaylist) || songsInFriendsPlaylist === undefined) && awaitingSongsInFriendsPlaylist) {
       return <Spinner size='large'/>;
     }
   };
 
   render() {
-    const { navigation } = this.props;
-    const { playlist, awaitingSongsInPlaylist, songsInPlaylist } = navigation.state.params;
+    const { navigation, awaitingSongsInFriendsPlaylist, songsInFriendsPlaylist } = this.props;
+    const { playlist } = navigation.state.params;
 
     // this.renderSpinner();
-    if ((_.isNull(songsInPlaylist) || songsInPlaylist === undefined) && awaitingSongsInPlaylist) {
+    if (awaitingSongsInFriendsPlaylist) {
       return <Spinner size='large'/>;
     }
 
+    // if (songsInFriendsPlaylist && songsInFriendsPlaylist.length === 0) {
+    //   return <Message color='#F26C4F'>The playlist is empty.</Message>
+    // }
+
     return (
-      <View style={styles.buttonContainer}>
-        <Button
-          // raised
-          title='Add Songs'
-          icon={{ name: 'add-circle-outline' }}
-          onPress={() => navigation.navigate('addSongs', { playlist })}
-          style={styles.button}
-          disabledStyle={styles.buttonDisabled}
-          // disabled={awaitingSongsInPlaylist}
-          fontSize={13}
-          borderRadius={60}
-          backgroundColor='#98250B'
-        />
-        <Button
-          // raised
-          title='Delete Songs'
-          icon={{ name: 'clear' }}
-          onPress={() => null}
-          style={styles.button}
-          disabledStyle={styles.buttonDisabled}
-          // disabled={awaitingSongsInPlaylist}
-          fontSize={13}
-          borderRadius={60}
-          backgroundColor='#D13310'
-        />
-        <SongsInPlaylistList data={songsInPlaylist}/>
+      <View>
+        <View style={styles.buttonContainer}>
+          <Button
+            // raised
+            title='Add Songs'
+            icon={{ name: 'add-circle-outline' }}
+            onPress={() => navigation.navigate('addSongs', { playlist })}
+            style={styles.button}
+            disabledStyle={styles.buttonDisabled}
+            // disabled={awaitingSongsInFriendsPlaylist}
+            fontSize={13}
+            borderRadius={60}
+            backgroundColor='#98250B'
+          />
+          {/* <Button
+            // raised
+            title='Delete Songs'
+            icon={{ name: 'clear' }}
+            onPress={() => null}
+            style={styles.button}
+            disabledStyle={styles.buttonDisabled}
+            // disabled={awaitingSongsInFriendsPlaylist}
+            fontSize={13}
+            borderRadius={60}
+            backgroundColor='#D13310'
+          /> */}
+        </View>
+        <SongsInFriendsPlaylistList data={this.sortData(songsInFriendsPlaylist)} navigation={navigation} />
       </View>
     );
   }
@@ -106,14 +135,14 @@ const styles = {
 
 const mapStateToProps = ({
   auth: { authToken },
-  playlist: { awaitingSongsInPlaylist, songsInPlaylist, songsInPlaylistError }
+  playlist: { awaitingSongsInFriendsPlaylist, songsInFriendsPlaylist, songsInFriendsPlaylistError }
 }) => {
   return {
     authToken,
-    awaitingSongsInPlaylist,
-    songsInPlaylist,
-    songsInPlaylistError,
+    awaitingSongsInFriendsPlaylist,
+    songsInFriendsPlaylist,
+    songsInFriendsPlaylistError,
   };
 };
 
-export default connect(mapStateToProps, { getSongsInPlaylist })(FriendsPlaylistScreen);
+export default connect(mapStateToProps, { getSongsInFriendsPlaylist, deleteSong })(FriendsPlaylistScreen);

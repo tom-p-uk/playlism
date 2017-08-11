@@ -34,7 +34,7 @@ class PlaylistList extends Component {
               roundAvatar
               title={item.title}
               rightIcon={{ name: 'create' }}
-              onPressRightIcon={() => navigation.navigate('editPlaylistForm', { playlist: item })}
+              onPressRightIcon={() => navigation.navigate('editPlaylistForm', { playlist: item, friendsPlaylists: data })}
               // rightTitle={item.forUser.displayName}
               rightTitleStyle={styles.rightTitle}
               subtitle={`Created on ${moment(item.dateAdded).format('MMM Do, YYYY')}`}

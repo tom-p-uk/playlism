@@ -18,7 +18,6 @@ class UserCard extends Component {
           style={styles.button}
           fontSize={13}
           borderRadius={60}
-          backgroundColor='#98250B'
           disabledStyle={styles.buttonDisabled}
           {...secondButtonProps}
         />

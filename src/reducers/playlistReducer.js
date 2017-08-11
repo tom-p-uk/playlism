@@ -18,6 +18,22 @@ import {
   ADD_SONG_START,
   ADD_SONG_SUCCESS,
   ADD_SONG_FAILURE,
+  DELETE_SONG_START,
+  DELETE_SONG_SUCCESS,
+  DELETE_SONG_FAILURE,
+  LIKE_SONG_START,
+  LIKE_SONG_SUCCESS,
+  LIKE_SONG_FAILURE,
+  UNLIKE_SONG_START,
+  UNLIKE_SONG_SUCCESS,
+  UNLIKE_SONG_FAILURE,
+  EDIT_PLAYLIST_TITLE_START,
+  EDIT_PLAYLIST_TITLE_SUCCESS,
+  EDIT_PLAYLIST_TITLE_FAILURE,
+  DELETE_FRIENDS_PLAYLIST_START,
+  DELETE_FRIENDS_PLAYLIST_SUCCESS,
+  DELETE_FRIENDS_PLAYLIST_FAILURE,
+  UPDATE_LAST_SONG_PLAYED,
 } from '../actions/types';
 
 const initialState = {
@@ -32,11 +48,17 @@ const initialState = {
   searchResults: null,
   awaitingSearchResults: false,
   searchError: '',
-  awaitingSongsInPlaylist: false,
-  songsInPlaylist: null,
-  songsInPlaylistError: '',
+  awaitingSongsInFriendsPlaylist: false,
+  songsInFriendsPlaylist: null,
+  songsInFriendsPlaylistError: '',
   awaitingAddSong: false,
   addSongError: '',
+  awaitingDeleteSong: false,
+  deleteSongError: '',
+  awaitingEditPlaylistTitle: false,
+  editPlaylistTitleError: '',
+  awaitingDeleteFriendsPlaylist: false,
+  deleteFriendsPlaylistError: '',
 };
 
 export default (state = initialState, action) => {
@@ -131,21 +153,21 @@ export default (state = initialState, action) => {
     case (GET_SONGS_IN_PLAYLIST_START):
       return {
         ...state,
-        awaitingSongsInPlaylist: true,
+        awaitingSongsInFriendsPlaylist: true,
       };
 
     case (GET_SONGS_IN_PLAYLIST_SUCCESS):
       return {
         ...state,
-        awaitingSongsInPlaylist: false,
-        songsInPlaylist: action.payload.songsInPlaylist
+        awaitingSongsInFriendsPlaylist: false,
+        songsInFriendsPlaylist: action.payload.songsInFriendsPlaylist
       };
 
     case (GET_SONGS_IN_PLAYLIST_FAILURE):
       return {
         ...state,
-        awaitingSongsInPlaylist: false,
-        songsInPlaylistError: action.payload.error
+        awaitingSongsInFriendsPlaylist: false,
+        songsInFriendsPlaylistError: action.payload.error
       };
 
     case (ADD_SONG_START):
@@ -158,7 +180,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingAddSong: false,
-        songsInPlaylist: [...state.songsInPlaylist, action.payload.song],
+        songsInFriendsPlaylist: [...state.songsInFriendsPlaylist, action.payload.song],
         addSongError: '',
       };
 
@@ -167,6 +189,69 @@ export default (state = initialState, action) => {
         ...state,
         awaitingAddSong: false,
         addSongError: action.payload.error
+      };
+
+    case (DELETE_SONG_START):
+      return {
+        ...state,
+        awaitingDeleteSong: true,
+      };
+
+    case (DELETE_SONG_SUCCESS):
+      return {
+        ...state,
+        songsInFriendsPlaylist: action.payload.songsInFriendsPlaylist,
+        deleteSongError: '',
+        awaitingDeleteSong: false,
+      };
+
+    case (DELETE_SONG_FAILURE):
+      return {
+        ...state,
+        deleteSongError: action.payload.error,
+        awaitingDeleteSong: false,
+      };
+
+    case (EDIT_PLAYLIST_TITLE_START):
+      return {
+        ...state,
+        awaitingEditPlaylistTitle: true,
+      };
+
+    case (EDIT_PLAYLIST_TITLE_SUCCESS):
+      return {
+        ...state,
+        awaitingEditPlaylistTitle: false,
+        friendsPlaylists: action.payload.friendsPlaylists,
+        editPlaylistTitleError: '',
+      };
+
+    case (EDIT_PLAYLIST_TITLE_FAILURE):
+      return {
+        ...state,
+        awaitingEditPlaylistTitle: false,
+        editPlaylistTitleError: action.payload.error,
+      };
+
+    case (DELETE_FRIENDS_PLAYLIST_START):
+      return {
+        ...state,
+        awaitingDeleteFriendsPlaylist: true,
+      };
+
+    case (DELETE_FRIENDS_PLAYLIST_SUCCESS):
+      return {
+        ...state,
+        friendsPlaylists: action.payload.friendsPlaylists,
+        deleteFriendsPlaylistError: '',
+        awaitingDeleteFriendsPlaylist: false,
+      };
+
+    case (DELETE_FRIENDS_PLAYLIST_FAILURE):
+      return {
+        ...state,
+        deleteFriendsPlaylistError: action.payload.error,
+        awaitingDeleteFriendsPlaylist: false,
       };
 
     default:

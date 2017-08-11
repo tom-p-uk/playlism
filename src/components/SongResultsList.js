@@ -13,14 +13,14 @@ class SongResultsList extends Component {
   }
 
   renderIcon = videoId => {
-    const index = this.findIndexOfSongInPlaylist(videoId);
+    const index = this.findIndexOfSongInFriendsPlaylist(videoId);
     return index === -1 ? { name: 'add' } : { name: 'done' };
   };
 
-  findIndexOfSongInPlaylist = videoId => {
-    const { songsInPlaylist } = this.props;
+  findIndexOfSongInFriendsPlaylist = videoId => {
+    const { songsInFriendsPlaylist } = this.props;
     const youTubeUrl = `https://www.youtube.com/watch?v=${videoId}`;
-    return _.findIndex(songsInPlaylist, { youTubeUrl });
+    return _.findIndex(songsInFriendsPlaylist, { youTubeUrl });
   };
 
   renderSeparator = () => {
@@ -31,30 +31,31 @@ class SongResultsList extends Component {
     );
   };
 
-  handleOnPressRightIcon = videoId => {
+  handleOnPressRightIcon = item => {
+    const { id: { videoId }, snippet: { title, description, thumbnails } } = item;
     const { awaitingAddSong, authToken, navigation, addSong } = this.props;
     const { playlist } = navigation.state.params;
-    const index = this.findIndexOfSongInPlaylist(videoId);
+    const index = this.findIndexOfSongInFriendsPlaylist(videoId);
 
     if (awaitingAddSong) {
       console.log('Awaiting results of addSong function. Button disabled.');
     } else if (index !== -1) {
       console.log('Song already added. Button disabled.');
     } else {
-      addSong(videoId, playlist._id, authToken);
+      addSong(videoId, title, description, thumbnails.default.url, playlist._id, authToken);
     }
   };
 
   render() {
-    const { data, renderHeader, subtitle } = this.props;
-    
+    const { data, extraData, renderHeader, subtitle, songsInFriendsPlaylist } = this.props;
+
     return (
       <List
         containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
       >
         <FlatList
           data={data}
-          // extraData={extraData}
+          extraData={extraData}
           keyExtractor={item => item.id.videoId}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
@@ -69,7 +70,7 @@ class SongResultsList extends Component {
               avatar={{ uri: decodeURIComponent(item.snippet.thumbnails.default.url) }}
               containerStyle={{ borderBottomWidth: 0 }}
               onPress={() => console.log(item.snippet.title)}
-              onPressRightIcon={() => this.handleOnPressRightIcon(item.id.videoId)}
+              onPressRightIcon={() => this.handleOnPressRightIcon(item)}
             />
           )}
         />
@@ -99,12 +100,12 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ auth: { authToken }, playlist: { awaitingAddSong, addSongError, songsInPlaylist } }) => {
+const mapStateToProps = ({ auth: { authToken }, playlist: { awaitingAddSong, addSongError, songsInFriendsPlaylist } }) => {
   return {
     authToken,
     awaitingAddSong,
     addSongError,
-    songsInPlaylist,
+    songsInFriendsPlaylist,
   };
 };
 

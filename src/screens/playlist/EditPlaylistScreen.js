@@ -2,18 +2,34 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { } from '../../actions';
+import { editPlaylistTitle, deleteFriendsPlaylist } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
 import Input from '../../components/Input';
 import Message from '../../components/Message';
 
 class EditPlaylistScreen extends Component {
-  onSubmit = ({ createPlaylistTitle }) => {
-    const { navigation, authToken } = this.props;
-    // const { user } = this.props.navigation.state.params;
-    const navigationCallback = () => navigation.navigate('friendsPlaylistsList');
+  onSaveChangesPress = ({ playlistTitle }) => {
+    const { navigation, authToken, editPlaylistTitle, awaitingEditPlaylistTitle } = this.props;
+    const { playlist, friendsPlaylists } = navigation.state.params;
 
-    // createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);
+    if (awaitingEditPlaylistTitle) {
+      return console.log('Awaiting result of editPlaylistTitle. Button disabled')
+    }
+    
+    const navigationCallback = () => navigation.goBack();
+    editPlaylistTitle(playlist._id, playlistTitle, [...friendsPlaylists], authToken, navigationCallback);
+  };
+
+  onDeletePlaylistPress = () => {
+    const { navigation, authToken, deleteFriendsPlaylist, awaitingDeleteFriendsPlaylist } = this.props;
+    const { playlist, friendsPlaylists } = navigation.state.params;
+
+    if (awaitingDeleteFriendsPlaylist) {
+      return console.log('Awaiting result of deleteFriendsPlaylist. Button disabled')
+    }
+
+    const navigationCallback = () => navigation.goBack();
+    deleteFriendsPlaylist(playlist._id, friendsPlaylists, authToken, navigationCallback);
   };
 
   render() {
@@ -30,7 +46,7 @@ class EditPlaylistScreen extends Component {
           <Text style={styles.text}>Edit {title}</Text>
         </View>
         <Field
-          name='editPlaylistTitle'
+          name='playlistTitle'
           component={Input}
           label='Playlist Title'
           highlightColor='#F26C4F'
@@ -40,7 +56,7 @@ class EditPlaylistScreen extends Component {
             raised
             title='Delete Playlist'
             icon={{ name: 'clear' }}
-            onPress={() => navigation.navigate('addSongs')}
+            onPress={() => this.onDeletePlaylistPress()}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
             disabled={awaitingCreatePlaylist}
@@ -53,13 +69,13 @@ class EditPlaylistScreen extends Component {
             raised
             title='Save Changes'
             icon={{ name: 'save' }}
-            onPress={handleSubmit(this.onSubmit)}
+            onPress={handleSubmit(this.onSaveChangesPress)}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
             disabled={awaitingCreatePlaylist}
             fontSize={13}
             borderRadius={60}
-            backgroundColor='#98250B'
+            backgroundColor='#D13310'
           />
         </View>
       </Card>
@@ -112,20 +128,21 @@ const validate = ({ createPlaylistTitle }) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const { auth: { authToken }, playlist: { awaitingCreatePlaylist } } = state;
+  const { auth: { authToken }, playlist: { awaitingEditPlaylistTitle, awaitingDeleteFriendsPlaylist } } = state;
   return {
     authToken,
-    addedSongs: props.navigation.state.params.addedSongs,
+    awaitingEditPlaylistTitle,
+    awaitingDeleteFriendsPlaylist,
     initialValues: {
-      editPlaylistTitle: props.navigation.state.params.playlist.title
+      playlistTitle: props.navigation.state.params.playlist.title
     },
   };
 };
 
 const Form = reduxForm({
   validate,
-  form: 'createPlaylist',
+  form: 'editPlaylist',
 })(EditPlaylistScreen);
 
 
-export default connect(mapStateToProps)(Form);
+export default connect(mapStateToProps, { editPlaylistTitle, deleteFriendsPlaylist })(Form);

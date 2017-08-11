@@ -24,9 +24,9 @@ class CustomDrawerMenu extends Component {
         />
         {/* <Divider style={{ backgroundColor: '#F26C4F' }} /> */}
         <DrawerItems style={styles.items} {...this.props} />
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <Text>Logout</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }
