@@ -19,6 +19,7 @@ class UserCard extends Component {
           fontSize={13}
           borderRadius={60}
           disabledStyle={styles.buttonDisabled}
+          buttonStyle={{ height: 45 }}
           {...secondButtonProps}
         />
       );
@@ -60,6 +61,7 @@ class UserCard extends Component {
               borderRadius={60}
               backgroundColor='#98250B'
               disabledStyle={styles.buttonDisabled}
+              buttonStyle={{ height: 45 }}
               {...buttonProps}
             />
             {this.renderSecondButton()}

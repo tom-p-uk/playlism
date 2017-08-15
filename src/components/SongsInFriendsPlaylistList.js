@@ -32,28 +32,8 @@ class SongsInFriendsPlaylistList extends Component {
     }
   };
 
-  renderListComponent = videoId => {
-    return (
-      <View>
-        <YouTube
-          videoId={videoId}   // The YouTube video ID
-          play={false}             // control playback of video with true/false
-          fullscreen={false}       // control whether the video should play in fullscreen or inline
-          loop={false}             // control whether the video should loop when ended
-
-          onReady={e => this.setState({ isReady: true })}
-          onChangeState={e => this.setState({ status: e.state })}
-          onChangeQuality={e => this.setState({ quality: e.quality })}
-          onError={e => this.setState({ error: e.error })}
-
-          style={{ alignSelf: 'stretch', height: 300 }}
-        />
-      </View>
-    );
-  };
-
   render() {
-    const { data, extraData, renderHeader, subtitle } = this.props;
+    const { data, extraData, renderHeader, subtitle, onSongListItemPress } = this.props;
 
     return (
       <List
@@ -72,7 +52,7 @@ class SongsInFriendsPlaylistList extends Component {
               subtitle={`Added ${moment(item.dateAdded).fromNow()}`}
               avatar={{ uri: decodeURIComponent(item.thumbnail) }}
               containerStyle={{ borderBottomWidth: 0 }}
-              // onPress={() => console.log(item.snippet.title)}
+              onPress={() => onSongListItemPress(item.videoId)}
               onPressRightIcon={() => this.handleOnPressRightIcon(item)}
             />
           )}

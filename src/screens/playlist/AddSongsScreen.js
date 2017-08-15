@@ -3,11 +3,12 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { searchSongs, clearSearchSongsResults } from '../../actions';
+import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
 import SearchBar from '../../components/SearchBar';
 import SongResultsList from '../../components/SongResultsList';
 import Message from '../../components/Message';
+import PreviewSongModal from '../../components/PreviewSongModal';
 
 class AddSongsScreen extends Component {
 
@@ -46,15 +47,35 @@ class AddSongsScreen extends Component {
     }
   };
 
+  onSongListItemPress = videoId => {
+    const { previewSong } = this.props;
+
+    previewSong(videoId);
+  };
+
   render() {
-    const { searchResults, songsInFriendsPlaylist, navigation } = this.props;
+    const {
+      searchResults,
+      songsInFriendsPlaylist,
+      navigation,
+      togglePreviewSongModal,
+      isPreviewSongModalOpen,
+      songBeingPreviewed
+    } = this.props;
+
     return (
       <View>
+        <PreviewSongModal
+          isVisible={isPreviewSongModalOpen}
+          onButtonPress={() => togglePreviewSongModal()}
+          videoId={songBeingPreviewed}
+        />
         <SongResultsList
           data={searchResults}
           extraData={songsInFriendsPlaylist}
           renderHeader={this.renderHeader()}
           navigation={navigation}
+          onSongListItemPress={this.onSongListItemPress}
         />
         {this.renderMessage()}
       </View>
@@ -84,7 +105,8 @@ const Form = reduxForm({
 
 const mapStateToProps = ({
   playlist: { searchResults, searchError, awaitingSearchResults, songsInFriendsPlaylist },
-  auth: { authToken }
+  auth: { authToken },
+  player: { isPreviewSongModalOpen, songBeingPreviewed },
 }) => {
   return {
     searchResults,
@@ -92,7 +114,9 @@ const mapStateToProps = ({
     awaitingSearchResults,
     authToken,
     songsInFriendsPlaylist,
+    isPreviewSongModalOpen,
+    songBeingPreviewed,
   };
 };
 
-export default connect(mapStateToProps, { searchSongs, clearSearchSongsResults })(Form);
+export default connect(mapStateToProps, { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal })(Form);

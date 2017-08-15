@@ -42,7 +42,7 @@ class FriendRequestsScreen extends Component {
           text=""
           color='#F26C4F'
         >
-          You don't have any friend requests right now.
+          You don't have any friend requests.
         </Message>
       );
     } else if (friendRequestsError) {

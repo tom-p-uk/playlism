@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
@@ -32,10 +32,11 @@ class FriendsScreen extends Component {
     const { friends, friendsError, awaitingFriends } = this.props;
     if (!awaitingFriends && friends && friends.length !== 0 && routeName === 'selectFriend') {
       return (
-        <Text style={styles.selectFriendMessage}>
-          Select a user from your friends list.
-        </Text>
-
+        <Card>
+          <Text style={styles.selectFriendMessage}>
+            Select a user from your friends list.
+          </Text>
+        </Card>
       );
     }
   };
@@ -101,7 +102,6 @@ const styles = {
     textAlign: 'center',
     fontSize: 14,
     color: '#F26C4F',
-    marginTop: 20,
   },
 };
 

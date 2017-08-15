@@ -15,7 +15,7 @@ class EditPlaylistScreen extends Component {
     if (awaitingEditPlaylistTitle) {
       return console.log('Awaiting result of editPlaylistTitle. Button disabled')
     }
-    
+
     const navigationCallback = () => navigation.goBack();
     editPlaylistTitle(playlist._id, playlistTitle, [...friendsPlaylists], authToken, navigationCallback);
   };
@@ -115,13 +115,13 @@ const styles = {
   },
 };
 
-const validate = ({ createPlaylistTitle }) => {
+const validate = ({ playlistTitle }) => {
   const errors = {};
 
-  if (!createPlaylistTitle) {
-    errors.createPlaylistTitle = 'You must enter a title.';
-  } else if (createPlaylistTitle && createPlaylistTitle.length >= 30) {
-    errors.createPlaylistTitle = 'Max length is 30 characters.';
+  if (!playlistTitle) {
+    errors.playlistTitle = 'You must enter a title.';
+  } else if (playlistTitle && playlistTitle.length >= 30) {
+    errors.playlistTitle = 'Max length is 30 characters.';
   }
 
   return errors;

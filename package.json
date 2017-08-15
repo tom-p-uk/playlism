@@ -18,6 +18,7 @@
     "react-native-hamburger": "0.0.2",
     "react-native-loading-spinner-overlay": "^0.5.1",
     "react-native-md-textinput": "^2.0.4",
+    "react-native-modal": "^2.5.0",
     "react-native-vector-icons": "^4.2.0",
     "react-native-youtube": "^1.0.0-beta.2",
     "react-navigation": "^1.0.0-beta.11",

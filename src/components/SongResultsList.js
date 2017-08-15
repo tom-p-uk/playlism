@@ -47,7 +47,7 @@ class SongResultsList extends Component {
   };
 
   render() {
-    const { data, extraData, renderHeader, subtitle, songsInFriendsPlaylist } = this.props;
+    const { data, extraData, renderHeader, subtitle, songsInFriendsPlaylist, onSongListItemPress } = this.props;
 
     return (
       <List
@@ -63,13 +63,12 @@ class SongResultsList extends Component {
             <ListItem
               title={item.snippet.title}
               rightIcon={this.renderIcon(item.id.videoId)}
-              rightTitleStyle={styles.rightTitle}
               subtitle={<Text style={styles.subtitle}>{item.snippet.description.slice(0, 40)}</Text>}
               subtitleNumberOfLines={1}
               subtitleContainerStyle={styles.subtitleContainer}
               avatar={{ uri: decodeURIComponent(item.snippet.thumbnails.default.url) }}
               containerStyle={{ borderBottomWidth: 0 }}
-              onPress={() => console.log(item.snippet.title)}
+              onPress={() => onSongListItemPress(item.id.videoId)}
               onPressRightIcon={() => this.handleOnPressRightIcon(item)}
             />
           )}

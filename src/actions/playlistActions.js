@@ -37,6 +37,8 @@ import {
   DELETE_FRIENDS_PLAYLIST_SUCCESS,
   DELETE_FRIENDS_PLAYLIST_FAILURE,
   UPDATE_LAST_SONG_PLAYED,
+  SORT_FRIENDS_PLAYLIST,
+  SORT_MY_PLAYLIST,
 } from './types';
 import { API_KEY } from '../config';
 
@@ -391,7 +393,7 @@ export const editPlaylistTitle = (playlistId, title, friendsPlaylists, authToken
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.put(`${URL}/playlist/title/${playlistId}`, { title });
-    
+
     const index = _.findIndex(friendsPlaylists, { _id: playlistId });
     friendsPlaylists.splice(index, 1, success.playlist);
 
@@ -467,5 +469,19 @@ const deleteFriendsPlaylistFailure = error => {
   return {
     type: DELETE_FRIENDS_PLAYLIST_FAILURE,
     payload: { error }
+  };
+};
+
+export const sortFriendsPlaylist = index => {
+  return {
+    type: SORT_FRIENDS_PLAYLIST,
+    payload: { index }
+  };
+};
+
+export const sortMyPlaylist = index => {
+  return {
+    type: SORT_MY_PLAYLIST,
+    payload: { index }
   };
 };

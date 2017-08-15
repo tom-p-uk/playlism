@@ -34,6 +34,8 @@ import {
   DELETE_FRIENDS_PLAYLIST_SUCCESS,
   DELETE_FRIENDS_PLAYLIST_FAILURE,
   UPDATE_LAST_SONG_PLAYED,
+  SORT_FRIENDS_PLAYLIST,
+  SORT_MY_PLAYLIST,
 } from '../actions/types';
 
 const initialState = {
@@ -59,6 +61,8 @@ const initialState = {
   editPlaylistTitleError: '',
   awaitingDeleteFriendsPlaylist: false,
   deleteFriendsPlaylistError: '',
+  friendsPlaylistSortedBy: 1,
+  myPlaylistSortedBy: 1,
 };
 
 export default (state = initialState, action) => {
@@ -252,6 +256,18 @@ export default (state = initialState, action) => {
         ...state,
         deleteFriendsPlaylistError: action.payload.error,
         awaitingDeleteFriendsPlaylist: false,
+      };
+
+    case (SORT_FRIENDS_PLAYLIST):
+      return {
+        ...state,
+        friendsPlaylistSortedBy: action.payload.index,
+      };
+
+    case (SORT_MY_PLAYLIST):
+      return {
+        ...state,
+        myPlaylistSortedBy: action.payload.index,
       };
 
     default:
