@@ -4,7 +4,7 @@ import { View, FlatList, LayoutAnimation, UIManager, Text } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
-import Youtube from 'react-native-youtube';
+
 import { deleteSong } from '../actions';
 
 class SongsInFriendsPlaylistList extends Component {
@@ -37,7 +37,7 @@ class SongsInFriendsPlaylistList extends Component {
 
     return (
       <List
-        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
+        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, opacity: 0.8 }}
       >
         <FlatList
           data={data}
@@ -51,7 +51,7 @@ class SongsInFriendsPlaylistList extends Component {
               rightIcon={{ name: 'clear' }}
               subtitle={`Added ${moment(item.dateAdded).fromNow()}`}
               avatar={{ uri: decodeURIComponent(item.thumbnail) }}
-              containerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
               onPress={() => onSongListItemPress(item.videoId)}
               onPressRightIcon={() => this.handleOnPressRightIcon(item)}
             />

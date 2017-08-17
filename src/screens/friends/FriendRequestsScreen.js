@@ -3,10 +3,11 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { getFriendRequests } from '../../actions';
 import { Icon } from 'react-native-elements';
+
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
-import * as actions from '../../actions';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendRequestsScreen extends Component {
   static navigationOptions = {
@@ -66,7 +67,7 @@ class FriendRequestsScreen extends Component {
      }
 
     return (
-      <View>
+      <BackgroundImage>
         <FriendsList
           data={data}
           navigation={this.props.navigation}
@@ -74,7 +75,7 @@ class FriendRequestsScreen extends Component {
         />
         {this.renderMessage()}
         {this.renderSpinner()}
-      </View>
+      </BackgroundImage>
     );
   }
 };
@@ -88,4 +89,4 @@ const mapStateToProps = ({ friends: { friendRequests, friendRequestsError, await
   };
 };
 
-export default connect(mapStateToProps, actions)(FriendRequestsScreen);
+export default connect(mapStateToProps, { getFriendRequests })(FriendRequestsScreen);

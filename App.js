@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import Expo, { Notifications } from 'expo';
 import AuthScreen from './src/screens/AuthScreen';
 import { Provider } from 'react-redux'
+import { Font } from 'expo';
 import store from './src/store';
-// import Navigator from './src/Navigator';
 import MainNav from './src/navigation/MainNav';
 
 export default class App extends Component {
@@ -19,6 +19,10 @@ export default class App extends Component {
           [{ test: 'OK' }] // button
         );
       }
+    });
+
+    Font.loadAsync({
+      'lato-light': require('./assets/fonts/Lato-Light.ttf'),
     });
   }
 

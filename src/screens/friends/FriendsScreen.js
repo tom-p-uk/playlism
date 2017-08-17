@@ -3,11 +3,12 @@ import { View, Text } from 'react-native';
 import { Icon, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
+
 import { getFriends, loadFriendRequestsSent } from '../../actions';
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendsScreen extends Component {
   static navigationOptions = {
@@ -32,7 +33,7 @@ class FriendsScreen extends Component {
     const { friends, friendsError, awaitingFriends } = this.props;
     if (!awaitingFriends && friends && friends.length !== 0 && routeName === 'selectFriend') {
       return (
-        <Card>
+        <Card containerStyle={styles.selectFriendMessageCard}>
           <Text style={styles.selectFriendMessage}>
             Select a user from your friends list.
           </Text>
@@ -82,7 +83,7 @@ class FriendsScreen extends Component {
      }
 
     return (
-      <View>
+      <BackgroundImage>
         {this.renderSelectFriendText()}
         <FriendsList
           data={data}
@@ -91,12 +92,15 @@ class FriendsScreen extends Component {
         />
         {this.renderMessage()}
         {this.renderSpinner()}
-      </View>
+      </BackgroundImage>
     );
   }
 };
 
 const styles = {
+  selectFriendMessageCard: {
+    opacity: 0.8,
+  },
   selectFriendMessage: {
     alignSelf: 'center',
     textAlign: 'center',

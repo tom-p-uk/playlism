@@ -2,17 +2,30 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+
 import { createPlaylist } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
+import { NavigationActions } from 'react-navigation'
 import Input from '../../components/Input';
 import Message from '../../components/Message';
 import BackButton from '../../components/BackButton';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class CreatePlaylistScreen extends Component {
   onSubmit = ({ createPlaylistTitle }) => {
     const { navigation, createPlaylist, authToken } = this.props;
     const { user } = this.props.navigation.state.params;
-    const navigationCallback = () => navigation.navigate('friendsPlaylistsList');
+
+    const navigationCallback = () => {
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'selectFriend' })
+        ],
+      });
+      navigation.dispatch(resetAction);
+      navigation.navigate('friendsPlaylistsList');
+    };
 
     createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);
   };
@@ -21,36 +34,38 @@ class CreatePlaylistScreen extends Component {
     const { user } = this.props.navigation.state.params;
     const { handSubmit, awaitingCreatePlaylist} = this.props;
     return (
-      <Card>
-        <View style={styles.textAndImgContainer}>
-          <Image
-            style={styles.profileImg}
-            resizeMode="cover"
-            source={{ uri: decodeURIComponent(user.profileImg) }}
+      <BackgroundImage>
+        <Card containerStyle={{ opacity: 0.8 }}>
+          <View style={styles.textAndImgContainer}>
+            <Image
+              style={styles.profileImg}
+              resizeMode="cover"
+              source={{ uri: decodeURIComponent(user.profileImg) }}
+            />
+            <Text style={styles.text}>Create playlist for {user.displayName}</Text>
+          </View>
+          <Field
+            name='createPlaylistTitle'
+            component={Input}
+            label='Playlist Title'
+            highlightColor='#F26C4F'
           />
-          <Text style={styles.text}>Create playlist for {user.displayName}</Text>
-        </View>
-        <Field
-          name='createPlaylistTitle'
-          component={Input}
-          label='Playlist Title'
-          highlightColor='#F26C4F'
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            raised
-            title='Create Playlist'
-            icon={{ name: 'playlist-plus', type: 'material-community' }}
-            onPress={this.props.handleSubmit(this.onSubmit)}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            disabled={awaitingCreatePlaylist}
-            fontSize={13}
-            borderRadius={60}
-            backgroundColor='#98250B'
-          />
-        </View>
-      </Card>
+          <View style={styles.buttonContainer}>
+            <Button
+              raised
+              title='Create Playlist'
+              icon={{ name: 'playlist-plus', type: 'material-community' }}
+              onPress={this.props.handleSubmit(this.onSubmit)}
+              style={styles.button}
+              disabledStyle={styles.buttonDisabled}
+              disabled={awaitingCreatePlaylist}
+              fontSize={13}
+              borderRadius={60}
+              backgroundColor='#98250B'
+            />
+          </View>
+        </Card>
+      </BackgroundImage>
     );
   }
 };
@@ -91,10 +106,11 @@ const validate = ({ createPlaylistTitle }) => {
 
   if (!createPlaylistTitle) {
     errors.createPlaylistTitle = 'You must enter a title.';
+  } else if (createPlaylistTitle && createPlaylistTitle.length < 4) {
+    errors.createPlaylistTitle = 'Title must be at least 4 characters long.';
   }
-
   if (createPlaylistTitle && createPlaylistTitle.length >= 30) {
-    errors.createPlaylistTitle = 'Max length is 30 characters.';
+    errors.createPlaylistTitle = 'Title must no more than 30 characters long.';
   }
 
   return errors;

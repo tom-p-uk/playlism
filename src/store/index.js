@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
+import { createFilter, createBlacklistFilter } from 'redux-persist-transform-filter';
 import { AsyncStorage } from 'react-native';
 import thunk from 'redux-thunk';
 import reducers from '../reducers';
@@ -13,6 +14,11 @@ const store = createStore(
   )
 );
 
-persistStore(store, { storage: AsyncStorage, whitelist: ['auth'] }).purge();
+const subsetFilter = createFilter(
+  'downloads',
+  ['downloadedSongs']
+);
+
+persistStore(store, { storage: AsyncStorage, transforms: [subsetFilter] }).purge();
 
 export default store;

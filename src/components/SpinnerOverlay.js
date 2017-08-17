@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 
 class SpinnerOverlay extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
-import YouTube from 'react-native-youtube';
+
 import SortPlaylistButtonGroup from './SortPlaylistButtonGroup';
 
 class SortPlaylistModal extends Component {
@@ -13,7 +13,7 @@ class SortPlaylistModal extends Component {
 
     return (
       <Modal isVisible={isVisible}>
-        <Card>
+        <Card containerStyle={{ opacity: 0.8 }}>
           <SortPlaylistButtonGroup sortedBy={sortedBy} onPress={onButtonGroupPress} />
           <View style={styles.buttonContainer}>
             <Button

@@ -4,7 +4,7 @@ import { Card } from 'react-native-elements';
 
 const Message = ({ color, children }) => {
   return (
-    <Card>
+    <Card containerStyle={styles.card}>
       <View style={styles.container}>
         <Text style={[styles.text, { color: color || '#DB0000' }]}>
           {children}
@@ -15,6 +15,9 @@ const Message = ({ color, children }) => {
 };
 
 const styles = {
+  card: {
+    opacity: 0.8,
+  },
   container: {
     alignSelf: 'center',
     width: 250,

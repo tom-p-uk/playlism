@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-// import styles from './Styles/DrawerButtonStyles';
 
 class DrawerButton extends Component {
   render() {

@@ -6,7 +6,6 @@ import FriendRequestsScreen from '../screens/friends/FriendRequestsScreen';
 import FriendsStackNav from './FriendsStackNav';
 import FriendRequestsStackNav from './FriendRequestsStackNav';
 import AddFriendStackNav from './AddFriendStackNav';
-import { enhance } from 'react-navigation-addons';
 
 const FriendsTabNav = TabNavigator({
   friends: {

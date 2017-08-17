@@ -3,12 +3,14 @@ import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+
 import { getMyPlaylists } from '../../actions';
-// import FriendsList from '../../components/FriendsList';
+import MyPlaylistList from '../../components/MyPlaylistList';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
+import BackgroundImage from '../../components/BackgroundImage';
 
-class MyPlaylistsScreen extends Component {
+class MyPlaylistsListScreen extends Component {
   static navigationOptions = {
     title: 'My Playlists',
     tabBarIcon: ({ tintColor }) => (
@@ -43,7 +45,7 @@ class MyPlaylistsScreen extends Component {
           text=""
           color='#F26C4F'
         >
-          You don't have any playlists yet.{'\n'}
+          You don't have any playlists yet.
         </Message>
       );
     } else if (myPlaylistsError) {
@@ -56,11 +58,16 @@ class MyPlaylistsScreen extends Component {
   };
 
   render() {
+    const { myPlaylists, navigation } = this.props;
+
     return (
-      <View>
-        {this.renderMessage()}
-        {this.renderSpinner()}
-      </View>
+
+        <BackgroundImage>
+          <MyPlaylistList data={myPlaylists} navigation={navigation}/>
+          {this.renderMessage()}
+          {this.renderSpinner()}
+        </BackgroundImage>
+
     );
   }
 };
@@ -77,4 +84,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getMyPlaylists })(MyPlaylistsScreen);
+export default connect(mapStateToProps, { getMyPlaylists })(MyPlaylistsListScreen);

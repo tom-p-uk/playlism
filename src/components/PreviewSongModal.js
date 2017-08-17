@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, WebView } from 'react-native';
 import Modal from 'react-native-modal';
-import YouTube from 'react-native-youtube';
+
 import { Button } from 'react-native-elements';
 
 class PreviewSongModal extends Component {

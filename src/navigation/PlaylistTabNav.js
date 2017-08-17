@@ -2,14 +2,13 @@ import React from 'react';
 import { TabNavigator } from 'react-navigation'
 import { Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
-import MyPlaylistsScreen from '../screens/playlist/MyPlaylistsScreen';
-import FriendsPlaylistScreen from '../screens/playlist/FriendsPlaylistScreen';
+import MyPlaylistsStackNav from './MyPlaylistsStackNav';
 import CreatePlaylistStackNav from './CreatePlaylistStackNav';
 import FriendsPlaylistsStackNav from './FriendsPlaylistsStackNav';
 
 const PlaylistTabNav = TabNavigator({
   myPlaylists: {
-    screen: MyPlaylistsScreen,
+    screen: MyPlaylistsStackNav,
     navigationOptions: {
       title: 'My Playlists',
       tabBarIcon: ({ tintColor }) => (

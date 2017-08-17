@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import Hamburger from 'react-native-hamburger';
 import { connect } from 'react-redux';
+
 import * as actions from '../actions';
 
 class HamburgerComponent extends Component {

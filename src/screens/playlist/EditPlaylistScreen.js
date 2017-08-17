@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+
 import { editPlaylistTitle, deleteFriendsPlaylist } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
 import Input from '../../components/Input';
 import Message from '../../components/Message';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class EditPlaylistScreen extends Component {
   onSaveChangesPress = ({ playlistTitle }) => {
@@ -33,52 +35,55 @@ class EditPlaylistScreen extends Component {
   };
 
   render() {
-    const { handleSubmit, awaitingCreatePlaylist, navigation} = this.props;
-    const { playlist: { forUser, title} } = navigation.state.params;
+    const { handleSubmit, awaitingCreatePlaylist, navigation } = this.props;
+    const { playlist: { byUser, forUser, title } } = navigation.state.params;
+    const uri = navigation.state.routeName === 'editMyPlaylist' ? decodeURIComponent(byUser.profileImg) : decodeURIComponent(forUser.profileImg);
     return (
-      <Card>
-        <View style={styles.textAndImgContainer}>
-          <Image
-            style={styles.profileImg}
-            resizeMode="cover"
-            source={{ uri: decodeURIComponent(forUser.profileImg) }}
+      <BackgroundImage>
+        <Card containerStyle={{ opacity: 0.8 }}>
+          <View style={styles.textAndImgContainer}>
+            <Image
+              style={styles.profileImg}
+              resizeMode="cover"
+              source={{ uri }}
+            />
+            <Text style={styles.text}>Edit {title}</Text>
+          </View>
+          <Field
+            name='playlistTitle'
+            component={Input}
+            label='Playlist Title'
+            highlightColor='#F26C4F'
           />
-          <Text style={styles.text}>Edit {title}</Text>
-        </View>
-        <Field
-          name='playlistTitle'
-          component={Input}
-          label='Playlist Title'
-          highlightColor='#F26C4F'
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            raised
-            title='Delete Playlist'
-            icon={{ name: 'clear' }}
-            onPress={() => this.onDeletePlaylistPress()}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            disabled={awaitingCreatePlaylist}
-            fontSize={13}
-            borderRadius={60}
-            backgroundColor='#98250B'
-          />
+          <View style={styles.buttonContainer}>
+            <Button
+              raised
+              title='Delete Playlist'
+              icon={{ name: 'clear' }}
+              onPress={() => this.onDeletePlaylistPress()}
+              style={styles.button}
+              disabledStyle={styles.buttonDisabled}
+              disabled={awaitingCreatePlaylist}
+              fontSize={13}
+              borderRadius={60}
+              backgroundColor='#98250B'
+            />
 
-          <Button
-            raised
-            title='Save Changes'
-            icon={{ name: 'save' }}
-            onPress={handleSubmit(this.onSaveChangesPress)}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            disabled={awaitingCreatePlaylist}
-            fontSize={13}
-            borderRadius={60}
-            backgroundColor='#D13310'
-          />
-        </View>
-      </Card>
+            <Button
+              raised
+              title='Save Changes'
+              icon={{ name: 'save' }}
+              onPress={handleSubmit(this.onSaveChangesPress)}
+              style={styles.button}
+              disabledStyle={styles.buttonDisabled}
+              disabled={awaitingCreatePlaylist}
+              fontSize={13}
+              borderRadius={60}
+              backgroundColor='#D13310'
+            />
+          </View>
+        </Card>
+      </BackgroundImage>
     );
   }
 };

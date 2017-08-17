@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { debounce, isNull } from 'lodash';
 import { searchFriendsStart, searchFriends, clearSearchFriendsResults } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
+
 import SearchBar from '../../components/SearchBar';
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
 import * as actions from '../../actions';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class SearchFriendScreen extends Component {
   static navigationOptions = {
@@ -52,20 +54,17 @@ class SearchFriendScreen extends Component {
 
   render() {
     return (
-      <View>
+      <BackgroundImage>
         <FriendsList
           data={this.props.searchResults}
           renderHeader={this.renderHeader()}
           navigation={this.props.navigation}
+          opacity={0.9}
         />
         {this.renderMessage()}
-      </View>
+      </BackgroundImage>
     );
   }
-};
-
-const styles = {
-  color: 'white'
 };
 
 const onChange = debounce(({ friendsSearchBar }, dispatch, props) => {

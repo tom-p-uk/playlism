@@ -15,7 +15,7 @@ const FriendsPlaylistsStackNav = StackNavigator({
       title: "Friends' Playlists"
     }
   },
-  editPlaylistForm: {
+  editFriendsPlaylist: {
     screen: EditPlaylistScreen,
     navigationOptions: {
       title: 'Edit Playlist',

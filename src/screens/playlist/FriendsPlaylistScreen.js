@@ -11,6 +11,7 @@ import Spinner from '../../components/Spinner';
 import SongsInFriendsPlaylistList from '../../components/SongsInFriendsPlaylistList';
 import PreviewSongModal from '../../components/PreviewSongModal';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendsPlaylistScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -50,10 +51,11 @@ class FriendsPlaylistScreen extends Component {
 
   renderButtons = (navigation, playlist) => {
     return (
-      <Card>
+      <Card containerStyle={styles.buttonCard}>
         <View style={styles.buttonContainer}>
           <Button
             raised
+            small
             title='Add Songs'
             icon={{ name: 'add' }}
             onPress={() => navigation.navigate('addSongs', { playlist })}
@@ -65,6 +67,7 @@ class FriendsPlaylistScreen extends Component {
           />
           <Button
             raised
+            small
             title='Sort Playlist'
             icon={{ name: 'swap-vert' }}
             onPress={() => this.toggleSortPlaylistModal()}
@@ -79,9 +82,7 @@ class FriendsPlaylistScreen extends Component {
     );
   };
 
-  renderMessageOrSongList = () => {
-    const { navigation, songsInFriendsPlaylist } = this.props;
-
+  renderMessageOrSongList = (navigation, songsInFriendsPlaylist) => {
     if (songsInFriendsPlaylist && songsInFriendsPlaylist.length === 0) {
       return <Message color='#F26C4F'>The playlist is empty.</Message>
     } else {
@@ -102,9 +103,9 @@ class FriendsPlaylistScreen extends Component {
     previewSong(videoId);
   };
 
-  render() {
+  renderContent = () => {
     const {
-      awaitingSongsInFriendsPlaylist,
+      songsInFriendsPlaylist,
       navigation,
       friendsPlaylistSortedBy,
       sortFriendsPlaylist,
@@ -113,11 +114,6 @@ class FriendsPlaylistScreen extends Component {
       songBeingPreviewed,
     } = this.props;
     const { playlist } = navigation.state.params;
-
-    if (awaitingSongsInFriendsPlaylist) {
-      return <Spinner size='large'/>;
-    }
-
     return (
       <View style={{ flex: 1 }}>
         <SortPlaylistModal
@@ -132,22 +128,45 @@ class FriendsPlaylistScreen extends Component {
           videoId={songBeingPreviewed}
         />
         {this.renderButtons(navigation, playlist)}
-        {this.renderMessageOrSongList()}
+        {this.renderMessageOrSongList(navigation, songsInFriendsPlaylist)}
       </View>
+    );
+  };
+
+  render() {
+    const { awaitingSongsInFriendsPlaylist } = this.props;
+    return (
+      <BackgroundImage>
+        {
+          awaitingSongsInFriendsPlaylist
+            ?
+              <Spinner size='large'/>
+            :
+              this.renderContent()
+        }
+      </BackgroundImage>
     );
   }
 };
 
 const styles = {
+  buttonCard: {
+    opacity: 0.8,
+    marginTop: 30,
+    marginBottom: 10,
+    marginLeft: 30,
+    marginRight: 30,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     // marginBottom: -40,
     height: 50,
+    opacity: 0.9,
   },
   button: {
-    width: 140,
+    // width: 140,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

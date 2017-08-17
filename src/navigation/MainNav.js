@@ -3,7 +3,7 @@ import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
 import { View, Platform, Text } from 'react-native';
 import AuthScreen from '../screens/AuthScreen';
-import DashboardScreen from '../screens/DashboardScreen';
+import DashboardScreen from '../screens/HomeScreen';
 import SongsTabNav from './SongsTabNav';
 import FriendsTabNav from './FriendsTabNav';
 import PlaylistTabNav from './PlaylistTabNav';

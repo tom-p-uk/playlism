@@ -15,9 +15,12 @@ import {
   SEARCH_SONGS_SUCCESS,
   SEARCH_SONGS_FAILURE,
   CLEAR_SEARCH_SONGS_RESULTS,
-  GET_SONGS_IN_PLAYLIST_START,
-  GET_SONGS_IN_PLAYLIST_SUCCESS,
-  GET_SONGS_IN_PLAYLIST_FAILURE,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_START,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_SUCCESS,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_FAILURE,
+  GET_SONGS_IN_MY_PLAYLIST_START,
+  GET_SONGS_IN_MY_PLAYLIST_SUCCESS,
+  GET_SONGS_IN_MY_PLAYLIST_FAILURE,
   ADD_SONG_START,
   ADD_SONG_SUCCESS,
   ADD_SONG_FAILURE,
@@ -213,20 +216,56 @@ export const getSongsInFriendsPlaylist = (playlistId, authToken) => async dispat
 
 const getSongsInFriendsPlaylistStart = () => {
   return {
-    type: GET_SONGS_IN_PLAYLIST_START
+    type: GET_SONGS_IN_FRIENDS_PLAYLIST_START
   };
 };
 
 const getSongsInFriendsPlaylistSuccess = songsInFriendsPlaylist => {
   return {
-    type: GET_SONGS_IN_PLAYLIST_SUCCESS,
+    type: GET_SONGS_IN_FRIENDS_PLAYLIST_SUCCESS,
     payload: { songsInFriendsPlaylist }
   };
 };
 
 const getSongsInFriendsPlaylistFailure = error => {
   return {
-    type: GET_SONGS_IN_PLAYLIST_FAILURE,
+    type: GET_SONGS_IN_FRIENDS_PLAYLIST_FAILURE,
+    payload: { error }
+  };
+};
+
+export const getSongsInMyPlaylist = (playlistId, authToken) => async dispatch => {
+  dispatch(getSongsInMyPlaylistStart());
+  try {
+    axios.defaults.headers.common['Authorization'] = authToken;
+    const { data: { success } } = await axios.get(`${URL}/song/playlist/${playlistId}`);
+    console.log(success);
+    dispatch(getSongsInMyPlaylistSuccess(success.songs))
+  } catch (err) {
+    console.log(err);
+
+    if (err.response.data.error) {
+      dispatch(getSongsInMyPlaylistFailure(err.response.data.error));
+    }
+  }
+};
+
+const getSongsInMyPlaylistStart = () => {
+  return {
+    type: GET_SONGS_IN_MY_PLAYLIST_START
+  };
+};
+
+const getSongsInMyPlaylistSuccess = songsInMyPlaylist => {
+  return {
+    type: GET_SONGS_IN_MY_PLAYLIST_SUCCESS,
+    payload: { songsInMyPlaylist }
+  };
+};
+
+const getSongsInMyPlaylistFailure = error => {
+  return {
+    type: GET_SONGS_IN_MY_PLAYLIST_FAILURE,
     payload: { error }
   };
 };

@@ -30,23 +30,13 @@ class FriendsList extends Component {
       return `Member since ${moment(item.dateJoined).format('MMM Do, YYYY')}`;
     }
   };
-  //
-  // determineOnPress = item => {
-  //   if (item.friendsSince) {
-  //     return () => this.props.navigation.navigate('user', { user: item });
-  //   } else if (item.dateReceived) {
-  //     return () => this.props.navigation.navigate('user', { user: item });
-  //   } else {
-  //     return () => this.props.navigation.navigate('user', { user: item });
-  //   }
-  // };
 
   render() {
     const { data, renderHeader, subtitle, navigate } = this.props;
 
     return (
       <List
-        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
+        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, opacity: 0.8 }}
       >
         <FlatList
           data={data}
@@ -59,7 +49,7 @@ class FriendsList extends Component {
               title={item.displayName}
               subtitle={this.renderSubtitle(item)}
               avatar={{ uri: decodeURIComponent(item.profileImg) }}
-              containerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
               onPress={() => this.props.navigation.navigate('user', { user: item })}
             />
           )}

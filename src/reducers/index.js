@@ -5,6 +5,7 @@ import navReducer from './navReducer';
 import friendsReducer from './friendsReducer';
 import playlistReducer from './playlistReducer';
 import playerReducer from './playerReducer';
+import downloadsReducer from './downloadsReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   form: formReducer,
   playlist: playlistReducer,
   player: playerReducer,
+  downloads: downloadsReducer,
 });

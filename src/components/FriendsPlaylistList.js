@@ -22,7 +22,7 @@ class PlaylistList extends Component {
 
     return (
       <List
-        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
+        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, opacity: 0.8 }}
       >
         <FlatList
           data={data}
@@ -34,14 +34,12 @@ class PlaylistList extends Component {
               roundAvatar
               title={item.title}
               rightIcon={{ name: 'create' }}
-              onPressRightIcon={() => navigation.navigate('editPlaylistForm', { playlist: item, friendsPlaylists: data })}
-              // rightTitle={item.forUser.displayName}
+              onPressRightIcon={() => navigation.navigate('editFriendsPlaylist', { playlist: item, friendsPlaylists: data })}
               rightTitleStyle={styles.rightTitle}
               subtitle={`Created on ${moment(item.dateAdded).format('MMM Do, YYYY')}`}
               avatar={{ uri: decodeURIComponent(item.forUser.profileImg) }}
-              containerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
               onPress={() => navigation.navigate('friendsPlaylist', { playlist: item })}
-              // containerStyle={{ height: 100 }}
             />
           )}
         />

@@ -4,6 +4,7 @@ import { View, FlatList, LayoutAnimation, UIManager, Text } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+
 import { addSong } from '../actions';
 
 class SongResultsList extends Component {
@@ -51,7 +52,7 @@ class SongResultsList extends Component {
 
     return (
       <List
-        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
+        containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0, opacity: 0.8 }}
       >
         <FlatList
           data={data}
@@ -67,7 +68,7 @@ class SongResultsList extends Component {
               subtitleNumberOfLines={1}
               subtitleContainerStyle={styles.subtitleContainer}
               avatar={{ uri: decodeURIComponent(item.snippet.thumbnails.default.url) }}
-              containerStyle={{ borderBottomWidth: 0 }}
+              containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
               onPress={() => onSongListItemPress(item.id.videoId)}
               onPressRightIcon={() => this.handleOnPressRightIcon(item)}
             />

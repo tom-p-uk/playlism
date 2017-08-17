@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
+
 import Spinner from './Spinner';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;

@@ -3,10 +3,12 @@ import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+
 import { getFriendsPlaylists } from '../../actions';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
-import PlaylistList from '../../components/PlaylistList';
+import FriendsPlaylistList from '../../components/FriendsPlaylistList';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendsPlaylistsListScreen extends Component {
   static navigationOptions = {
@@ -43,7 +45,7 @@ class FriendsPlaylistsListScreen extends Component {
           text=""
           color='#F26C4F'
         >
-          You haven't created any playlists yet.{'\n'}
+          You haven't created any playlists yet.
         </Message>
       );
     } else if (friendsPlaylistsError) {
@@ -59,11 +61,11 @@ class FriendsPlaylistsListScreen extends Component {
     const { friendsPlaylists, navigation } = this.props;
 
     return (
-      <View>
-        <PlaylistList data={friendsPlaylists} navigation={navigation}/>
+      <BackgroundImage>
+        <FriendsPlaylistList data={friendsPlaylists} navigation={navigation}/>
         {this.renderMessage()}
         {this.renderSpinner()}
-      </View>
+      </BackgroundImage>
     );
   }
 };

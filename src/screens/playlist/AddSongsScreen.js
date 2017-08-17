@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
+
 import SearchBar from '../../components/SearchBar';
 import SongResultsList from '../../components/SongResultsList';
 import Message from '../../components/Message';
 import PreviewSongModal from '../../components/PreviewSongModal';
+import BackgroundImage from '../../components/BackgroundImage';
 
 class AddSongsScreen extends Component {
 
@@ -64,7 +66,7 @@ class AddSongsScreen extends Component {
     } = this.props;
 
     return (
-      <View>
+      <BackgroundImage>
         <PreviewSongModal
           isVisible={isPreviewSongModalOpen}
           onButtonPress={() => togglePreviewSongModal()}
@@ -78,13 +80,9 @@ class AddSongsScreen extends Component {
           onSongListItemPress={this.onSongListItemPress}
         />
         {this.renderMessage()}
-      </View>
+      </BackgroundImage>
     );
   }
-};
-
-const styles = {
-  color: 'white'
 };
 
 const onChange = _.debounce(({ songsSearchBar }, dispatch, props) => {

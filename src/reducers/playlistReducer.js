@@ -12,9 +12,12 @@ import {
   SEARCH_SONGS_SUCCESS,
   SEARCH_SONGS_FAILURE,
   CLEAR_SEARCH_SONGS_RESULTS,
-  GET_SONGS_IN_PLAYLIST_START,
-  GET_SONGS_IN_PLAYLIST_SUCCESS,
-  GET_SONGS_IN_PLAYLIST_FAILURE,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_START,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_SUCCESS,
+  GET_SONGS_IN_FRIENDS_PLAYLIST_FAILURE,
+  GET_SONGS_IN_MY_PLAYLIST_START,
+  GET_SONGS_IN_MY_PLAYLIST_SUCCESS,
+  GET_SONGS_IN_MY_PLAYLIST_FAILURE,
   ADD_SONG_START,
   ADD_SONG_SUCCESS,
   ADD_SONG_FAILURE,
@@ -53,6 +56,9 @@ const initialState = {
   awaitingSongsInFriendsPlaylist: false,
   songsInFriendsPlaylist: null,
   songsInFriendsPlaylistError: '',
+  awaitingSongsInMyPlaylist: false,
+  songsInMyPlaylist: null,
+  songsInMyPlaylistError: '',
   awaitingAddSong: false,
   addSongError: '',
   awaitingDeleteSong: false,
@@ -154,24 +160,44 @@ export default (state = initialState, action) => {
         searchResults: null,
       };
 
-    case (GET_SONGS_IN_PLAYLIST_START):
+    case (GET_SONGS_IN_FRIENDS_PLAYLIST_START):
       return {
         ...state,
         awaitingSongsInFriendsPlaylist: true,
       };
 
-    case (GET_SONGS_IN_PLAYLIST_SUCCESS):
+    case (GET_SONGS_IN_FRIENDS_PLAYLIST_SUCCESS):
       return {
         ...state,
         awaitingSongsInFriendsPlaylist: false,
         songsInFriendsPlaylist: action.payload.songsInFriendsPlaylist
       };
 
-    case (GET_SONGS_IN_PLAYLIST_FAILURE):
+    case (GET_SONGS_IN_FRIENDS_PLAYLIST_FAILURE):
       return {
         ...state,
         awaitingSongsInFriendsPlaylist: false,
         songsInFriendsPlaylistError: action.payload.error
+      };
+
+    case (GET_SONGS_IN_MY_PLAYLIST_START):
+      return {
+        ...state,
+        awaitingSongsInMyPlaylist: true,
+      };
+
+    case (GET_SONGS_IN_MY_PLAYLIST_SUCCESS):
+      return {
+        ...state,
+        awaitingSongsInMyPlaylist: false,
+        songsInMyPlaylist: action.payload.songsInMyPlaylist
+      };
+
+    case (GET_SONGS_IN_MY_PLAYLIST_FAILURE):
+      return {
+        ...state,
+        awaitingSongsInMyPlaylist: false,
+        songsInMyPlaylistError: action.payload.error
       };
 
     case (ADD_SONG_START):
