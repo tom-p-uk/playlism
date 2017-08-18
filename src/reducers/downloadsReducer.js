@@ -8,10 +8,10 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  awaitingDownloadSong: false,
+  currentlyDownloading: [],
   downloadedSongs: [],
   downloadSongError: '',
-  awaitingDeleteDownloadedSong: false,
+  currentlyDeleting: [],
   deleteDownloadedSongError: '',
 };
 
@@ -20,50 +20,44 @@ export default (state = initialState, action) => {
     case (DOWNLOAD_SONG_START):
       return {
         ...state,
-        awaitingDownloadSong: true,
+        currentlyDownloading: [...state.currentlyDownloading, action.payload.songId],
       };
 
     case (DOWNLOAD_SONG_SUCCESS):
       return {
         ...state,
-        awaitingDownloadSong: false,
         downloadedSongs: [...state.downloadedSongs, action.payload.song],
         downloadSongError: '',
+        currentlyDownloading: state.currentlyDownloading.filter(songId => songId !== action.payload.song._id),
       };
 
     case (DOWNLOAD_SONG_FAILURE):
       return {
         ...state,
-        awaitingDownloadSong: false,
         downloadSongError: action.payload.error,
+        currentlyDownloading: state.currentlyDownloading.filter(songId => songId !== action.payload.song._id),
       };
 
     case (DELETE_DOWNLOADED_SONG_START):
       return {
         ...state,
-        awaitingDeleteDownloadedSong: true,
+        currentlyDeleting: [...state.currentlyDeleting, action.payload.songId]
       };
 
     case (DELETE_DOWNLOADED_SONG_SUCCESS):
       return {
         ...state,
-        awaitingDeleteDownloadedSong: false,
-        downloadedSongs: state.downloadedSongs.filter(song => song._id !== action.payload.song._id),
+        downloadedSongs: state.downloadedSongs.filter(downloadedSong => downloadedSong._id !== action.payload.songId),
+        currentlyDeleting: state.currentlyDeleting.filter(songId => songId !== action.payload.songId),
         deleteDownloadedSongError: '',
       };
 
     case (DELETE_DOWNLOADED_SONG_FAILURE):
       return {
         ...state,
-        awaitingDeleteDownloadedSong: false,
+        currentlyDeleting: state.currentlyDeleting.filter(songId => songId !== action.payload.songId),
         deleteDownloadedSongError: action.payload.error,
       };
-
-    // case ('persist/REHYDRATE'):
-    //   return {
-    //     ...state,
-    //     downloadedSongs: action.payload.downloads.downloadedSongs,
-    //   };
 
     default:
       return state;

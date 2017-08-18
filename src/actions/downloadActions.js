@@ -10,25 +10,26 @@ import {
 } from './types';
 
 export const downloadSong = song => async dispatch => {
-  dispatch(downloadSongStart());
-  try {
-    const { youTubeUrl, _id } = song;
-    let { data: { link } } = await axios.get(`https://www.youtubeinmp3.com/fetch/?format=JSON&video=${youTubeUrl}`);
+  const { youTubeUrl, _id } = song;
+  dispatch(downloadSongStart(_id));
 
+  try {
+    let { data: { link } } = await axios.get(`https://www.youtubeinmp3.com/fetch/?format=JSON&video=${youTubeUrl}`);
     const { uri } = await FileSystem.downloadAsync(link, FileSystem.documentDirectory + `${_id}.mp3`);
     console.log('Finished downloading to ', uri);
 
-    const updatedSong = {...song, localUri: uri };
+    const updatedSong = {...song, localUri: uri, downloadedOn: Date.now() };
     dispatch(downloadSongSuccess(updatedSong));
   } catch (err) {
     console.log(err);
-    dispatch(downloadSongFailure(err));
+    dispatch(downloadSongFailure(song, err));
   }
 };
 
-const downloadSongStart = () => {
+const downloadSongStart = songId => {
   return {
-    type: DOWNLOAD_SONG_START
+    type: DOWNLOAD_SONG_START,
+    payload: { songId }
   };
 };
 
@@ -39,42 +40,43 @@ const downloadSongSuccess = song => {
   };
 };
 
-const downloadSongFailure = error => {
+const downloadSongFailure = (song, error) => {
   return {
     type: DOWNLOAD_SONG_FAILURE,
-    payload: { error }
+    payload: { song, error }
   };
 };
 
 export const deleteDownloadedSong = song => async dispatch => {
-  dispatch(deleteDownloadedSongStart());
+  dispatch(deleteDownloadedSongStart(song._id));
   try {
     await FileSystem.deleteAsync(song.localUri, { idempotent: true });
     console.log('Deleted file from ', song.localUri);
 
-    dispatch(deleteDownloadedSongSuccess(song));
+    dispatch(deleteDownloadedSongSuccess(song._id));
   } catch (err) {
     console.log(err);
-    dispatch(deleteDownloadedSongFailure(err));
+    dispatch(deleteDownloadedSongFailure(song._id, err));
   }
 };
 
-const deleteDownloadedSongStart = () => {
+const deleteDownloadedSongStart = songId => {
   return {
-    type: DOWNLOAD_SONG_START
+    type: DELETE_DOWNLOADED_SONG_START,
+    payload: { songId }
   };
 };
 
-const deleteDownloadedSongSuccess = song => {
+const deleteDownloadedSongSuccess = songId => {
   return {
-    type: DOWNLOAD_SONG_SUCCESS,
-    payload: { song }
+    type: DELETE_DOWNLOADED_SONG_SUCCESS,
+    payload: { songId }
   };
 };
 
-const deleteDownloadedSongFailure = error => {
+const deleteDownloadedSongFailure = (songId, error) => {
   return {
-    type: DOWNLOAD_SONG_FAILURE,
-    payload: { error }
+    type: DELETE_DOWNLOADED_SONG_FAILURE,
+    payload: { songId, error }
   };
 };

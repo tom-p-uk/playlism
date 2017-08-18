@@ -24,32 +24,37 @@ class SongsInMyPlaylistList extends Component {
     );
   };
 
-  handleOnPressRightIcon = (song, awaitingDownloadSong, awaitingDeleteDownloadedSong, downloadedSongs) => {
+  handleOnPressRightIcon = (song, downloadedSongs, currentlyDownloading, currentlyDeleting) => {
     const { downloadSong, deleteDownloadedSong } = this.props;
 
-    if (awaitingDownloadSong || awaitingDeleteDownloadedSong) {
+    const currentlyDownloadingIndex = currentlyDownloading.indexOf(song._id);
+    const currentlyDeletingIndex = currentlyDeleting.indexOf(song._id);
+    const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+
+    if (currentlyDownloadingIndex !== -1 || currentlyDeletingIndex !== -1) {
       return console.log('Awaiting results of of downloadSong/deleteDownloadedSong functions. Button disabled.');
     }
 
-    const index = _.findIndex(downloadedSongs, { _id: song._id });
-
-    if (index === -1) {
+    if (downloadedSongsIndex === -1) {
       downloadSong(song);
     } else {
-      deleteDownloadedSong(downloadedSongs[index]);
+      deleteDownloadedSong(downloadedSongs[downloadedSongsIndex]);
     }
   };
 
-  renderRightIcon = (song, awaitingDownloadSong, awaitingDeleteDownloadedSong, downloadedSongs) => {
-    if (awaitingDownloadSong || awaitingDeleteDownloadedSong) {
+  renderRightIcon = (song, downloadedSongs, currentlyDownloading, currentlyDeleting) => {
+    const currentlyDownloadingIndex = currentlyDownloading.indexOf(song._id);
+    // const currentlyDeletingIndex = currentlyDeleting.indexOf(song._id);
+    const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+
+    if (currentlyDownloadingIndex !== -1) {
       return <ActivityIndicator size='small' />;
     }
 
-    const index = _.findIndex(downloadedSongs, { _id: song._id });
-    if (index === -1) {
+    if (downloadedSongsIndex === -1) {
       return { name: 'file-download' };
     } else {
-      return { name: 'clear' }
+      return { name: 'delete-forever' }
     }
 
   };
@@ -61,9 +66,9 @@ class SongsInMyPlaylistList extends Component {
       renderHeader,
       subtitle,
       onSongListItemPress,
-      awaitingDownloadSong,
       downloadedSongs,
-      awaitingDeleteDownloadedSong,
+      currentlyDownloading,
+      currentlyDeleting
     } = this.props;
 
     return (
@@ -72,19 +77,19 @@ class SongsInMyPlaylistList extends Component {
       >
         <FlatList
           data={data}
-          extraData={downloadedSongs}
+          extraData={[downloadedSongs, currentlyDeleting, currentlyDownloading]}
           keyExtractor={item => item.videoId}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
-              rightIcon={this.renderRightIcon(item, awaitingDownloadSong, awaitingDeleteDownloadedSong, downloadedSongs)}
+              rightIcon={this.renderRightIcon(item, downloadedSongs, currentlyDownloading, currentlyDeleting)}
               subtitle={`Added ${moment(item.dateAdded).fromNow()}`}
               avatar={{ uri: decodeURIComponent(item.thumbnail) }}
               containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
               onPress={() => onSongListItemPress(item.videoId)}
-              onPressRightIcon={() => this.handleOnPressRightIcon(item, awaitingDownloadSong, awaitingDeleteDownloadedSong, downloadedSongs)}
+              onPressRightIcon={() => this.handleOnPressRightIcon(item, downloadedSongs, currentlyDownloading, currentlyDeleting)}
             />
           )}
         />
@@ -116,16 +121,13 @@ const styles = {
 
 const mapStateToProps = ({
   auth: { authToken },
-  playlist: { awaitingDeleteSong, deleteSongError },
-  downloads: { awaitingDownloadSong, downloadedSongs, awaitingDeleteDownloadedSong, },
+  downloads: { downloadedSongs, currentlyDownloading, currentlyDeleting },
 }) => {
   return {
     authToken,
-    awaitingDeleteSong,
-    deleteSongError,
-    awaitingDownloadSong,
     downloadedSongs,
-    awaitingDeleteDownloadedSong,
+    currentlyDownloading,
+    currentlyDeleting,
   };
 };
 

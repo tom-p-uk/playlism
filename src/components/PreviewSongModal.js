@@ -14,9 +14,9 @@ class PreviewSongModal extends Component {
           <WebView
             source={{
               uri: `https://www.youtube.com/embed/${videoId}?
-                    version=3&fs=0&origin=https%3A%2F%2Fplaylism.herokuapp.com
+                    version=3&fs=0
                     &playsinline=1&enablejsapi=1&rel=0&autoplay=1
-                    &showinfo=0&controls=1&modestbranding=1`,
+                    &showinfo=0&controls=1&modestbranding=0`,
               headers: { Referer: 'https://www.youtube.com' }
             }}
             style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}

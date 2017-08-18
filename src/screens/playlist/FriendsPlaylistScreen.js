@@ -57,7 +57,7 @@ class FriendsPlaylistScreen extends Component {
             raised
             small
             title='Add Songs'
-            icon={{ name: 'add' }}
+            icon={{ name: 'add', style: styles.buttonIcon }}
             onPress={() => navigation.navigate('addSongs', { playlist })}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
@@ -69,7 +69,7 @@ class FriendsPlaylistScreen extends Component {
             raised
             small
             title='Sort Playlist'
-            icon={{ name: 'swap-vert' }}
+            icon={{ name: 'swap-vert', style: styles.buttonIcon }}
             onPress={() => this.toggleSortPlaylistModal()}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
@@ -167,6 +167,9 @@ const styles = {
   },
   button: {
     // width: 140,
+  },
+  buttonIcon: {
+    marginRight: 3,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

@@ -19,6 +19,6 @@ const subsetFilter = createFilter(
   ['downloadedSongs']
 );
 
-persistStore(store, { storage: AsyncStorage, transforms: [subsetFilter] }).purge();
+persistStore(store, { storage: AsyncStorage, transforms: [subsetFilter] });
 
 export default store;

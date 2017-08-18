@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
-import { getSongsInMyPlaylist, deleteSong, sortMyPlaylist, previewSong, togglePreviewSongModal } from '../../actions';
+import { getSongsInMyPlaylist, sortMyPlaylist, previewSong, togglePreviewSongModal, downloadSong } from '../../actions';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
 import SongsInMyPlaylistList from '../../components/SongsInMyPlaylistList';
@@ -49,6 +49,21 @@ class MyPlaylistScreen extends Component {
     }
   };
 
+  onDownloadAllPress = () => {
+    const { songsInMyPlaylist, downloadSong, downloadedSongs, currentlyDownloading } = this.props;
+    const songs = this.sortData(songsInMyPlaylist);
+
+    // If song in array isn't currently downloading or hasn't been downloaded, start downloading it
+    songs.forEach(song => {
+      const currentlyDownloadingIndex = currentlyDownloading.indexOf(song._id);
+      const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+
+      if (currentlyDownloadingIndex === -1 && downloadedSongsIndex === -1) {
+        downloadSong(song);
+      }
+    });
+  };
+
   renderButtons = (navigation, playlist) => {
     return (
       <Card containerStyle={styles.buttonCard}>
@@ -56,9 +71,9 @@ class MyPlaylistScreen extends Component {
           <Button
             raised
             small
-            title='Play Songs'
-            icon={{ name: 'play', type: 'material-community' }}
-            onPress={() => navigation.navigate('addSongs', { playlist })}
+            title='Download All'
+            icon={{ name: 'file-download', style: styles.buttonIcon }}
+            onPress={() => this.onDownloadAllPress()}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
             fontSize={13}
@@ -69,7 +84,7 @@ class MyPlaylistScreen extends Component {
             raised
             small
             title='Sort Playlist'
-            icon={{ name: 'swap-vert' }}
+            icon={{ name: 'swap-vert', style: styles.buttonIcon }}
             onPress={() => this.toggleSortPlaylistModal()}
             style={styles.button}
             disabledStyle={styles.buttonDisabled}
@@ -157,6 +172,9 @@ const styles = {
     marginLeft: 30,
     marginRight: 30,
   },
+  buttonIcon: {
+    marginRight: 3,
+  },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -177,6 +195,7 @@ const mapStateToProps = ({
   auth: { authToken },
   playlist: { awaitingSongsInMyPlaylist, songsInMyPlaylist, songsInMyPlaylistError, myPlaylistSortedBy },
   player: { isPreviewSongModalOpen, songBeingPreviewed },
+  downloads: { downloadedSongs, currentlyDownloading }
 }) => {
   return {
     authToken,
@@ -186,13 +205,15 @@ const mapStateToProps = ({
     myPlaylistSortedBy,
     isPreviewSongModalOpen,
     songBeingPreviewed,
+    downloadedSongs,
+    currentlyDownloading
   };
 };
 
 export default connect(mapStateToProps, {
   getSongsInMyPlaylist,
-  deleteSong,
   sortMyPlaylist,
   togglePreviewSongModal,
   previewSong,
+  downloadSong,
 })(MyPlaylistScreen);
