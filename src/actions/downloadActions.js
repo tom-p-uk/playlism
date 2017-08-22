@@ -14,12 +14,26 @@ export const downloadSong = song => async dispatch => {
   dispatch(downloadSongStart(_id));
 
   try {
-    let { data: { link } } = await axios.get(`https://www.youtubeinmp3.com/fetch/?format=JSON&video=${youTubeUrl}`);
+    let { data } = await axios.get(`http://www.youtubeinmp3.com/fetch/?format=json&video=${youTubeUrl}`);
+    let { link } = data;
+
+    // API sends a link to a page for larger files. Pull the URL from the response,
+    // send new request, and then pull download link from the second response.
+    if (JSON.stringify(data).indexOf('" />') !== -1) {
+      const url = data.split('url=')[1].split('" />')[0];
+      const res = await axios.get(url);
+      console.log('-------------------------------------------------');
+      link = 'http://www.youtubeinmp3.com';
+      link += res.data.split('id="download" href="')[1].split('">')[0];
+      console.log(link);
+    }
+
     const { uri } = await FileSystem.downloadAsync(link, FileSystem.documentDirectory + `${_id}.mp3`);
     console.log('Finished downloading to ', uri);
 
     const updatedSong = {...song, localUri: uri, downloadedOn: Date.now() };
     dispatch(downloadSongSuccess(updatedSong));
+
   } catch (err) {
     console.log(err);
     dispatch(downloadSongFailure(song, err));

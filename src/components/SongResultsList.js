@@ -9,8 +9,8 @@ import { addSong } from '../actions';
 
 class SongResultsList extends Component {
   componentWillUpdate() {
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    LayoutAnimation.spring();
+    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    // LayoutAnimation.spring();
   }
 
   renderIcon = videoId => {

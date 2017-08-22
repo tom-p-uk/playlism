@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
 import { View, FlatList, LayoutAnimation, UIManager } from 'react-native';
 import moment from 'moment';
+import { Audio } from 'expo';
+import { connect } from 'react-redux';
 
-class FriendsPlaylistList extends Component {
+import { setCurrentlyPlayingSong } from '../actions';
+
+class SongsInAllDownloadsList extends Component {
   componentWillUpdate() {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     LayoutAnimation.spring();
@@ -17,8 +21,19 @@ class FriendsPlaylistList extends Component {
     );
   };
 
+  // onPress = async song => {
+  //   setCurrentlyPlayingSong(song);
+  // };
+
   render() {
-    const { data, renderHeader, subtitle, navigation, navigationTarget } = this.props;
+    const {
+      data,
+      extraData,
+      renderHeader,
+      subtitle,
+      downloadedSongs,
+      setCurrentlyPlayingSong
+    } = this.props;
 
     return (
       <List
@@ -26,21 +41,16 @@ class FriendsPlaylistList extends Component {
       >
         <FlatList
           data={data}
-          keyExtractor={item => item._id}
+          keyExtractor={item => item.videoId}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
           renderItem={({ item }) => (
             <ListItem
-              roundAvatar
               title={item.title}
-              rightIcon={{ name: 'create' }}
-              onPressRightIcon={() => navigation.navigate('editMyPlaylist', { playlist: item, friendsPlaylists: data })}
-              // rightTitle={item.forUser.displayName}
-              rightTitleStyle={styles.rightTitle}
-              subtitle={`Created on ${moment(item.dateAdded).format('MMM Do, YYYY')}`}
-              avatar={{ uri: decodeURIComponent(item.byUser.profileImg) }}
+              subtitle={`Added ${moment(item.dateAdded).fromNow()}`}
+              avatar={{ uri: decodeURIComponent(item.thumbnail) }}
               containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
-              onPress={() => navigation.navigate(navigationTarget, { playlist: item })}
+              onPress={() => setCurrentlyPlayingSong(item)}
             />
           )}
         />
@@ -62,4 +72,4 @@ const styles = {
   },
 };
 
-export default FriendsPlaylistList;
+export default connect(null, { setCurrentlyPlayingSong })(SongsInAllDownloadsList);

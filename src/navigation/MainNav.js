@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import { View, Platform, Text } from 'react-native';
 import AuthScreen from '../screens/AuthScreen';
 import DashboardScreen from '../screens/HomeScreen';
-import SongsTabNav from './SongsTabNav';
+import DownloadsTabNav from './DownloadsTabNav';
 import FriendsTabNav from './FriendsTabNav';
 import PlaylistTabNav from './PlaylistTabNav';
 import Hamburger from '../components/Hamburger';
@@ -48,22 +48,44 @@ const DashboardStack = StackNavigator({
   },
 }, { navigationOptions });
 
-const SongsStack = StackNavigator({
-  songsStack: {
-    screen: SongsTabNav,
+const DownloadsStack = StackNavigator({
+  downloadsStack: {
+    screen: DownloadsTabNav,
     navigationOptions: {
-      drawerLabel: 'Songs',
+      drawerLabel: 'Downloads',
       drawerIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}
-          type='material-community'
-          name='music-note'
+          type='material'
+          name='file-download'
           color={tintColor}
         />
       ),
     }
   }
-}, { navigationOptions });
+}, {
+  navigationOptions: ({ navigation, tintColor }) => ({
+    headerRight: (
+      <DrawerButton
+        navigation={navigation}
+        tintColor='#FFFFFF'
+      />
+    ),
+    headerLeft: (
+      <BackButton color='#FFFFFF' navigation={navigation} />
+    ),
+    // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
+    headerStyle: {
+      backgroundColor: '#F26C4F',
+      marginTop: Platform.OS === 'android' ? 24 : 0
+     },
+     headerTitleStyle: {
+      alignSelf:'center',
+      color: '#FFFFFF'
+     },
+    headerTintColor: '#FFFFFF',
+  })
+});
 
 const PlaylistsStack = StackNavigator({
   playlistsStack: {
@@ -119,11 +141,33 @@ const FriendsStack = StackNavigator({
       ),
     }
   }
-}, { navigationOptions });
+}, {
+  navigationOptions: ({ navigation, tintColor }) => ({
+    headerRight: (
+      <DrawerButton
+        navigation={navigation}
+        tintColor='#FFFFFF'
+      />
+    ),
+    headerLeft: (
+      <BackButton color='#FFFFFF' navigation={navigation} />
+    ),
+    headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
+    headerStyle: {
+      backgroundColor: '#F26C4F',
+      marginTop: Platform.OS === 'android' ? 24 : 0
+     },
+     headerTitleStyle: {
+      alignSelf:'center',
+      color: '#FFFFFF'
+     },
+    headerTintColor: '#FFFFFF',
+  })
+});
 
 const DrawerNav = DrawerNavigator({
   dashboard: { screen: DashboardStack },
-  songs: { screen: SongsStack },
+  downloads: { screen: DownloadsStack },
   playlists: { screen: PlaylistsStack },
   friends: { screen: FriendsStack },
 }, {

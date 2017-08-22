@@ -25,38 +25,35 @@ class HomeScreen extends Component {
               <Button
                 small
                 raised
-                style={styles.button}
+                buttonStyle={styles.button}
                 fontSize={13}
                 borderRadius={60}
-                backgroundColor='#98250B'
+                backgroundColor='rgba(152, 37, 11, 0.7)'
                 disabledStyle={styles.buttonDisabled}
-                buttonStyle={{ height: 45 }}
-                icon={{ name: 'music', type: 'font-awesome' }}
-                title='Songs'
-                onPress={() => navigate('allSongs')}
+                icon={{ name: 'file-download' }}
+                title='Downloads'
+                onPress={() => navigate('downloads')}
               />
               <Button
                 small
                 raised
-                style={styles.button}
+                buttonStyle={styles.button}
                 fontSize={13}
                 borderRadius={60}
-                backgroundColor='#D13310'
+                backgroundColor='rgba(209, 51, 16, 0.7)'
                 disabledStyle={styles.buttonDisabled}
-                buttonStyle={{ height: 45 }}
                 icon={{ name: 'playlist-play', type: 'material-community' }}
                 title='Playlists'
-                onPress={() => navigate('playlistsStack')}
+                onPress={() => navigate('playlists')}
               />
               <Button
                 small
                 raised
-                style={styles.button}
+                buttonStyle={styles.button}
                 fontSize={13}
                 borderRadius={60}
-                backgroundColor='#F26C4F'
+                backgroundColor='rgba(242,108,79, 0.7)'
                 disabledStyle={styles.buttonDisabled}
-                buttonStyle={{ height: 45 }}
                 icon={{ name: 'account-multiple', type: 'material-community' }}
                 title='Friends'
                 onPress={() => navigate('friends')}
@@ -82,6 +79,8 @@ const styles = {
     bottom: 50,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    borderRadius: 60,
+    // opacity: 0.7,
   },
   logoContainer: {
     position: 'absolute',
@@ -118,7 +117,8 @@ const styles = {
   button: {
     width: 250,
     marginBottom: 40,
-    opacity: 0.7,
+    // opacity: 0.7,
+    height: 45,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

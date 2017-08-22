@@ -10,7 +10,7 @@ import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
 import BackgroundImage from '../../components/BackgroundImage';
 
-class MyPlaylistsListScreen extends Component {
+class DownloadedPlaylistsListScreen extends Component {
   static navigationOptions = {
     title: 'My Playlists',
     tabBarIcon: ({ tintColor }) => (
@@ -61,13 +61,11 @@ class MyPlaylistsListScreen extends Component {
     const { myPlaylists, navigation } = this.props;
 
     return (
-
         <BackgroundImage>
-          <MyPlaylistList data={myPlaylists} navigation={navigation} navigationTarget='myPlaylist'/>
+          <MyPlaylistList data={myPlaylists} navigation={navigation} navigationTarget='downloadedPlaylist' />
           {this.renderMessage()}
           {this.renderSpinner()}
         </BackgroundImage>
-
     );
   }
 };
@@ -84,4 +82,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getMyPlaylists })(MyPlaylistsListScreen);
+export default connect(mapStateToProps, { getMyPlaylists })(DownloadedPlaylistsListScreen);
