@@ -115,7 +115,7 @@ class AuthScreen extends Component {
                   borderRadius={6}
                 />
               </View>
-              <SpinnerOverlay />
+              {/* <SpinnerOverlay /> */}
             </View>
         }
       </View>

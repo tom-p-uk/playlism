@@ -16,11 +16,10 @@ class UserCard extends Component {
         <Button
           small
           raised
-          style={styles.button}
+          buttonStyle={styles.button}
           fontSize={13}
           borderRadius={60}
           disabledStyle={styles.buttonDisabled}
-          buttonStyle={{ height: 45 }}
           {...secondButtonProps}
         />
       );
@@ -57,12 +56,12 @@ class UserCard extends Component {
             <Button
               small
               raised
-              style={styles.button}
+              buttonStyle={styles.button}
               fontSize={13}
               borderRadius={60}
               backgroundColor='#98250B'
               disabledStyle={styles.buttonDisabled}
-              buttonStyle={{ height: 45 }}
+              // buttonStyle={{ height: 45 }}
               {...buttonProps}
             />
             {this.renderSecondButton()}
@@ -100,20 +99,32 @@ const styles = {
     height: 120,
     width: 120,
   },
+  displayNameAndButtonContainer: {
+    flex: 1,
+  },
+  displayNameContainer: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+    flex: 8,
+  },
   displayName: {
     fontSize: 19,
-    alignSelf: 'center',
-    justifyContent: 'center',
     marginBottom: 15,
   },
   buttonContainer: {
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginTop: 15,
+    flex: 1,
+    // elevation: 10,
+    // zIndex: 99,
   },
   button: {
     width: 215,
+    height: 45,
     marginBottom: 20,
+    elevation: 1,
+    zIndex: 99999,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

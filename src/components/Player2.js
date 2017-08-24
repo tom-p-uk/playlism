@@ -11,13 +11,25 @@ import {
   clearPlaybackObject,
   onPlaybackStatusUpdate,
   togglePlayPause,
-  toggleRepeat,
+  toggleRepeatOne,
   toggleShuffle,
-  scrubThroughSong,
-  setCurrentlyPlayingSong,
 } from '../actions';
 
 class Player extends Component {
+  state = {
+    progressUpdateIntervalMillis: null,
+    scrubPositionMillis: null,
+    isPlayerMounted: false,
+    // didJustFinish:
+  };
+  componentDidMount() {
+    this.setState({ isPlayerMounted:  true });
+  }
+
+  componentWillUnmount() {
+     this.setState({ isPlayerMounted:  false });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.currentlyPlayingSong !== nextProps.currentlyPlayingSong) {
       this.loadSong(nextProps.currentlyPlayingSong);
@@ -25,35 +37,40 @@ class Player extends Component {
   }
 
   loadSong = async song => {
-    const { playbackObject, setPlaybackObject, clearPlaybackObject, onPlaybackStatusUpdate, isPlaying } = this.props;
-
-    if (playbackObject && playbackObject.unloadAsync) {
-      await this.props.playbackObject.unloadAsync();
-    }
-
+    const { playbackObject, setPlaybackObject, onPlaybackStatusUpdate } = this.props;
+    console.log(song.localUri);
+  //   if (!_.isNull(playbackObject)) {
+  //     playbackObject.unloadAsync();
+  //     setPlaybackObject(null);
+  //   }
+  //
     const source = { uri: song.localUri };
     const initialStatus = {
       volume: 1.0,
-      shouldPlay: isPlaying || true,
+      shouldPlay: true,
     };
-
+    // console.log(source.uri);
+    // setPlaybackObject(song.localUri, initialStatus);
     const { sound, status } = await Audio.Sound.create(
       source,
       initialStatus,
-      onPlaybackStatusUpdate,
+      // onPlaybackStatusUpdate,
     );
 
-    setPlaybackObject(sound);
+    // setPlaybackObject(sound);
   };
 
   skipToPosition = async positionMillis => {
-    await this.props.playbackObject.setPositionAsync(positionMillis);
-    this.props.scrubThroughSong(null);
+    await this.state.playbackObject.setPositionAsync(positionMillis);
+    this.setState({ scrubPositionMillis: null });
+  };
+
+  scrubThroughSong = scrubPositionMillis => {
+    this.setState({ scrubPositionMillis });
   };
 
   togglePlayPause = async () => {
     const { playbackObject, isPlaying } = this.props;
-    console.log(playbackObject);
     if (isPlaying) {
       await playbackObject.pauseAsync();
     } else {
@@ -65,55 +82,8 @@ class Player extends Component {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
 
-    const output = (seconds == 60 ? (minutes + 1) + ':00' : minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
-    return (output.indexOf('NaN') === -1) ? output : ''; // To prevent 'NaN' text appearing immediately after track loads
-  };
-
-  findIndexOfSongInSongsList = (songs, song) => {
-    return _.findIndex(songs, { _id: song._id });
-  };
-
-  restartSong = async () => {
-    const { playbackObject } = this.props;
-    playbackObject.setPositionAsync(0);
-  };
-
-  handleRewind = (songs, currentlyPlayingSong) => {
-    const { setCurrentlyPlayingSong } = this.props;
-    const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
-
-    if (index === 0) {
-      this.restartSong();
-    } else {
-      setCurrentlyPlayingSong(songs[index - 1]);
-    }
-  };
-
-  handleFastForward = (songs, currentlyPlayingSong, repeatMode) => {
-    const { setCurrentlyPlayingSong, repeatAll } = this.props;
-    const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
-
-    if (index === songs.length - 1 && repeatMode === 'all') { // If song is last in playlist and repeat all is activated, play 1st song
-      setCurrentlyPlayingSong(songs[0]);
-    } else {
-      setCurrentlyPlayingSong(songs[index + 1]); // else play the next song
-    }
-  };
-
-  renderRepeatIcon = repeatMode => {
-    const icon = {
-      name: 'repeat',
-      color: '#9E9E9E'
-    };
-
-    if (repeatMode === 'one') {
-      icon.name = 'repeat-one',
-      icon.color = '#FFFFFF'
-    } else if (repeatMode === 'all') {
-      icon.color = '#FFFFFF'
-    }
-
-    return icon;
+    if (minutes === NaN || seconds === NaN) return '';
+    return (seconds == 60 ? (minutes + 1) + ':00' : minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
   };
 
   render() {
@@ -122,17 +92,12 @@ class Player extends Component {
       playbackObject,
       positionMillis,
       durationMillis,
-      scrubPositionMillis,
+      // scrubPositionMillis,
       isPlaying,
+      repeatOne,
       shuffle,
-      repeatStates,
-      repeatIndex,
-      toggleShuffle,
-      toggleRepeat,
-      scrubThroughSong,
-      songs,
     } = this.props;
-    const repeatMode = repeatStates[repeatIndex];
+    const { scrubPositionMillis } = this.state;
 
     if (!playbackObject) return <View />;
 
@@ -153,12 +118,12 @@ class Player extends Component {
           </Text>
           <Slider
             thumbTintColor='#FFFFFF'
-            value={scrubPositionMillis || positionMillis}
+            value={positionMillis}
             minimumValue={0}
             maximumValue={durationMillis}
             step={durationMillis / 100}
             onSlidingComplete={value => this.skipToPosition(value)}
-            onValueChange={value => scrubThroughSong(value)}
+            onValueChange={value => this.scrubThroughSong(value)}
             thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
             style={styles.slider}
           />
@@ -167,29 +132,31 @@ class Player extends Component {
 
         <View style={styles.buttonsContainer}>
           <Icon
-            name={this.renderRepeatIcon(repeatMode).name}
-            color={this.renderRepeatIcon(repeatMode).color}
-            onPress={() => toggleRepeat()}
+            name='repeat-one'
+            color={repeatOne ? '#FFFFFF' : '#9E9E9E'}
+            onPress={() => this.setState({ repeatOne: !repeatOne })}
           />
           <Icon
             name='fast-rewind'
             color='#FFFFFF'
-            onPress={() => this.handleRewind(songs, currentlyPlayingSong)}
+            // onPress={() => this.togglePlayPause()}
           />
           <Icon
             name={isPlaying ? 'pause' : 'play-arrow'}
             onPress={() => this.togglePlayPause()}
             color='#FFFFFF'
+            // buttonStyle={styles.button}
           />
           <Icon
             name='fast-forward'
             color='#FFFFFF'
-            onPress={() => this.handleFastForward(songs, currentlyPlayingSong, repeatMode)}
+            // onPress={() => this.togglePlayPause()}
+            // buttonStyle={styles.button}
           />
           <Icon
             name='shuffle'
             color={shuffle ? '#FFFFFF' : '#9E9E9E'}
-            onPress={() => toggleShuffle()}
+            onPress={() => this.setState({ shuffle: !shuffle })}
           />
         </View>
       </View>
@@ -225,9 +192,8 @@ const styles = {
   },
   minsAndSecs: {
     color: '#FFFFFF',
-    paddingLeft: 4,
-    paddingRight: 4,
-    width: 40,
+    marginLeft: 3,
+    marginRight: 3,
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -244,8 +210,8 @@ const mapStateToProps = ({ player: {
   positionMillis,
   scrubPositionMillis,
   shuffle,
-  repeatStates,
-  repeatIndex,
+  repeatOne,
+
 }}) => {
   return {
     currentlyPlayingSong,
@@ -255,8 +221,7 @@ const mapStateToProps = ({ player: {
     positionMillis,
     scrubPositionMillis,
     shuffle,
-    repeatStates,
-    repeatIndex,
+    repeatOne,
   };
 };
 
@@ -265,8 +230,6 @@ export default connect(mapStateToProps, {
   clearPlaybackObject,
   onPlaybackStatusUpdate,
   togglePlayPause,
-  toggleRepeat,
+  toggleRepeatOne,
   toggleShuffle,
-  scrubThroughSong,
-  setCurrentlyPlayingSong,
 })(Player);

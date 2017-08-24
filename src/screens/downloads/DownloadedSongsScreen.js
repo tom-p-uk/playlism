@@ -16,7 +16,7 @@ class DownloadedSongsScreen extends Component {
 
         </View>
         {/* <View style={styles.playerContainer}> */}
-          <Player />
+          <Player songs={downloadedSongs}/>
         {/* </View> */}
       </BackgroundImage>
     );
