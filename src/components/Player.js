@@ -18,6 +18,18 @@ import {
 } from '../actions';
 
 class Player extends Component {
+  state = {
+    isPlayerMounted: false,
+  };
+
+  componentDidMount() {
+    this.setState({ isPlayerMounted: true });
+  }
+
+  componentWillMount() {
+    this.setState({ isPlayerMounted: false });
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.props.currentlyPlayingSong !== nextProps.currentlyPlayingSong) {
       this.loadSong(nextProps.currentlyPlayingSong);
@@ -53,7 +65,7 @@ class Player extends Component {
 
   togglePlayPause = async () => {
     const { playbackObject, isPlaying } = this.props;
-    console.log(playbackObject);
+
     if (isPlaying) {
       await playbackObject.pauseAsync();
     } else {
@@ -78,7 +90,7 @@ class Player extends Component {
     playbackObject.setPositionAsync(0);
   };
 
-  handleRewind = (songs, currentlyPlayingSong) => {
+  handleSkipPrevious = (songs, currentlyPlayingSong) => {
     const { setCurrentlyPlayingSong } = this.props;
     const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
 
@@ -89,7 +101,7 @@ class Player extends Component {
     }
   };
 
-  handleFastForward = (songs, currentlyPlayingSong, repeatMode) => {
+  handleSkipNext = (songs, currentlyPlayingSong, repeatMode) => {
     const { setCurrentlyPlayingSong, repeatAll } = this.props;
     const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
 
@@ -97,6 +109,24 @@ class Player extends Component {
       setCurrentlyPlayingSong(songs[0]);
     } else {
       setCurrentlyPlayingSong(songs[index + 1]); // else play the next song
+    }
+  };
+
+  sortData = data => {
+    if (!data) {
+      return data;
+    }
+
+    const sortedBy = this.props.myPlaylistSortedBy;
+    switch (sortedBy) {
+      case 0:
+        return _.sortBy(data, 'dateAdded');
+      case 1:
+        return _.sortBy(data, 'dateAdded').reverse();
+      case 2:
+        return _.sortBy(data, 'title');
+      case 3:
+        return _.sortBy(data, 'title').reverse();
     }
   };
 
@@ -172,9 +202,9 @@ class Player extends Component {
             onPress={() => toggleRepeat()}
           />
           <Icon
-            name='fast-rewind'
+            name='skip-previous'
             color='#FFFFFF'
-            onPress={() => this.handleRewind(songs, currentlyPlayingSong)}
+            onPress={() => this.handleSkipPrevious(songs, currentlyPlayingSong)}
           />
           <Icon
             name={isPlaying ? 'pause' : 'play-arrow'}
@@ -182,9 +212,9 @@ class Player extends Component {
             color='#FFFFFF'
           />
           <Icon
-            name='fast-forward'
+            name='skip-next'
             color='#FFFFFF'
-            onPress={() => this.handleFastForward(songs, currentlyPlayingSong, repeatMode)}
+            onPress={() => this.handleSkipNext(songs, currentlyPlayingSong, repeatMode)}
           />
           <Icon
             name='shuffle'

@@ -2,18 +2,13 @@ import {
   OPEN_DRAWER,
   CLOSE_DRAWER,
 } from '../actions/types';
+import { NavigationActions } from 'react-navigation';
+import { MainNav } from '../navigation/MainNav';
 
-const initialState = { drawerIsOpen: false };
+const initialState = MainNav.router.getStateForAction(NavigationActions.init());
 
 export default (state = initialState, action) => {
-  switch(action.type) {
-    case (OPEN_DRAWER):
-      return { drawerIsOpen: true };
+  const nextState = MainNav.router.getStateForAction(action, state);
 
-    case (CLOSE_DRAWER):
-      return { drawerIsOpen: false };
-
-    default:
-      return state;
-  }
+  return nextState || state;
 };

@@ -1,7 +1,9 @@
 import React from 'react';
-import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
+import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
 import { View, Platform, Text } from 'react-native';
+
 import AuthScreen from '../screens/AuthScreen';
 import DashboardScreen from '../screens/HomeScreen';
 import DownloadsTabNav from './DownloadsTabNav';
@@ -182,7 +184,7 @@ const DrawerNav = DrawerNavigator({
   }
 });
 
-const MainNav = TabNavigator({
+export const MainNav = TabNavigator({
   // welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
   main: {
@@ -194,4 +196,12 @@ const MainNav = TabNavigator({
   lazy: true,
 });
 
-export default MainNav;
+const MainNavWithNavigationState = ({ dispatch, nav }) => (
+  <MainNav navigation={addNavigationHelpers({ dispatch, state: nav })} />
+);
+
+const mapStateToProps = ({ nav }) => ({
+  nav,
+});
+
+export default connect(mapStateToProps)(MainNavWithNavigationState);

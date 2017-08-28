@@ -20,7 +20,7 @@ const styles = {
 
 const BackgroundImage = ({ source, children }) => {
   return (
-    <Image source={source || require('../../assets/img/record-box.jpg')} style={styles.backgroundImage}>
+    <Image source={source || require('../../assets/img/stack-vinyl.jpg')} style={styles.backgroundImage}>
       <View style={styles.overlay} />
       {children}
     </Image>

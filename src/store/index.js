@@ -19,7 +19,10 @@ const subsetFilter = createFilter(
   ['downloadedSongs']
 );
 
-
-persistStore(store, { storage: AsyncStorage, transforms: [subsetFilter] });
+persistStore(store, {
+  storage: AsyncStorage,
+  blacklist: ['auth', 'nav', 'friends', 'form', 'playlist', 'player'],
+  transforms: [subsetFilter] 
+});
 
 export default store;

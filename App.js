@@ -4,8 +4,9 @@ import Expo, { Notifications } from 'expo';
 import AuthScreen from './src/screens/AuthScreen';
 import { Provider } from 'react-redux'
 import { Font } from 'expo';
+
 import store from './src/store';
-import MainNav from './src/navigation/MainNav';
+import MainNavWithNavigationState from './src/navigation/MainNav';
 
 export default class App extends Component {
   componentDidMount() {
@@ -29,7 +30,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <MainNav />
+        <MainNavWithNavigationState />
       </Provider>
     );
   }

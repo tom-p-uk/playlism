@@ -12,6 +12,7 @@ import SongsInMyPlaylistList from '../../components/SongsInMyPlaylistList';
 import PreviewSongModal from '../../components/PreviewSongModal';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import BackgroundImage from '../../components/BackgroundImage';
+import PlaylistControls from '../../components/PlaylistControls';
 
 class MyPlaylistScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -142,7 +143,10 @@ class MyPlaylistScreen extends Component {
           onButtonPress={() => togglePreviewSongModal()}
           videoId={songBeingPreviewed}
         />
-        {this.renderButtons(navigation, playlist)}
+        <PlaylistControls
+          firstButtonProps={{ title: 'Download All', iconName: 'file-download', onPress: () => this.onDownloadAllPress() }}
+          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
+        />
         {this.renderMessageOrSongList(navigation, songsInMyPlaylist)}
       </View>
     );

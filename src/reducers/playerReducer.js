@@ -11,6 +11,7 @@ import {
   SKIP_TO_PREVIOUS_SONG,
   SKIP_TO_NEXT_SONG,
   SCRUB_THROUGH_SONG,
+  SORT_PLAYER_PLAYLIST,
 } from '../actions/types';
 
 const initialState = {
@@ -21,12 +22,13 @@ const initialState = {
   durationMillis: null,
   positionMillis: null,
   scrubPositionMillis: null,
-  isPlaying: null,
+  isPlaying: false,
   volume: 1.0,
   isMuted: false,
   repeatStates: ['none', 'all', 'one'],
   repeatIndex: 0,
   shuffle: false,
+  playerPlaylistSortedBy: 1,
 };
 
 export default (state = initialState, action) => {
@@ -102,6 +104,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         scrubPositionMillis: action.payload.scrubPositionMillis,
+      };
+
+    case (SORT_PLAYER_PLAYLIST):
+      return {
+        ...state,
+        playerPlaylistSortedBy: action.payload.index,
       };
 
     default:

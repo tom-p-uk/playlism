@@ -11,22 +11,9 @@ import Spinner from '../../components/Spinner';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class DownloadedPlaylistsListScreen extends Component {
-  static navigationOptions = {
-    title: 'My Playlists',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        // style={styles.icon}
-        type='material-community'
-        name='playlist-play'
-        color={tintColor}
-      />
-    ),
-  };
-
   componentDidMount() {
     const { getMyPlaylists, user, authToken, navigation, awaitingMyPlaylists } = this.props;
     getMyPlaylists(authToken);
-
   }
 
   renderSpinner() {
@@ -39,13 +26,15 @@ class DownloadedPlaylistsListScreen extends Component {
 
   renderMessage = () => {
     const { myPlaylists, myPlaylistsError, awaitingMyPlaylists } = this.props;
-    if (!awaitingMyPlaylists && myPlaylists && myPlaylists.length === 0) {
+    const downloadedPlaylists = this.filterPlaylists(myPlaylists);
+
+    if (!awaitingMyPlaylists && myPlaylists && downloadedPlaylists.length === 0) {
       return (
         <Message
-          text=""
+          text=''
           color='#F26C4F'
         >
-          You don't have any playlists yet.
+          You haven't downloaded any songs or playlists yet.
         </Message>
       );
     } else if (myPlaylistsError) {
@@ -57,12 +46,27 @@ class DownloadedPlaylistsListScreen extends Component {
     }
   };
 
+  filterPlaylists = data => { // Filter out playlists that don't contain any downloaded songs
+    if (!data) return;
+    const { downloadedSongs } = this.props;
+
+    const dataFiltered = data.filter(playlist => {
+      const indexOfPlaylistInDownloadedSongs = _.findIndex(downloadedSongs, downloadedSong => {
+        return downloadedSong.inPlaylists.indexOf(playlist._id) !== -1;
+      });
+      return indexOfPlaylistInDownloadedSongs !== -1;
+    });
+
+
+    return dataFiltered;
+  };
+
   render() {
     const { myPlaylists, navigation } = this.props;
 
     return (
         <BackgroundImage>
-          <MyPlaylistList data={myPlaylists} navigation={navigation} navigationTarget='downloadedPlaylist' />
+          <MyPlaylistList data={this.filterPlaylists(myPlaylists)} navigation={navigation} navigationTarget='downloadedPlaylist' />
           {this.renderMessage()}
           {this.renderSpinner()}
         </BackgroundImage>
@@ -70,15 +74,18 @@ class DownloadedPlaylistsListScreen extends Component {
   }
 };
 
-const mapStateToProps = state => {
-  const { playlist: { myPlaylists, myPlaylistsError, awaitingMyPlaylists } , auth: { user, authToken } } = state;
-
+const mapStateToProps = ({
+  playlist: { myPlaylists, myPlaylistsError, awaitingMyPlaylists },
+  auth: { user, authToken },
+  downloads: { downloadedSongs },
+}) => {
   return {
     myPlaylists,
     myPlaylistsError,
     awaitingMyPlaylists,
     user,
     authToken,
+    downloadedSongs,
   };
 };
 

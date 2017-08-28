@@ -20,12 +20,14 @@ export const downloadSong = song => async dispatch => {
     // API sends a link to a page for larger files. Pull the URL from the response,
     // send new request, and then pull download link from the second response.
     if (JSON.stringify(data).indexOf('" />') !== -1) {
-      const url = data.split('url=')[1].split('" />')[0];
-      const res = await axios.get(url);
+      // const url = data.split('url=')[1].split('" />')[0];
+      // const res = await axios.get(url);
+      // console.log('-------------------------------------------------');
+      // link = 'http://www.youtubeinmp3.com';
+      // link += res.data.split('id="download" href="')[1].split('">')[0];
+      // console.log(link);
       console.log('-------------------------------------------------');
-      link = 'http://www.youtubeinmp3.com';
-      link += res.data.split('id="download" href="')[1].split('">')[0];
-      console.log(link);
+      return dispatch(downloadSong(song));
     }
 
     const { uri } = await FileSystem.downloadAsync(link, FileSystem.documentDirectory + `${_id}.mp3`);

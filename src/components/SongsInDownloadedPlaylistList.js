@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { setCurrentlyPlayingSong } from '../actions';
 
-class SongsInAllDownloadsList extends Component {
+class SongsInDownloadedPlaylistList extends Component {
   componentWillUpdate() {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     LayoutAnimation.spring();
@@ -95,4 +95,4 @@ const mapStateToProps = ({ player: { isPlaying, currentlyPlayingSong } }) => {
   };
 };
 
-export default connect(mapStateToProps, { setCurrentlyPlayingSong })(SongsInAllDownloadsList);
+export default connect(mapStateToProps, { setCurrentlyPlayingSong })(SongsInDownloadedPlaylistList);

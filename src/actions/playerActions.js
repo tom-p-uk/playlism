@@ -12,6 +12,7 @@ import {
   SKIP_TO_PREVIOUS_SONG,
   SKIP_TO_NEXT_SONG,
   SCRUB_THROUGH_SONG,
+  SORT_PLAYER_PLAYLIST,
 } from './types';
 
 export const previewSong = videoId => dispatch => {
@@ -95,5 +96,12 @@ export const scrubThroughSong = scrubPositionMillis => {
   return {
     type: SCRUB_THROUGH_SONG,
     payload: { scrubPositionMillis }
+  };
+};
+
+export const sortPlayerPlaylist = index => {
+  return {
+    type: SORT_PLAYER_PLAYLIST,
+    payload: { index }
   };
 };
