@@ -7,8 +7,8 @@ import {
   JWT_LOGIN,
   LOGOUT,
 } from './types';
-const URL = 'http://192.168.0.14:3000/api';
-// const URL = 'https://playlism.herokuapp.com/api';
+// const URL = 'http://192.168.0.14:3000/api';
+const URL = 'https://playlism-171809.appspot.com/api';
 
 export const loginSuccess = (user, authToken) => async dispatch => {
   await AsyncStorage.setItem('authToken', authToken);
@@ -34,13 +34,12 @@ export const loginStart = () => {
 
 export const jwtLogin = () => async dispatch => {
   const authToken = await AsyncStorage.getItem('authToken');
-  console.log(authToken);
+  
   if (authToken) {
     dispatch(loginStart())
     try {
       axios.defaults.headers.common['Authorization'] = authToken;
       const { data: { success } } = await axios.get(`${URL}/user`);
-      console.log(success);
       dispatch(loginSuccess(success.user, authToken))
     } catch (err) {
       console.log(err);

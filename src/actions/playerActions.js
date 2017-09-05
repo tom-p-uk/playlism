@@ -50,7 +50,7 @@ export const clearPlaybackObject = () => {
   };
 };
 
-export const onPlaybackStatusUpdate = ({ durationMillis, positionMillis, volume, isPlaying }) => {
+export const onPlaybackStatusUpdate = ({ durationMillis, positionMillis, volume, isPlaying, didJustFinish }) => {
   return {
     type: ON_PLAYBACK_STATUS_UPDATE,
     payload: {
@@ -58,6 +58,7 @@ export const onPlaybackStatusUpdate = ({ durationMillis, positionMillis, volume,
       positionMillis,
       volume,
       isPlaying,
+      didJustFinish,
     }
   };
 };

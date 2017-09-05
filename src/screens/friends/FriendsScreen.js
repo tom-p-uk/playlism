@@ -22,10 +22,16 @@ class FriendsScreen extends Component {
       />
     ),
   };
-
   componentDidMount() {
-    const { getFriends, user, authToken, navigation, loadFriendRequestsSent } = this.props;
+    const { getFriends, authToken } = this.props;
     getFriends(authToken);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    const { getFriends, authToken, currentRoute } = this.props;
+    if (nextProps.currentRoute === 'friends') {
+      getFriends(authToken);
+    }
   }
 
   renderSelectFriendText = () => {
@@ -109,13 +115,28 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ friends: { friends, friendsError, awaitingFriends }, auth: { user, authToken } }) => {
+const getCurrentRouteRecursive = (routes, index) => {
+  const route = routes[index];
+  if (route.index === undefined) {
+    return route.routeName;
+  } else {
+    return getCurrentRouteRecursive(route.routes, route.index);
+  }
+};
+
+const mapStateToProps = ({
+  nav,
+  friends: { friends, friendsError, awaitingFriends },
+  auth: { user, authToken }
+}) => {
+  const currentRoute = getCurrentRouteRecursive(nav.routes, nav.index);
   return {
     friends,
     friendsError,
     awaitingFriends,
     user,
     authToken,
+    currentRoute,
   };
 };
 

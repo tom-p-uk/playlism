@@ -21,7 +21,6 @@ const navigationOptions = ({ navigation, tintColor }) => ({
       tintColor='#FFFFFF'
     />
   ),
-  // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
   headerStyle: {
     backgroundColor: '#F26C4F',
     marginTop: Platform.OS === 'android' ? 24 : 0

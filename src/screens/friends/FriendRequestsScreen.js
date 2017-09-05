@@ -14,7 +14,6 @@ class FriendRequestsScreen extends Component {
     title: 'Requests',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        // style={styles.icon}
         type='material-community'
         name='account-alert'
         color={tintColor}
@@ -22,9 +21,11 @@ class FriendRequestsScreen extends Component {
     ),
   };
 
-  componentDidMount() {
-    const { getFriendRequests, authToken } = this.props;
-    getFriendRequests(authToken);
+  componentWillReceiveProps(nextProps) {
+    const { getFriendRequests, authToken, currentRoute } = this.props;
+    if (currentRoute !== nextProps.currentRoute && nextProps.currentRoute === 'friendRequests') {
+      getFriendRequests(authToken);
+    }
   }
 
   renderSpinner() {
@@ -80,12 +81,27 @@ class FriendRequestsScreen extends Component {
   }
 };
 
-const mapStateToProps = ({ friends: { friendRequests, friendRequestsError, awaitingFriendRequests }, auth: { authToken } }) => {
+const getCurrentRouteRecursive = (routes, index) => {
+  const route = routes[index];
+  if (route.index === undefined) {
+    return route.routeName;
+  } else {
+    return getCurrentRouteRecursive(route.routes, route.index);
+  }
+};
+
+const mapStateToProps = ({
+  nav,
+  friends: { friendRequests, friendRequestsError, awaitingFriendRequests },
+  auth: { authToken },
+}) => {
+  const currentRoute = getCurrentRouteRecursive(nav.routes, nav.index);
   return {
     friendRequests,
     friendRequestsError,
     awaitingFriendRequests,
     authToken,
+    currentRoute,
   };
 };
 

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   DOWNLOAD_SONG_START,
   DOWNLOAD_SONG_SUCCESS,
@@ -5,9 +6,11 @@ import {
   DELETE_DOWNLOADED_SONG_START,
   DELETE_DOWNLOADED_SONG_SUCCESS,
   DELETE_DOWNLOADED_SONG_FAILURE,
+  UPDATE_DOWNLOAD_PROGRESS,
 } from '../actions/types';
 
 const initialState = {
+  pendingDownloads: [],
   currentlyDownloading: [],
   downloadedSongs: [],
   downloadSongError: '',
@@ -20,22 +23,37 @@ export default (state = initialState, action) => {
     case (DOWNLOAD_SONG_START):
       return {
         ...state,
-        currentlyDownloading: [...state.currentlyDownloading, action.payload.songId],
+        pendingDownloads: _.uniq([...state.pendingDownloads, action.payload.songId]),
+      };
+
+    case (UPDATE_DOWNLOAD_PROGRESS): // TODO - get simultaneous downloads working with download progress display
+      return {
+        ...state,
+        pendingDownloads: state.pendingDownloads.filter(songId => songId !== action.payload.songId),
+        currentlyDownloading: _.uniqBy([...state.currentlyDownloading, action.payload], 'songId').map(download => {
+          if (download.songId === action.payload.songId) {
+            return action.payload;
+          } else {
+            return download;
+          }
+        })
       };
 
     case (DOWNLOAD_SONG_SUCCESS):
       return {
         ...state,
         downloadedSongs: [...state.downloadedSongs, action.payload.song],
+        currentlyDownloading: state.currentlyDownloading.filter(download => download.songId !== action.payload.song._id),
         downloadSongError: '',
-        currentlyDownloading: state.currentlyDownloading.filter(songId => songId !== action.payload.song._id),
+
       };
 
     case (DOWNLOAD_SONG_FAILURE):
+    console.log(action.payload);
       return {
         ...state,
-        downloadSongError: action.payload.error,
-        currentlyDownloading: state.currentlyDownloading.filter(songId => songId !== action.payload.song._id),
+        downloadSongError: `Error. ${action.payload.song.title} failed to download.`,
+        currentlyDownloading: state.currentlyDownloading.filter(download => download.songId !== action.payload.song._id),
       };
 
     case (DELETE_DOWNLOADED_SONG_START):

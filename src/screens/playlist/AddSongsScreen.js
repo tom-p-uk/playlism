@@ -20,8 +20,6 @@ class AddSongsScreen extends Component {
 
   renderHeader = () => {
     const { awaitingSearchResults } = this.props;
-    // console.log(awaitingSearchResults);
-
     return (
       <Field
         name={'songsSearchBar'}

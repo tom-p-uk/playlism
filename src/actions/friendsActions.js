@@ -25,7 +25,8 @@ import {
   DELETE_FRIEND_FAILURE,
 } from './types';
 
-const URL = 'http://192.168.0.14:3000/api';
+// const URL = 'http://192.168.0.14:3000/api';
+const URL = 'https://playlism-171809.appspot.com/api';
 // const URL = Platform.OS === 'android' ? 'http://192.168.0.14:3000/api' : 'http://localhost:3000/api';
 
 export const searchFriends = (searchTerm, authToken) => async dispatch => {

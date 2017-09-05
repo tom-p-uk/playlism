@@ -14,7 +14,7 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
           onPress={firstButtonProps.onPress}
           style={styles.button}
           disabledStyle={styles.buttonDisabled}
-          fontSize={13}
+          fontSize={12}
           borderRadius={30}
           backgroundColor='#98250B'
         />
@@ -26,7 +26,7 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
           onPress={secondButtonProps.onPress}
           style={styles.button}
           disabledStyle={styles.buttonDisabled}
-          fontSize={13}
+          fontSize={12}
           borderRadius={30}
           backgroundColor='#D13310'
         />
@@ -38,8 +38,8 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
 const styles = {
   buttonCard: {
     opacity: 0.8,
-    marginTop: 30,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 0,
     marginLeft: 30,
     marginRight: 30,
   },

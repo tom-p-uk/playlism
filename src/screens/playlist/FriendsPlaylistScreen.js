@@ -8,10 +8,11 @@ import moment from 'moment';
 import { getSongsInFriendsPlaylist, deleteSong, sortFriendsPlaylist, previewSong, togglePreviewSongModal } from '../../actions';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
-import SongsInFriendsPlaylistList from '../../components/SongsInFriendsPlaylistList';
+import SongsList from '../../components/SongsList';
 import PreviewSongModal from '../../components/PreviewSongModal';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import BackgroundImage from '../../components/BackgroundImage';
+import PlaylistControls from '../../components/PlaylistControls';
 
 class FriendsPlaylistScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -49,37 +50,24 @@ class FriendsPlaylistScreen extends Component {
     }
   };
 
-  renderButtons = (navigation, playlist) => {
-    return (
-      <Card containerStyle={styles.buttonCard}>
-        <View style={styles.buttonContainer}>
-          <Button
-            raised
-            small
-            title='Add Songs'
-            icon={{ name: 'add', style: styles.buttonIcon }}
-            onPress={() => navigation.navigate('addSongs', { playlist })}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            fontSize={13}
-            borderRadius={30}
-            backgroundColor='#98250B'
-          />
-          <Button
-            raised
-            small
-            title='Sort Playlist'
-            icon={{ name: 'swap-vert', style: styles.buttonIcon }}
-            onPress={() => this.toggleSortPlaylistModal()}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            fontSize={13}
-            borderRadius={30}
-            backgroundColor='#D13310'
-          />
-        </View>
-      </Card>
-    );
+  renderRightIcon = () => ({ name: 'clear' });
+
+  handleOnPressRightIcon = (song, data) => {
+    const { awaitingDeleteSong, authToken, navigation, deleteSong } = this.props;
+    const { playlist } = navigation.state.params;
+
+    if (awaitingDeleteSong) {
+      console.log('Awaiting results of deleteSong function. Button disabled.');
+    } else {
+      deleteSong(song._id, playlist._id, data, authToken);
+    }
+  };
+
+  renderSubtitle = song => `Added ${moment(song.dateAdded).fromNow()}`;
+
+  onSongListItemPress = videoId => {
+    const { previewSong } = this.props;
+    previewSong(videoId);
   };
 
   renderMessageOrSongList = (navigation, songsInFriendsPlaylist) => {
@@ -88,19 +76,17 @@ class FriendsPlaylistScreen extends Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <SongsInFriendsPlaylistList
+          <SongsList
             data={this.sortData(songsInFriendsPlaylist)}
-            navigation={navigation}
+            extraData={null}
             onSongListItemPress={this.onSongListItemPress}
+            renderRightIcon={this.renderRightIcon}
+            handleOnPressRightIcon={this.handleOnPressRightIcon}
+            renderSubtitle={this.renderSubtitle}
           />
         </View>
       );
     }
-  };
-
-  onSongListItemPress = videoId => {
-    const { previewSong } = this.props;
-    previewSong(videoId);
   };
 
   renderContent = () => {
@@ -127,7 +113,10 @@ class FriendsPlaylistScreen extends Component {
           onButtonPress={() => togglePreviewSongModal()}
           videoId={songBeingPreviewed}
         />
-        {this.renderButtons(navigation, playlist)}
+        <PlaylistControls
+          firstButtonProps={{ title: 'Add Songs', iconName: 'add', onPress: () => navigation.navigate('addSongs', { playlist }) }}
+          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
+        />
         {this.renderMessageOrSongList(navigation, songsInFriendsPlaylist)}
       </View>
     );
@@ -178,7 +167,14 @@ const styles = {
 
 const mapStateToProps = ({
   auth: { authToken },
-  playlist: { awaitingSongsInFriendsPlaylist, songsInFriendsPlaylist, songsInFriendsPlaylistError, friendsPlaylistSortedBy },
+  playlist: {
+    awaitingSongsInFriendsPlaylist,
+    songsInFriendsPlaylist,
+    songsInFriendsPlaylistError,
+    friendsPlaylistSortedBy,
+    awaitingDeleteSong,
+    deleteSongError,
+  },
   player: { isPreviewSongModalOpen, songBeingPreviewed },
 }) => {
   return {
@@ -189,6 +185,8 @@ const mapStateToProps = ({
     friendsPlaylistSortedBy,
     isPreviewSongModalOpen,
     songBeingPreviewed,
+    awaitingDeleteSong,
+    deleteSongError,
   };
 };
 

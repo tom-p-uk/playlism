@@ -22,7 +22,7 @@ const subsetFilter = createFilter(
 persistStore(store, {
   storage: AsyncStorage,
   blacklist: ['auth', 'nav', 'friends', 'form', 'playlist', 'player'],
-  transforms: [subsetFilter] 
+  transforms: [subsetFilter]
 });
 
 export default store;

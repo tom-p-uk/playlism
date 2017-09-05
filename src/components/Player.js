@@ -34,6 +34,10 @@ class Player extends Component {
     if (this.props.currentlyPlayingSong !== nextProps.currentlyPlayingSong) {
       this.loadSong(nextProps.currentlyPlayingSong);
     }
+
+    if (nextProps.didJustFinish) {
+      this.handleSkipNext();
+    }
   }
 
   loadSong = async song => {
@@ -87,11 +91,17 @@ class Player extends Component {
 
   restartSong = async () => {
     const { playbackObject } = this.props;
-    playbackObject.setPositionAsync(0);
+    await playbackObject.setPositionAsync(0);
   };
 
-  handleSkipPrevious = (songs, currentlyPlayingSong) => {
-    const { setCurrentlyPlayingSong } = this.props;
+  stopSong = async () => {
+    const { playbackObject } = this.props;
+    await this.togglePlayPause();
+    await playbackObject.setPositionAsync(0);
+  };
+
+  handleSkipPrevious = () => {
+    const { songs, currentlyPlayingSong, setCurrentlyPlayingSong } = this.props;
     const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
 
     if (index === 0) {
@@ -101,14 +111,31 @@ class Player extends Component {
     }
   };
 
-  handleSkipNext = (songs, currentlyPlayingSong, repeatMode) => {
-    const { setCurrentlyPlayingSong, repeatAll } = this.props;
+  handleSkipNext = () => {
+    const { songs, currentlyPlayingSong, repeatMode, shuffle, setCurrentlyPlayingSong } = this.props;
     const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
 
-    if (index === songs.length - 1 && repeatMode === 'all') { // If song is last in playlist and repeat all is activated, play 1st song
-      setCurrentlyPlayingSong(songs[0]);
+    if (shuffle) {
+      const index = Math.floor(Math.random() * songs.length);
+      return setCurrentlyPlayingSong(songs[index]);
+    }
+
+    if (index === songs.length - 1) { // If song is last in playlist
+      if (repeatMode === 'all') { // and repeatMode is 'all', play first in playlist
+        setCurrentlyPlayingSong(songs[0]);
+      } else if (repeatMode === 'one') { // and repeatMode is 'one', restart track
+        this.restartSong();
+      } else {
+        this.stopSong(); // else stop playback
+      }
     } else {
       setCurrentlyPlayingSong(songs[index + 1]); // else play the next song
+    }
+  };
+
+  onSongEnd = ({ didJustFinish }) => {
+    if (didJustFinish) {
+      this.handleSkipNext();
     }
   };
 
@@ -155,15 +182,12 @@ class Player extends Component {
       scrubPositionMillis,
       isPlaying,
       shuffle,
-      repeatStates,
-      repeatIndex,
       toggleShuffle,
       toggleRepeat,
       scrubThroughSong,
-      songs,
+      repeatMode,
+      didJustFinish,
     } = this.props;
-    const repeatMode = repeatStates[repeatIndex];
-
     if (!playbackObject) return <View />;
 
     return (
@@ -204,7 +228,7 @@ class Player extends Component {
           <Icon
             name='skip-previous'
             color='#FFFFFF'
-            onPress={() => this.handleSkipPrevious(songs, currentlyPlayingSong)}
+            onPress={() => this.handleSkipPrevious()}
           />
           <Icon
             name={isPlaying ? 'pause' : 'play-arrow'}
@@ -214,7 +238,7 @@ class Player extends Component {
           <Icon
             name='skip-next'
             color='#FFFFFF'
-            onPress={() => this.handleSkipNext(songs, currentlyPlayingSong, repeatMode)}
+            onPress={() => this.handleSkipNext()}
           />
           <Icon
             name='shuffle'
@@ -274,6 +298,7 @@ const mapStateToProps = ({ player: {
   positionMillis,
   scrubPositionMillis,
   shuffle,
+  didJustFinish,
   repeatStates,
   repeatIndex,
 }}) => {
@@ -285,8 +310,8 @@ const mapStateToProps = ({ player: {
     positionMillis,
     scrubPositionMillis,
     shuffle,
-    repeatStates,
-    repeatIndex,
+    didJustFinish,
+    repeatMode: repeatStates[repeatIndex],
   };
 };
 

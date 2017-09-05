@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList, LayoutAnimation, UIManager, Text } from 'react-native';
+import { View, FlatList, LayoutAnimation, UIManager, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
 
-import { deleteSong } from '../actions';
-
-class SongsInFriendsPlaylistList extends Component {
+class SongsList extends Component {
   componentWillUpdate() {
     UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
     LayoutAnimation.spring();
@@ -21,19 +19,16 @@ class SongsInFriendsPlaylistList extends Component {
     );
   };
 
-  handleOnPressRightIcon = song => {
-    const { data, awaitingDeleteSong, authToken, navigation, deleteSong } = this.props;
-    const { playlist } = navigation.state.params;
-
-    if (awaitingDeleteSong) {
-      console.log('Awaiting results of deleteSong function. Button disabled.');
-    } else {
-      deleteSong(song._id, playlist._id, data, authToken);
-    }
-  };
-
   render() {
-    const { data, extraData, renderHeader, subtitle, onSongListItemPress } = this.props;
+    const {
+      data,
+      extraData,
+      renderHeader,
+      onSongListItemPress,
+      renderRightIcon,
+      handleOnPressRightIcon,
+      renderSubtitle,
+    } = this.props;
 
     return (
       <List
@@ -48,12 +43,12 @@ class SongsInFriendsPlaylistList extends Component {
           renderItem={({ item }) => (
             <ListItem
               title={item.title}
-              rightIcon={{ name: 'clear' }}
-              subtitle={`Added ${moment(item.dateAdded).fromNow()}`}
+              rightIcon={renderRightIcon(item)}
+              subtitle={renderSubtitle(item)}
               avatar={{ uri: decodeURIComponent(item.thumbnail) }}
               containerStyle={{ borderBottomWidth: 0, opacity: 0.8 }}
-              onPress={() => onSongListItemPress(item.videoId)}
-              onPressRightIcon={() => this.handleOnPressRightIcon(item)}
+              onPress={() => onSongListItemPress(item)}
+              onPressRightIcon={() => handleOnPressRightIcon(item, data)}
             />
           )}
         />
@@ -78,20 +73,8 @@ const styles = {
   },
   subtitle: {
     color: '#999999',
-    // marginLeft: 5,
     fontSize: 12,
   },
 };
 
-const mapStateToProps = ({
-  auth: { authToken },
-  playlist: { awaitingDeleteSong, deleteSongError }
-}) => {
-  return {
-    authToken,
-    awaitingDeleteSong,
-    deleteSongError,
-  };
-};
-
-export default connect(mapStateToProps, { deleteSong })(SongsInFriendsPlaylistList);
+export default SongsList;

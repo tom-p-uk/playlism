@@ -45,14 +45,15 @@ import {
 } from './types';
 import { API_KEY } from '../config';
 
-const URL = 'http://192.168.0.14:3000/api';
+// const URL = 'http://192.168.0.14:3000/api';
+const URL = 'https://playlism-171809.appspot.com/api';
 
 export const getMyPlaylists = authToken => async dispatch => {
   dispatch(getMyPlaylistsStart());
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/playlist/foruser`);
-    console.log({success});
+
     dispatch(getMyPlaylistsSuccess(success.playlists))
   } catch (err) {
     console.log(err);
@@ -239,7 +240,6 @@ export const getSongsInMyPlaylist = (playlistId, authToken) => async dispatch =>
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/song/playlist/${playlistId}`);
-    console.log(success);
     dispatch(getSongsInMyPlaylistSuccess(success.songs))
   } catch (err) {
     console.log(err);

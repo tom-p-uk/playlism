@@ -29,6 +29,7 @@ const initialState = {
   repeatIndex: 0,
   shuffle: false,
   playerPlaylistSortedBy: 1,
+  didJustFinish: false,
 };
 
 export default (state = initialState, action) => {
@@ -70,6 +71,7 @@ export default (state = initialState, action) => {
         positionMillis: action.payload.positionMillis,
         volume: action.payload.volume,
         isPlaying: action.payload.isPlaying,
+        didJustFinish: action.payload.didJustFinish,
       };
 
     case (TOGGLE_PLAY_PAUSE):

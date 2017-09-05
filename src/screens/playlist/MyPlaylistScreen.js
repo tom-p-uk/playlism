@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { Card, Button, ButtonGroup } from 'react-native-elements';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import { Circle, Bar } from 'react-native-progress';
+import DropdownAlert from 'react-native-dropdownalert';
 
-import { getSongsInMyPlaylist, sortMyPlaylist, previewSong, togglePreviewSongModal, downloadSong } from '../../actions';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
-import SongsInMyPlaylistList from '../../components/SongsInMyPlaylistList';
+import SongsList from '../../components/SongsList';
 import PreviewSongModal from '../../components/PreviewSongModal';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import BackgroundImage from '../../components/BackgroundImage';
 import PlaylistControls from '../../components/PlaylistControls';
+import {
+  getSongsInMyPlaylist,
+  sortMyPlaylist,
+  previewSong,
+  togglePreviewSongModal,
+  downloadSong,
+  deleteDownloadedSong
+} from '../../actions';
 
 class MyPlaylistScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -21,6 +30,7 @@ class MyPlaylistScreen extends Component {
 
   state = {
     isSortPlaylistModalVisible: false,
+    fileIsDownloading: false,
   };
 
   toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
@@ -30,6 +40,18 @@ class MyPlaylistScreen extends Component {
     const { playlist } = navigation.state.params;
 
     getSongsInMyPlaylist(playlist._id, authToken);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { currentlyDownloading } = this.props;
+
+    if (currentlyDownloading.length !== nextProps.currentlyDownloading.length) {
+      console.log(nextProps.currentlyDownloading);
+    }
+
+    if (nextProps.downloadSongError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.downloadSongError);
+    }
   }
 
   sortData = data => {
@@ -50,64 +72,97 @@ class MyPlaylistScreen extends Component {
     }
   };
 
-  onDownloadAllPress = () => {
-    const { songsInMyPlaylist, downloadSong, downloadedSongs, currentlyDownloading } = this.props;
-    const songs = this.sortData(songsInMyPlaylist);
-
-    // If song in array isn't currently downloading or hasn't been downloaded, start downloading it
-    songs.forEach(song => {
-      const currentlyDownloadingIndex = currentlyDownloading.indexOf(song._id);
-      const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
-
-      if (currentlyDownloadingIndex === -1 && downloadedSongsIndex === -1) {
-        downloadSong(song);
-      }
-    });
+  renderSubtitle = item => {
+    return `Added ${moment(item.dateAdded).fromNow()}`;
   };
 
-  renderButtons = (navigation, playlist) => {
-    return (
-      <Card containerStyle={styles.buttonCard}>
-        <View style={styles.buttonContainer}>
-          <Button
-            raised
-            small
-            title='Download All'
-            icon={{ name: 'file-download', style: styles.buttonIcon }}
-            onPress={() => this.onDownloadAllPress()}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            fontSize={13}
-            borderRadius={30}
-            backgroundColor='#98250B'
-          />
-          <Button
-            raised
-            small
-            title='Sort Playlist'
-            icon={{ name: 'swap-vert', style: styles.buttonIcon }}
-            onPress={() => this.toggleSortPlaylistModal()}
-            style={styles.button}
-            disabledStyle={styles.buttonDisabled}
-            fontSize={13}
-            borderRadius={30}
-            backgroundColor='#D13310'
-          />
-        </View>
-      </Card>
-    );
+  onDeleteAllPress = () => {
+    const { songsInMyPlaylist, deleteDownloadedSong, downloadedSongs, currentlyDownloading } = this.props;
+    const songs = this.sortData(songsInMyPlaylist);
+
+    // // If song in array isn't currently downloading or hasn't been downloaded, start downloading it
+    // songs.forEach(song => {
+    //   const currentlyDownloadingIndex = currentlyDownloading.indexOf(song._id);
+    //   const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+    //
+    //   if (currentlyDownloadingIndex === -1 && downloadedSongsIndex === -1) {
+    //     downloadSong(song);
+    //   }
+    // });
+    downloadedSongs.forEach(song => deleteDownloadedSong(song));
+  };
+
+  handleOnPressRightIcon = song => {
+    const { downloadSong, deleteDownloadedSong, downloadedSongs, pendingDownloads, currentlyDownloading } = this.props;
+
+    const pendingDownloadsIndex = pendingDownloads.indexOf(song._id);
+    const currentlyDownloadingIndex = _.findIndex(currentlyDownloading, { songId: song._id });
+    const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+
+    if (pendingDownloadsIndex !== -1) {
+      return console.log('Awaiting results of downloadSong/deleteDownloadedSong functions. Button disabled.');
+    }
+
+    if (downloadedSongsIndex === -1) {
+      downloadSong(song);
+    } else {
+      deleteDownloadedSong(downloadedSongs[downloadedSongsIndex]);
+    }
+  };
+
+  renderRightIcon = (song) => {
+    const { downloadSong, deleteDownloadedSong, downloadedSongs, pendingDownloads, currentlyDownloading } = this.props;
+
+    const pendingDownloadsIndex = pendingDownloads.indexOf(song._id);
+    const currentlyDownloadingIndex = _.findIndex(currentlyDownloading, { songId: song._id });
+    const downloadedSongsIndex = _.findIndex(downloadedSongs, { _id: song._id });
+    // const currentDownload = _.find(currentlyDownloading, { _id: song._id });
+
+    if (pendingDownloadsIndex !== -1) {
+      return <ActivityIndicator size='small' />;
+    }
+
+    if (currentlyDownloadingIndex !== -1) {
+      const { totalBytesWritten, totalBytesExpectedToWrite } = currentlyDownloading[currentlyDownloadingIndex];
+      const progress = totalBytesWritten / totalBytesExpectedToWrite;
+
+      return (
+        <Circle
+          color='#F26C4F'
+          progress={progress}
+          size={35}
+          thickness={2}
+          showsText
+          // formatText={progress => `${Math.round(progress * 100)}%`}
+          textStyle={{ fontSize: 10 }}
+        />
+      );
+    }
+
+    if (currentlyDownloading.length > 0 || pendingDownloads.length > 0) {
+      return <View />
+    }  else if (downloadedSongsIndex === -1) {
+      return { name: 'file-download' };
+    } else {
+      return { name: 'delete-forever' }
+    }
   };
 
   renderMessageOrSongList = (navigation, songsInMyPlaylist) => {
+    const { downloadedSongs, currentlyDownloading, pendingDownloads } = this.props;
     if (songsInMyPlaylist && songsInMyPlaylist.length === 0) {
       return <Message color='#F26C4F'>The playlist is empty.</Message>
     } else {
       return (
         <View style={{ flex: 1 }}>
-          <SongsInMyPlaylistList
+          <SongsList
             data={this.sortData(songsInMyPlaylist)}
+            extraData={[downloadedSongs, currentlyDownloading, pendingDownloads]}
             navigation={navigation}
             onSongListItemPress={this.onSongListItemPress}
+            handleOnPressRightIcon={this.handleOnPressRightIcon}
+            renderRightIcon={this.renderRightIcon}
+            renderSubtitle={this.renderSubtitle}
           />
         </View>
       );
@@ -117,6 +172,12 @@ class MyPlaylistScreen extends Component {
   onSongListItemPress = videoId => {
     const { previewSong } = this.props;
     previewSong(videoId);
+  };
+
+  handleDropdownAlert = alert => {
+
+
+      // this.dropdown.alertWithType('error', 'Error', 'downloadSongError')
   };
 
   renderContent = () => {
@@ -144,7 +205,7 @@ class MyPlaylistScreen extends Component {
           videoId={songBeingPreviewed}
         />
         <PlaylistControls
-          firstButtonProps={{ title: 'Download All', iconName: 'file-download', onPress: () => this.onDownloadAllPress() }}
+          firstButtonProps={{ title: 'Delete Downloads', iconName: 'delete-forever', onPress: () => this.onDeleteAllPress() }}
           secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
         />
         {this.renderMessageOrSongList(navigation, songsInMyPlaylist)}
@@ -163,6 +224,7 @@ class MyPlaylistScreen extends Component {
             :
               this.renderContent()
         }
+        <DropdownAlert ref={ref => this.dropdown = ref} />
       </BackgroundImage>
     );
   }
@@ -199,7 +261,7 @@ const mapStateToProps = ({
   auth: { authToken },
   playlist: { awaitingSongsInMyPlaylist, songsInMyPlaylist, songsInMyPlaylistError, myPlaylistSortedBy },
   player: { isPreviewSongModalOpen, songBeingPreviewed },
-  downloads: { downloadedSongs, currentlyDownloading }
+  downloads: { downloadedSongs, currentlyDownloading, pendingDownloads, downloadSongError }
 }) => {
   return {
     authToken,
@@ -210,7 +272,9 @@ const mapStateToProps = ({
     isPreviewSongModalOpen,
     songBeingPreviewed,
     downloadedSongs,
-    currentlyDownloading
+    currentlyDownloading,
+    pendingDownloads,
+    downloadSongError,
   };
 };
 
@@ -220,4 +284,5 @@ export default connect(mapStateToProps, {
   togglePreviewSongModal,
   previewSong,
   downloadSong,
+  deleteDownloadedSong,
 })(MyPlaylistScreen);

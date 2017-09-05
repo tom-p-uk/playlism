@@ -131,8 +131,8 @@ class UserScreen extends Component {
   }
 };
 
-const mapStateToProps = state => {
-  const {
+const mapStateToProps = ({
+  friends: {
     friends,
     userFriendStatus,
     awaitingSendFriendRequest,
@@ -140,9 +140,9 @@ const mapStateToProps = state => {
     friendRequests,
     awaitingRespondToFriendRequest,
     awaitingDeleteFriend,
-  } = state.friends;
-  const { authToken, user } = state.auth;
-
+  },
+  auth: { authToken, user },
+}) => {
   return {
     friends,
     userFriendStatus,
