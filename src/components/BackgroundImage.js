@@ -1,6 +1,18 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
+const BackgroundImage = ({ source, backgroundColor, children }) => {
+  return (
+    <Image
+      source={source || require('../../assets/img/stack-vinyl.jpg')}
+      style={styles.backgroundImage}
+    >
+      <View style={backgroundColor ? [styles.overlay, { backgroundColor }] : styles.overlay} />
+      {children}
+    </Image>
+  );
+};
+
 const styles = {
   backgroundImage: {
     flex: 1,
@@ -16,15 +28,6 @@ const styles = {
    bottom: 0,
    backgroundColor: 'rgba(40,40,40, 0.7)'
   },
-};
-
-const BackgroundImage = ({ source, children }) => {
-  return (
-    <Image source={source || require('../../assets/img/stack-vinyl.jpg')} style={styles.backgroundImage}>
-      <View style={styles.overlay} />
-      {children}
-    </Image>
-  );
 };
 
 export default BackgroundImage;

@@ -120,6 +120,7 @@ export default (state = initialState, action) => {
       };
 
     case (CREATE_PLAYLIST_SUCCESS):
+    console.log(action);
       return {
         ...state,
         awaitingCreatePlaylist: false,

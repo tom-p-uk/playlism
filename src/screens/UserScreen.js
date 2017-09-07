@@ -72,7 +72,7 @@ class UserScreen extends Component {
     } else {
       return {
         icon: { name: 'playlist-plus', type: 'material-community' },
-        title: `Create Playlist for ${user.firstName}`,
+        title: 'Create Playlist',
         onPress: () => navigation.navigate('createPlaylistForm', { user })
       };
     }

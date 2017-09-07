@@ -12,9 +12,14 @@ import {
   UPDATE_DOWNLOAD_PROGRESS
 } from './types';
 
-export const downloadSong = song => async dispatch => {
+export const downloadSong = (song, attemptNum) => async dispatch => {
   let { youTubeUrl, _id } = song;
   dispatch(downloadSongStart(_id));
+
+  // Download fails after 7 unsuccessful download attempts
+  if (attemptNum >= 7) {
+    return dispatch(downloadSongFailure(song));
+  }
 
   try {
     let { data } = await axios.get(`http://www.youtubeinmp3.com/fetch/?format=json&video=${youTubeUrl}`);
@@ -23,18 +28,16 @@ export const downloadSong = song => async dispatch => {
     // API occasionally sends an HTML response rather than JSON. In those cases, make
     // repeated requests until a JSON response is received
     if (JSON.stringify(data).indexOf('" />') !== -1) {
-      // const url = data.split('url=')[1].split('" />')[0];
-      // const res = await axios.get(url);
-      // console.log('-------------------------------------------------');
-      // link = 'http://www.youtubeinmp3.com';
-      // link += res.data.split('id="download" href="')[1].split('">')[0];
-      // console.log(link);
-      console.log('Reattempting download.');
-      return dispatch(downloadSong(song));
+      console.log(`Download attempt #${attemptNum} failed. Reattempting.`);
+      return dispatch(downloadSong(song, attemptNum + 1));
     }
 
-    let callback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
-      if (!_.isNull(_id) && totalBytesExpectedToWrite >= 0) {
+    const callback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
+      // Callback is called for old as well as present downloads for some reason,
+      // so _id must be set to null after downloading, and callback only called for non-null _id values
+      if (totalBytesWritten === totalBytesExpectedToWrite) {
+        return;
+      } else if (!_.isNull(_id) && totalBytesExpectedToWrite >= 0) {
         dispatch(updateDownloadProgress(
           _id,
           totalBytesWritten,
@@ -47,20 +50,18 @@ export const downloadSong = song => async dispatch => {
       link,
       FileSystem.documentDirectory + `${_id}.mp3`,
       {},
-      _.throttle(callback, 400),
+      _.throttle(callback, 1000), // Throttle for performance reaons (esp. on Android)
     );
 
     const { uri } = await downloadResumable.downloadAsync();
     const { size } = await FileSystem.getInfoAsync(uri);
 
-    if (size < 100000) {
-      dispatch(deleteDownloadedSong(song));
+    _id = null;
+    if (!size || size < 100000) {
       return dispatch(downloadSongFailure(song));
     }
 
     console.log('Finished downloading to ', uri);
-
-    _id = null;
 
     const updatedSong = {...song, localUri: uri, downloadedOn: Date.now() };
     return dispatch(downloadSongSuccess(updatedSong));
@@ -68,6 +69,8 @@ export const downloadSong = song => async dispatch => {
   } catch (err) {
     console.log(err);
     dispatch(downloadSongFailure(song));
+    FileSystem.deleteAsync(FileSystem.documentDirectory + `${_id}.mp3`);
+    _id = null;
   }
 };
 

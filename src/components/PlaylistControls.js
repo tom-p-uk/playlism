@@ -52,10 +52,10 @@ const styles = {
     alignItems: 'center',
     // marginBottom: -40,
     height: 50,
-    opacity: 0.9,
   },
   button: {
     // width: 115,
+    // opacity: 0.9,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

@@ -9,7 +9,7 @@ const DownloadedPlaylistsStackNav = StackNavigator({
   downloadedPlaylistsList: {
     screen: DownloadedPlaylistsListScreen,
     navigationOptions: {
-      title: "My Playlists"
+      title: "Downloaded Playlists"
     }
   },
   downloadedPlaylist: {

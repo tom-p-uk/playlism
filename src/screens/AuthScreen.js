@@ -11,15 +11,15 @@ import {
 import { Button, Card, SocialIcon } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
+
 import * as actions from '../actions';
 import registerForNotifications from '../services/push_notifications';
 import SpinnerOverlay from '../components/SpinnerOverlay';
 
-// const HOST = 'http://192.168.0.14:3000';
-const URL = 'http://192.168.0.14:3000';
-// const URL = 'https://playlism.herokuapp.com';
-const FACEBOOK_AUTH_URL = `${URL}/api/auth/facebook`;
-const GOOGLE_AUTH_URL = `${URL}/api/auth/google`;
+const URL = 'https://playlism.herokuapp.com/api';
+const FACEBOOK_AUTH_URL = `${URL}/auth/facebook`;
+const GOOGLE_AUTH_URL = `${URL}/auth/google`;
 
 
 class AuthScreen extends Component {
@@ -28,16 +28,26 @@ class AuthScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // if (nextProps.user) {
-    //   this.props.navigation.navigate('dashboard');
-    // }
+    const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'dashboard' }),
+        ],
+        key: null
+    });
+
+    if (nextProps.user) {
+      setTimeout(() => this.props.navigation.dispatch(resetAction), 2000);
+    }
   }
+
+
 
   // Opens browser internally in order to access the backend OAuth routes
   openWebBrowserAsync = async authUrl => {
     this.props.loginStart();
     this.addLinkingListener();
-    await WebBrowser.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
+    await WebBrowser.default.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
     this.removeLinkingListener();
   }
 
@@ -51,7 +61,7 @@ class AuthScreen extends Component {
 
   // Pull user object and JWT from url following redirect from backend
   handleRedirect = (event) => {
-    WebBrowser.dismissBrowser();
+    WebBrowser.default.dismissBrowser();
 
     const query = event.url.replace(`${Constants.linkingUri}?`, ''); // Pull data from redirect URL
     const data = qs.parse(query);

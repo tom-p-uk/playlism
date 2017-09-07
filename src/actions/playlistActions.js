@@ -45,8 +45,7 @@ import {
 } from './types';
 import { API_KEY } from '../config';
 
-// const URL = 'http://192.168.0.14:3000/api';
-const URL = 'https://playlism-171809.appspot.com/api';
+const URL = 'https://playlism.herokuapp.com/api';
 
 export const getMyPlaylists = authToken => async dispatch => {
   dispatch(getMyPlaylistsStart());
@@ -135,10 +134,10 @@ export const createPlaylist = (title, forUser, authToken, navigationCallback) =>
     }
   } catch (err) {
     console.log(err);
-
-    if (err.response.data.error) {
-      dispatch(createPlaylistFailure(err.response.data.error));
-    }
+    console.log({ err });
+    // if (err.response.data.error) {
+    //   dispatch(createPlaylistFailure(err.response.data.error));
+    // }
   }
 };
 

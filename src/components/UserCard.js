@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
+import BackgroundImage from './BackgroundImage';
 
 import Spinner from './Spinner';
 
@@ -32,16 +33,8 @@ class UserCard extends Component {
 
     return (
       <Card  style={styles.container}>
-        <View>
-          <View style={{ flex: 1, }}>
-            <Image
-              source={coverImgSource}
-              style={{ flex: 1, width: SCREEN_WIDTH }}
-            />
-            <View style={styles.overlay} />
-          </View>
-          <View style={{ flex: 1, backgroundColor: '#FFFFFF', justifyContent: 'center', }}>
-          </View>
+        <View style={{ flex: 1, width: 400 }}>
+          <BackgroundImage source={require('../../assets/img/vinyl-records.png')} backgroundColor='rgba(242,108,79, 0.2)' />
         </View>
         <View style={styles.profileImgContainer}>
           <Image
@@ -50,23 +43,29 @@ class UserCard extends Component {
             source={{ uri: decodeURIComponent(user.profileImg) }}
           />
         </View>
-        <View style={[styles.displayNameAndButtonContainer, { top } ]}>
-          <Text style={styles.displayName}>{user.displayName}</Text>
+        {/* <View style={[styles.displayNameAndButtonContainer, { top } ]}>
+           */}
           <View style={styles.buttonContainer}>
-            <Button
-              small
-              raised
-              buttonStyle={styles.button}
-              fontSize={13}
-              borderRadius={60}
-              backgroundColor='#98250B'
-              disabledStyle={styles.buttonDisabled}
-              // buttonStyle={{ height: 45 }}
-              {...buttonProps}
-            />
-            {this.renderSecondButton()}
+            <View style={{ flex: 3, justifyContent: 'flex-end'}}>
+              <Text style={styles.displayName}>{user.displayName}</Text>
+            </View>
+            <View style={{ flex: 4, justifyContent: showSecondButton ? 'space-around' : 'flex-start' }}>
+
+              <Button
+                small
+                raised
+                buttonStyle={styles.button}
+                fontSize={13}
+                borderRadius={60}
+                backgroundColor='#98250B'
+                disabledStyle={styles.buttonDisabled}
+                // buttonStyle={{ height: 45 }}
+                {...buttonProps}
+              />
+              {this.renderSecondButton()}
+            </View>
           </View>
-        </View>
+        {/* </View> */}
       </Card>
     );
   }
@@ -95,9 +94,9 @@ const styles = {
     alignItems: 'center',
   },
   profileImg: {
-    borderRadius: 60,
-    height: 120,
-    width: 120,
+    borderRadius: 65,
+    height: 130,
+    width: 130,
   },
   displayNameAndButtonContainer: {
     flex: 1,
@@ -110,11 +109,13 @@ const styles = {
   displayName: {
     fontSize: 19,
     marginBottom: 15,
+    alignSelf: 'center',
+
   },
   buttonContainer: {
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    // marginTop: 15,
     flex: 1,
     // elevation: 10,
     // zIndex: 99,
@@ -123,8 +124,6 @@ const styles = {
     width: 215,
     height: 45,
     marginBottom: 20,
-    elevation: 1,
-    zIndex: 99999,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

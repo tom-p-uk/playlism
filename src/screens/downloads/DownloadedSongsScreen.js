@@ -3,9 +3,10 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
+import { KeepAwake } from 'expo';
 
 import SongsList from '../../components/SongsList';
-import Player from '../../components/Player';
+import Player from '../../containers/Player';
 import BackgroundImage from '../../components/BackgroundImage';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import PlaylistControls from '../../components/PlaylistControls';
@@ -91,6 +92,7 @@ class DownloadedSongsScreen extends Component {
           />
         </View>
         {currentRoute === 'downloadedSongs' && <Player songs={this.sortData(downloadedSongs)}/>}
+        <KeepAwake />
       </BackgroundImage>
     );
   }

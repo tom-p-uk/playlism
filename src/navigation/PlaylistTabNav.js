@@ -10,7 +10,7 @@ const PlaylistTabNav = TabNavigator({
   myPlaylists: {
     screen: MyPlaylistsStackNav,
     navigationOptions: {
-      title: 'My Playlists',
+      // title: 'My Playlists',
       tabBarIcon: ({ tintColor }) => (
         <Icon
           type='material-community'

@@ -38,7 +38,7 @@ class FriendRequestsScreen extends Component {
 
   renderMessage = () => {
     const { friendRequests, friendRequestsError, awaitingFriendRequests } = this.props;
-    if (!awaitingFriendRequests && friendRequests && friendRequests.length === 0) {
+    if (friendRequests && friendRequests.length === 0) {
       return (
         <Message
           text=""
@@ -49,9 +49,9 @@ class FriendRequestsScreen extends Component {
       );
     } else if (friendRequestsError) {
       return (
-        <Message
-          text={friendRequestsError}
-        />
+        <Message>
+          {friendRequestsError}
+        </Message>
       );
     }
   };

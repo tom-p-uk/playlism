@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Platform } from 'react-native';
 import { Card, Button, ButtonGroup } from 'react-native-elements';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -104,7 +104,7 @@ class MyPlaylistScreen extends Component {
     }
 
     if (downloadedSongsIndex === -1) {
-      downloadSong(song);
+      downloadSong(song, 1);
     } else {
       deleteDownloadedSong(downloadedSongs[downloadedSongsIndex]);
     }
@@ -169,15 +169,9 @@ class MyPlaylistScreen extends Component {
     }
   };
 
-  onSongListItemPress = videoId => {
+  onSongListItemPress = song => {
     const { previewSong } = this.props;
-    previewSong(videoId);
-  };
-
-  handleDropdownAlert = alert => {
-
-
-      // this.dropdown.alertWithType('error', 'Error', 'downloadSongError')
+    previewSong(song.videoId);
   };
 
   renderContent = () => {
@@ -224,7 +218,13 @@ class MyPlaylistScreen extends Component {
             :
               this.renderContent()
         }
-        <DropdownAlert ref={ref => this.dropdown = ref} />
+        <DropdownAlert
+          ref={ref => this.dropdown = ref}
+          // startDelta={-200}
+          errorColor='#F26C4F'
+          closeInterval={2000}
+          titleStyle={styles.dropdownAlertTitle}
+        />
       </BackgroundImage>
     );
   }
@@ -245,7 +245,6 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: -40,
     height: 50,
     opacity: 0.9,
   },
@@ -254,6 +253,14 @@ const styles = {
   },
   buttonDisabled: {
     backgroundColor: '#98250B',
+  },
+  dropdownAlertTitle: {
+    marginTop: Platform.OS === 'android' ? 0 : -20,
+    fontSize: 16,
+    textAlign: 'left',
+    fontWeight: 'bold',
+    color: 'white',
+    backgroundColor: 'transparent'
   },
 };
 

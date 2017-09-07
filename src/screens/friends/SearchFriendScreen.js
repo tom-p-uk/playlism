@@ -35,7 +35,7 @@ class SearchFriendScreen extends Component {
   renderMessage = () => {
     const { dirty, awaitingSearchResults, searchResults, searchError } = this.props;
 
-    if (dirty && !awaitingSearchResults && searchResults && searchResults.length === 0) {
+    if (dirty && searchResults && searchResults.length === 0) {
       return (
         <Message color='#F26C4F'>
           No search results found.

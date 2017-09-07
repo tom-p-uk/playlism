@@ -11,7 +11,7 @@ import FriendsTabNav from './FriendsTabNav';
 import PlaylistTabNav from './PlaylistTabNav';
 import Hamburger from '../components/Hamburger';
 import DrawerButton from '../components/DrawerButton';
-import CustomDrawerMenu from '../components/CustomDrawerMenu';
+import CustomDrawerMenu from '../containers/CustomDrawerMenu';
 import BackButton from '../components/BackButton';
 
 const navigationOptions = ({ navigation, tintColor }) => ({
@@ -183,16 +183,18 @@ const DrawerNav = DrawerNavigator({
   }
 });
 
-export const MainNav = TabNavigator({
+export const MainNav = StackNavigator({
   // welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
-  main: {
-    screen: DrawerNav,
-  }
+  dashboard: { screen: DashboardStack },
+  downloads: { screen: DownloadsStack },
+  playlists: { screen: PlaylistsStack },
+  friends: { screen: FriendsStack },
 }, {
-  swipeEnabled: false,
-  navigationOptions: { tabBarVisible: false },
-  lazy: true,
+  // swipeEnabled: false,
+  // navigationOptions: { tabBarVisible: false },
+  // lazy: true,
+  headerMode: 'none'
 });
 
 const MainNavWithNavigationState = ({ dispatch, nav }) => (

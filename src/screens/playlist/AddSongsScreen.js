@@ -7,7 +7,7 @@ import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongMod
 import { reduxForm, Field } from 'redux-form';
 
 import SearchBar from '../../components/SearchBar';
-import SongResultsList from '../../components/SongResultsList';
+import SongResultsList from '../../containers/SongResultsList';
 import Message from '../../components/Message';
 import PreviewSongModal from '../../components/PreviewSongModal';
 import BackgroundImage from '../../components/BackgroundImage';

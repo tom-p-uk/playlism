@@ -9,7 +9,6 @@ const DownloadsTabNav = TabNavigator({
   downloadedPlaylists: {
     screen: DownloadedPlaylistsStackNav,
     navigationOptions: {
-      title: 'Downloaded Playlists',
       tabBarIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}

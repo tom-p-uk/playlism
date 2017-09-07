@@ -11,7 +11,7 @@ import MainNavWithNavigationState from './src/navigation/MainNav';
 export default class App extends Component {
   componentDidMount() {
     Notifications.addListener(notification => {
-      const { data: { text }, origin } = notification; // const text, origin = notification.data.text
+      const { data: { text }, origin } = notification;
 
       if (origin === 'received' && text) {
         Alert.alert(

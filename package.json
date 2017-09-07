@@ -21,6 +21,7 @@
     "react-native-modal": "^2.5.0",
     "react-native-progress": "^3.4.0",
     "react-native-progress-bar": "^0.1.2",
+    "react-native-slider": "^0.11.0",
     "react-native-vector-icons": "^4.2.0",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.5",

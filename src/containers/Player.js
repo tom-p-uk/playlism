@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import { Slider, Icon } from 'react-native-elements';
+import { View, Text, Platform, Slider as SliderAndroid } from 'react-native';
+import { Icon } from 'react-native-elements';
 import { Audio } from 'expo';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import _ from 'lodash';
+import { Slider as SlideriOS } from 'react-native-elements'
 
 import {
   setPlaybackObject,
@@ -196,7 +197,7 @@ class Player extends Component {
           {currentlyPlayingSong.title.slice(0, 50)}
         </Text>
         <View style={styles.sliderContainer}>
-          <Text style={styles.minsAndSecs}>
+          <Text style={styles.minsAndSecsLeft}>
           {
             scrubPositionMillis !== null
             ?
@@ -205,18 +206,36 @@ class Player extends Component {
               this.millisToMinsAndSecs(positionMillis)
           }
           </Text>
-          <Slider
-            thumbTintColor='#FFFFFF'
-            value={scrubPositionMillis || positionMillis}
-            minimumValue={0}
-            maximumValue={durationMillis}
-            step={durationMillis / 100}
-            onSlidingComplete={value => this.skipToPosition(value)}
-            onValueChange={value => scrubThroughSong(value)}
-            thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
-            style={styles.slider}
-          />
-          <Text style={styles.minsAndSecs}>{this.millisToMinsAndSecs(durationMillis)}</Text>
+          {
+            Platform === 'android'
+            ?
+              <SliderAndroid
+                thumbTintColor='#FFFFFF'
+                minimumTrackTintColor='#000000'
+                maximumTrackTintColor='#9E9E9E'
+                value={scrubPositionMillis || positionMillis}
+                minimumValue={0.001}
+                maximumValue={durationMillis}
+                // step={durationMillis / 100}
+                onSlidingComplete={value => this.skipToPosition(value)}
+                onValueChange={value => scrubThroughSong(value)}
+                // thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
+                style={styles.sliderAndroid}
+              />
+            :
+              <SlideriOS
+                thumbTintColor='#FFFFFF'
+                value={scrubPositionMillis || positionMillis}
+                minimumValue={0.001}
+                maximumValue={durationMillis}
+                step={durationMillis / 100}
+                onSlidingComplete={value => this.skipToPosition(value)}
+                onValueChange={value => scrubThroughSong(value)}
+                thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
+                style={styles.slideriOS}
+              />
+          }
+          <Text style={styles.minsAndSecsRight}>{this.millisToMinsAndSecs(durationMillis)}</Text>
         </View>
 
         <View style={styles.buttonsContainer}>
@@ -256,7 +275,7 @@ const styles = {
     backgroundColor: 'rgba(242,108,79, 0.7)',
     flex: 1,
     justifyContent: 'flex-end',
-    paddingTop: 15,
+    paddingTop: Platform.OS === 'android' ? 50 : 30,
     paddingBottom: 15,
   },
   button: {
@@ -265,22 +284,33 @@ const styles = {
   songTitle: {
     alignSelf: 'center',
     color: '#FFFFFF',
-    marginTop: 7,
+    marginBottom: Platform.OS === 'android' ? 10 : 5,
   },
   sliderContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: Platform.OS === 'android' ? 10 : 0,
   },
-  slider: {
+  sliderAndroid: {
+    flex: 1,
+    // width: 200,
+    marginLeft: -7,
+    // marginRight: -7,
+  },
+  slideriOS: {
     flex: 1,
     marginLeft: 5,
     marginRight: 5,
   },
-  minsAndSecs: {
+  minsAndSecsLeft: {
     color: '#FFFFFF',
     paddingLeft: 4,
-    paddingRight: 4,
+    width: 40,
+  },
+  minsAndSecsRight: {
+    color: '#FFFFFF',
+    // paddingLeft: 4,
     width: 40,
   },
   buttonsContainer: {

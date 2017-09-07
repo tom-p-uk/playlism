@@ -26,7 +26,7 @@ class FriendsScreen extends Component {
     const { getFriends, authToken } = this.props;
     getFriends(authToken);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     const { getFriends, authToken, currentRoute } = this.props;
     if (nextProps.currentRoute === 'friends') {
@@ -37,7 +37,7 @@ class FriendsScreen extends Component {
   renderSelectFriendText = () => {
     const { routeName } = this.props.navigation.state;
     const { friends, friendsError, awaitingFriends } = this.props;
-    if (!awaitingFriends && friends && friends.length !== 0 && routeName === 'selectFriend') {
+    if (friends && friends.length !== 0 && routeName === 'selectFriend') {
       return (
         <Card containerStyle={styles.selectFriendMessageCard}>
           <Text style={styles.selectFriendMessage}>

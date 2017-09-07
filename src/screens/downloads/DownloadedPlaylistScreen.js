@@ -3,15 +3,20 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
+import { KeepAwake } from 'expo';
 
 import SongsList from '../../components/SongsList';
-import Player from '../../components/Player';
+import Player from '../../containers/Player';
 import BackgroundImage from '../../components/BackgroundImage';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import PlaylistControls from '../../components/PlaylistControls';
 import { sortPlayerPlaylist, setCurrentlyPlayingSong } from '../../actions';
 
 class DownloadedPlaylistScreen extends Component {
+  static navigationOptions = ({ navigation}) => ({
+    title: navigation.state.params.playlist.title,
+  });
+
   state = {
     isSortPlaylistModalVisible: false,
   };
@@ -100,6 +105,7 @@ class DownloadedPlaylistScreen extends Component {
           />
         </View>
         {currentRoute === 'downloadedPlaylist' && <Player songs={this.filterAndSortData(downloadedSongs)}/>}
+        <KeepAwake />
       </BackgroundImage>
     );
   }

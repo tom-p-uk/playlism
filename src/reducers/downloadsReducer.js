@@ -24,6 +24,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pendingDownloads: _.uniq([...state.pendingDownloads, action.payload.songId]),
+        downloadSongError: '',
       };
 
     case (UPDATE_DOWNLOAD_PROGRESS): // TODO - get simultaneous downloads working with download progress display
@@ -52,7 +53,8 @@ export default (state = initialState, action) => {
     console.log(action.payload);
       return {
         ...state,
-        downloadSongError: `Error. ${action.payload.song.title} failed to download.`,
+        downloadSongError: `${action.payload.song.title} failed to download. Please try again.`,
+        pendingDownloads: state.pendingDownloads.filter(songId => songId !== action.payload.song._id),
         currentlyDownloading: state.currentlyDownloading.filter(download => download.songId !== action.payload.song._id),
       };
 
