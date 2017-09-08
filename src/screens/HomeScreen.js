@@ -17,10 +17,15 @@ class HomeScreen extends Component {
               style={{ flex: 1, width: SCREEN_WIDTH }}
             />
             <View style={styles.overlay} />
-            <View style={styles.logoContainer}>
-              <Text style={[styles.logo, { color: '#FFFFFF' }]}>PLAY</Text>
-              <Text style={[styles.logo, { color: '#F26C4F' }]}>LISM</Text>
-            </View>
+            {/* <View style={styles.logoContainer}> */}
+              {/* <Text style={[styles.logo, { color: '#FFFFFF' }]}>PLAY</Text>
+              <Text style={[styles.logo, { color: '#F26C4F' }]}>LISM</Text> */}
+              <Image
+                source={require('../../assets/img/playlism-logo.png')}
+                style={styles.img}
+                resizeMode='contain'
+              />
+            {/* </View> */}
             <View style={styles.buttonContainer}>
               <Button
                 small
@@ -82,15 +87,27 @@ const styles = {
     borderRadius: 60,
     // opacity: 0.7,
   },
-  logoContainer: {
+  img: {
     position: 'absolute',
-    flexDirection: 'row',
-    // width: 250,
-    top: 150,
+    top: 100,
     left: 0,
     right: 0,
     bottom: 0,
-    justifyContent: 'center',
+    width: SCREEN_WIDTH,
+    height: 140,
+  },
+  logoContainer: {
+    position: 'absolute',
+    // flexDirection: 'row',
+    // width: 250,
+    left: 0,
+    right: 0,
+    bottom: 0,
+
+    // width: 300,
+    // height: 100,
+    // width: 200,
+    // justifyContent: 'center',
     // alignItems: 'center',
   },
   logo: {

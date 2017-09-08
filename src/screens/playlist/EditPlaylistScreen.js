@@ -61,7 +61,7 @@ class EditPlaylistScreen extends Component {
               title='Delete Playlist'
               icon={{ name: 'clear' }}
               onPress={() => this.onDeletePlaylistPress()}
-              style={styles.button}
+              buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
               disabled={awaitingCreatePlaylist}
               fontSize={13}
@@ -74,7 +74,7 @@ class EditPlaylistScreen extends Component {
               title='Save Changes'
               icon={{ name: 'save' }}
               onPress={handleSubmit(this.onSaveChangesPress)}
-              style={styles.button}
+              buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
               disabled={awaitingCreatePlaylist}
               fontSize={13}

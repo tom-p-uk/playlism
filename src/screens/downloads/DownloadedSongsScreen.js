@@ -105,21 +105,11 @@ const styles = {
   },
 };
 
-const getCurrentRouteRecursive = (routes, index) => {
-  const route = routes[index];
-  if (route.index === undefined) {
-    return route.routeName;
-  } else {
-    return getCurrentRouteRecursive(route.routes, route.index);
-  }
-};
-
 const mapStateToProps = ({
-  nav,
+  nav: { currentRoute },
   downloads: { downloadedSongs },
   player: { playerPlaylistSortedBy, isPlaying, currentlyPlayingSong },
 }) => {
-  const currentRoute = getCurrentRouteRecursive(nav.routes, nav.index);
   return {
     downloadedSongs,
     playerPlaylistSortedBy,

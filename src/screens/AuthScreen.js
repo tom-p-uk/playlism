@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Constants, WebBrowser } from 'expo';
+import { Constants, WebBrowser, AppLoading } from 'expo';
 import {
   Image,
   Linking,
@@ -36,8 +36,11 @@ class AuthScreen extends Component {
         key: null
     });
 
-    if (nextProps.user) {
-      setTimeout(() => this.props.navigation.dispatch(resetAction), 2000);
+    if (nextProps.user && nextProps.loggedInViaJWT) {
+      // setTimeout(() => this.props.navigation.dispatch(resetAction), 2000);
+      this.props.navigation.navigate('dashboard');
+    } else if (nextProps.user) {
+      setTimeout(() => this.props.navigation.navigate('dashboard'), 2000);
     }
   }
 
@@ -60,7 +63,7 @@ class AuthScreen extends Component {
   }
 
   // Pull user object and JWT from url following redirect from backend
-  handleRedirect = (event) => {
+  handleRedirect = event => {
     WebBrowser.default.dismissBrowser();
 
     const query = event.url.replace(`${Constants.linkingUri}?`, ''); // Pull data from redirect URL
@@ -73,10 +76,18 @@ class AuthScreen extends Component {
 
     this.props.loginSuccess(user, authToken); //
     registerForNotifications(authToken);
-  }
+  };
+
+  renderAppLoading = awaitingAuth => {
+    if (awaitingAuth) {
+      return <AppLoading />
+    }
+  };
 
   render() {
-    const { user } = this.props;
+    const { user, awaitingAuth } = this.props;
+
+    // if (awaitingAuth) return <AppLoading />
 
     return (
       <View style={styles.container}>
@@ -89,7 +100,7 @@ class AuthScreen extends Component {
               <View style={styles.profileImgContainer}>
                 <Image source={{ uri: decodeURIComponent(user.profileImg) }} style={styles.profileImg} />
               </View>
-              <Button title="Next" onPress={() => this.props.navigation.navigate('dashboard')} />
+              {/* <Button title="Next" onPress={() => this.props.navigation.navigate('dashboard')} /> */}
             </View>
           :
             <View>
@@ -125,7 +136,7 @@ class AuthScreen extends Component {
                   borderRadius={6}
                 />
               </View>
-              {/* <SpinnerOverlay /> */}
+              <SpinnerOverlay visible={awaitingAuth} />
             </View>
         }
       </View>
@@ -180,11 +191,16 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ auth: { user, authToken, loading } }) => {
+const mapStateToProps = ({
+  auth: { user, authToken, awaitingAuth, loggedInViaJWT },
+  assets: { awaitingAssets }
+}) => {
   return {
     user,
     authToken,
-    loading,
+    awaitingAuth,
+    loggedInViaJWT,
+    awaitingAssets,
   };
 };
 
