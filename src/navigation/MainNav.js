@@ -6,9 +6,9 @@ import { View, Platform, Text } from 'react-native';
 
 import AuthScreen from '../screens/AuthScreen';
 import DashboardScreen from '../screens/HomeScreen';
-import DownloadsTabNav from './DownloadsTabNav';
-import FriendsTabNav from './FriendsTabNav';
-import PlaylistTabNav from './PlaylistTabNav';
+import DownloadsTabNav from './downloads/DownloadsTabNav';
+import FriendsTabNav from './friends/FriendsTabNav';
+import PlaylistTabNav from './playlists/PlaylistTabNav';
 import Hamburger from '../components/Hamburger';
 import DrawerButton from '../components/DrawerButton';
 import CustomDrawerMenu from '../containers/CustomDrawerMenu';
@@ -153,7 +153,6 @@ const FriendsStack = StackNavigator({
     headerLeft: (
       <BackButton color='#FFFFFF' navigation={navigation} />
     ),
-    headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
     headerStyle: {
       backgroundColor: '#F26C4F',
       marginTop: Platform.OS === 'android' ? 24 : 0
@@ -173,7 +172,7 @@ const DrawerNav = DrawerNavigator({
   friends: { screen: FriendsStack },
 }, {
   contentComponent: CustomDrawerMenu,
-  drawerWidth: 260,
+  drawerWidth: 220,
   drawerPosition: 'right',
   contentOptions: {
     activeTintColor: '#F26C4F',
@@ -183,18 +182,16 @@ const DrawerNav = DrawerNavigator({
   }
 });
 
-export const MainNav = StackNavigator({
+export const MainNav = TabNavigator({
   // welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
-  dashboard: { screen: DashboardStack },
-  downloads: { screen: DownloadsStack },
-  playlists: { screen: PlaylistsStack },
-  friends: { screen: FriendsStack },
+  main: {
+    screen: DrawerNav,
+  }
 }, {
-  // swipeEnabled: false,
-  // navigationOptions: { tabBarVisible: false },
-  // lazy: true,
-  headerMode: 'none'
+  swipeEnabled: false,
+  navigationOptions: { tabBarVisible: false },
+  lazy: true,
 });
 
 const MainNavWithNavigationState = ({ dispatch, nav }) => (

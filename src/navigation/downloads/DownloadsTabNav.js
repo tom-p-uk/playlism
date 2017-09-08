@@ -1,47 +1,32 @@
 import React from 'react';
-import { TabNavigator } from 'react-navigation'
-import { Platform } from 'react-native';
+import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
-import MyPlaylistsStackNav from './MyPlaylistsStackNav';
-import CreatePlaylistStackNav from './CreatePlaylistStackNav';
-import FriendsPlaylistsStackNav from './FriendsPlaylistsStackNav';
+import { Platform } from 'react-native';
+import DownloadedPlaylistsStackNav from './DownloadedPlaylistsStackNav';
+import DownloadedSongsScreen from '../../screens/downloads/DownloadedSongsScreen';
 
-const PlaylistTabNav = TabNavigator({
-  myPlaylists: {
-    screen: MyPlaylistsStackNav,
+const DownloadsTabNav = TabNavigator({
+  downloadedSongs: {
+    screen: DownloadedSongsScreen,
     navigationOptions: {
-      // title: 'My Playlists',
+      title: 'Downloaded Songs',
       tabBarIcon: ({ tintColor }) => (
         <Icon
+          // style={styles.icon}
+          name='file-download'
+          color={tintColor}
+        />
+      ),
+    }
+  },
+  downloadedPlaylists: {
+    screen: DownloadedPlaylistsStackNav,
+    navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          // style={styles.icon}
           type='material-community'
           name='playlist-play'
-          color={tintColor}
-        />
-      ),
-    }
-  },
-  friendsPlaylists: {
-    screen: FriendsPlaylistsStackNav,
-    navigationOptions: {
-      // title: "Friends' Playlists",
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='account-multiple'
-          color={tintColor}
-        />
-      ),
-    }
-  },
-  createNewPlaylist: {
-    screen: CreatePlaylistStackNav,
-    navigationOptions: {
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='playlist-plus'
           color={tintColor}
         />
       ),
@@ -70,4 +55,4 @@ const PlaylistTabNav = TabNavigator({
   }
 });
 
-export default PlaylistTabNav;
+export default DownloadsTabNav;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { TabNavigator } from 'react-navigation';
-import FriendsScreen from '../screens/friends/FriendsScreen';
-import FriendRequestsScreen from '../screens/friends/FriendRequestsScreen';
+import FriendsScreen from '../../screens/friends/FriendsScreen';
+import FriendRequestsScreen from '../../screens/friends/FriendRequestsScreen';
 import FriendsStackNav from './FriendsStackNav';
 import FriendRequestsStackNav from './FriendRequestsStackNav';
 import AddFriendStackNav from './AddFriendStackNav';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
-import UserScreen from '../screens/UserScreen';
-import FriendRequestsScreen from '../screens/friends/FriendRequestsScreen';
+import UserScreen from '../../screens/UserScreen';
+import FriendRequestsScreen from '../../screens/friends/FriendRequestsScreen';
 
 const FriendRequestsStackNav = StackNavigator({
   friendRequests: {

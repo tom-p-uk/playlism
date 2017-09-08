@@ -1,17 +1,31 @@
 import React from 'react';
-import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
-import { Icon } from 'react-native-elements';
+import { TabNavigator } from 'react-navigation'
 import { Platform } from 'react-native';
-import DownloadedPlaylistsStackNav from './DownloadedPlaylistsStackNav';
-import DownloadedSongsScreen from '../screens/downloads/DownloadedSongsScreen';
+import { Icon } from 'react-native-elements';
+import MyPlaylistsStackNav from './MyPlaylistsStackNav';
+import CreatePlaylistStackNav from './CreatePlaylistStackNav';
+import FriendsPlaylistsStackNav from './FriendsPlaylistsStackNav';
 
-const DownloadsTabNav = TabNavigator({
-  downloadedPlaylists: {
-    screen: DownloadedPlaylistsStackNav,
+const PlaylistTabNav = TabNavigator({
+  createNewPlaylist: {
+    screen: CreatePlaylistStackNav,
     navigationOptions: {
       tabBarIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}
+          type='material-community'
+          name='playlist-plus'
+          color={tintColor}
+        />
+      ),
+    }
+  },
+  myPlaylists: {
+    screen: MyPlaylistsStackNav,
+    navigationOptions: {
+      // title: 'My Playlists',
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
           type='material-community'
           name='playlist-play'
           color={tintColor}
@@ -19,14 +33,15 @@ const DownloadsTabNav = TabNavigator({
       ),
     }
   },
-  downloadedSongs: {
-    screen: DownloadedSongsScreen,
+  friendsPlaylists: {
+    screen: FriendsPlaylistsStackNav,
     navigationOptions: {
-      title: 'Downloaded Songs',
+      // title: "Friends' Playlists",
       tabBarIcon: ({ tintColor }) => (
         <Icon
           // style={styles.icon}
-          name='file-download'
+          type='material-community'
+          name='account-multiple'
           color={tintColor}
         />
       ),
@@ -55,4 +70,4 @@ const DownloadsTabNav = TabNavigator({
   }
 });
 
-export default DownloadsTabNav;
+export default PlaylistTabNav;

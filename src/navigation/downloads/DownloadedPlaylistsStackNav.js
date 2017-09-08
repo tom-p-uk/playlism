@@ -2,8 +2,8 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation'
 import { Icon } from 'react-native-elements';
 
-import DownloadedPlaylistsListScreen from '../screens/downloads/DownloadedPlaylistsListScreen';
-import DownloadedPlaylistScreen from '../screens/downloads/DownloadedPlaylistScreen';
+import DownloadedPlaylistsListScreen from '../../screens/downloads/DownloadedPlaylistsListScreen';
+import DownloadedPlaylistScreen from '../../screens/downloads/DownloadedPlaylistScreen';
 
 const DownloadedPlaylistsStackNav = StackNavigator({
   downloadedPlaylistsList: {
