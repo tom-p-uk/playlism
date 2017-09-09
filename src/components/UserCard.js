@@ -34,7 +34,10 @@ class UserCard extends Component {
     return (
       <Card  style={styles.container}>
         <View style={{ flex: 1, width: 400 }}>
-          <BackgroundImage source={require('../../assets/img/vinyl-records.png')} backgroundColor='rgba(242,108,79, 0.2)' />
+          <BackgroundImage
+            source={require('../../assets/img/vinyl-records.png')}
+            extraStyle={{ backgroundColor: 'rgba(242,108,79, 0.2)' }} 
+          />
         </View>
         <View style={styles.profileImgContainer}>
           <Image

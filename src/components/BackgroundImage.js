@@ -1,13 +1,13 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-const BackgroundImage = ({ source, backgroundColor, children }) => {
+const BackgroundImage = ({ source, extraStyle, children }) => {
   return (
     <Image
       source={source || require('../../assets/img/stack-vinyl.jpg')}
       style={styles.backgroundImage}
     >
-      <View style={backgroundColor ? [styles.overlay, { backgroundColor }] : styles.overlay} />
+      <View style={[styles.overlay, extraStyle]} />
       {children}
     </Image>
   );
