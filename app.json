@@ -1,23 +1,23 @@
 {
   "expo": {
-    "name": "playlism",
-    "description": "An empty new project",
-    "slug": "playlism",
+    "name": "Playlism",
+    "description": "Create playlists for friends, download and listen to music.",
+    "slug": "Playlism",
     "privacy": "public",
     "sdkVersion": "20.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
-    "icon": "./assets/icons/app.png",
+    "primaryColor": "#777777",
+    "icon": "./assets/icons/playlism-icon-grey.png",
     "loading": {
-      "icon": "./assets/icons/loading.png",
-      "hideExponentText": false
+      "icon": "./assets/icons/playlism-icon-grey.png",
+      "hideExponentText": true
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     }
   }
 }

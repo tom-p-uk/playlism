@@ -13,24 +13,29 @@ import {
 } from './types';
 
 export const downloadSong = (song, attemptNum) => async dispatch => {
-  let { youTubeUrl, _id } = song;
+  let { youTubeUrl, _id, title } = song;
   dispatch(downloadSongStart(_id));
 
-  // Download fails after 7 unsuccessful download attempts
-  if (attemptNum >= 7) {
-    return dispatch(downloadSongFailure(song));
-  }
+  // // Download fails after 7 unsuccessful download attempts
+  // if (attemptNum >= 7) {
+  //   return dispatch(downloadSongFailure(song));
+  // }
 
   try {
-    let { data } = await axios.get(`http://www.youtubeinmp3.com/fetch/?format=json&video=${youTubeUrl}`);
-    let { link } = data;
+    axios.defaults.headers.common['X-Mashape-Key'] = 'y6v4sUl94Omsh0mnCYY8N3Jy32Dvp10ZvbdjsnO8IrEINXBJB2';
+    let { data: { streams } } = await axios.get(`https://getvideo.p.mashape.com?url=${youTubeUrl}`)
+    let { url } = streams[streams.length - 2];
+
+    // const { data } = await axios.get(`https://madde22-youtube-v1.p.mashape.com/Youtube/GetDownloadUrls?Url=${youTubeUrl}`);
+    // const track = data[data.length - 3];
+    // console.log(track);
 
     // API occasionally sends an HTML response rather than JSON. In those cases, make
     // repeated requests until a JSON response is received
-    if (JSON.stringify(data).indexOf('" />') !== -1) {
-      console.log(`Download attempt #${attemptNum} failed. Reattempting.`);
-      return dispatch(downloadSong(song, attemptNum + 1));
-    }
+    // if (JSON.stringify(data).indexOf('" />') !== -1) {
+    //   console.log(`Download attempt #${attemptNum} failed. Reattempting.`);
+    //   return dispatch(downloadSong(song, attemptNum + 1));
+    // }
 
     const callback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
       // Callback is called for old as well as present downloads for some reason,
@@ -47,10 +52,10 @@ export const downloadSong = (song, attemptNum) => async dispatch => {
     };
 
     const downloadResumable = FileSystem.createDownloadResumable(
-      link,
-      FileSystem.documentDirectory + `${_id}.mp3`,
+      url,
+      FileSystem.documentDirectory + `${_id}.m4a`,
       {},
-      _.throttle(callback, 1000), // Throttle for performance reaons (esp. on Android)
+      _.throttle(callback, 50), // Throttle for performance reaons (esp. on Android)
     );
 
     const { uri } = await downloadResumable.downloadAsync();

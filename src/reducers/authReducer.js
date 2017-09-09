@@ -7,10 +7,11 @@ import {
 } from '../actions/types';
 
 const initialState = {
-  user: null,
-  authToken: null,
-  loading: null,
-  error: ''
+  user: undefined,
+  authToken: undefined,
+  awaitingAuth: false,
+  error: '',
+  loggedInViaJWT: null,
 };
 
 export default (state = initialState, action) => {
@@ -20,8 +21,9 @@ export default (state = initialState, action) => {
         ...state,
         user: action.payload.user,
         authToken: action.payload.authToken,
-        loading: false,
+        awaitingAuth: false,
         error: '',
+        loggedInViaJWT: action.payload.loggedInViaJWT,
       };
 
     case (LOGIN_FAILURE):
@@ -29,18 +31,23 @@ export default (state = initialState, action) => {
         ...state,
         user: null,
         authToken: null,
-        loading: false,
+        awaitingAuth: false,
         error: action.payload.error,
       };
 
     case (LOGIN_START):
       return {
         ...state,
-        loading: true
+        awaitingAuth: true
       };
 
     case (LOGOUT):
-      return { ...initialState };
+      return {
+        ...state,
+        user: null,
+        authToken: null,
+        awaitingAuth: false,
+      };
 
     default:
       return state;

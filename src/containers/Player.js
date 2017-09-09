@@ -215,27 +215,26 @@ class Player extends Component {
                 maximumTrackTintColor='#9E9E9E'
                 value={scrubPositionMillis || positionMillis}
                 minimumValue={0.001}
-                maximumValue={durationMillis}
-                // step={durationMillis / 100}
+                maximumValue={durationMillis || 240000}
                 onSlidingComplete={value => this.skipToPosition(value)}
                 onValueChange={value => scrubThroughSong(value)}
-                // thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
                 style={styles.sliderAndroid}
               />
             :
               <SlideriOS
                 thumbTintColor='#FFFFFF'
                 value={scrubPositionMillis || positionMillis}
-                minimumValue={0.001}
-                maximumValue={durationMillis}
-                step={durationMillis / 100}
+                minimumValue={0}
+                maximumValue={durationMillis || 240000}
                 onSlidingComplete={value => this.skipToPosition(value)}
                 onValueChange={value => scrubThroughSong(value)}
                 thumbStyle={{ width: 15, height: 15, borderRadius: 15 }}
                 style={styles.slideriOS}
               />
           }
-          <Text style={styles.minsAndSecsRight}>{this.millisToMinsAndSecs(durationMillis)}</Text>
+          <Text style={styles.minsAndSecsRight}>
+            {Platform.OS === 'android' ? this.millisToMinsAndSecs(durationMillis) : this.millisToMinsAndSecs(durationMillis)}
+          </Text>
         </View>
 
         <View style={styles.buttonsContainer}>

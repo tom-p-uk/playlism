@@ -10,12 +10,16 @@ import {
 
 const URL = 'https://playlism.herokuapp.com/api';
 
-export const loginSuccess = (user, authToken) => async dispatch => {
+export const loginSuccess = (user, authToken, loggedInViaJWT) => async dispatch => {
   await AsyncStorage.setItem('authToken', authToken);
 
   dispatch({
     type: LOGIN_SUCCESS,
-    payload: { user, authToken }
+    payload: {
+      user,
+      authToken,
+      loggedInViaJWT: loggedInViaJWT ? true : null,
+    }
   });
 };
 
@@ -33,14 +37,19 @@ export const loginStart = () => {
 };
 
 export const jwtLogin = () => async dispatch => {
+  dispatch(loginStart())
   const authToken = await AsyncStorage.getItem('authToken');
 
   if (authToken) {
-    dispatch(loginStart())
     try {
       axios.defaults.headers.common['Authorization'] = authToken;
       const { data: { success } } = await axios.get(`${URL}/user`);
-      dispatch(loginSuccess(success.user, authToken))
+
+      if (success) {
+        dispatch(loginSuccess(success.user, authToken, true))
+      } else {
+        dispatch(loginSuccess({}, ''));
+      }
     } catch (err) {
       console.log(err);
 
@@ -48,6 +57,8 @@ export const jwtLogin = () => async dispatch => {
         dispatch(loginFailure(err.response.data.error));
       }
     }
+  } else {
+    dispatch(loginSuccess(null, ''));
   }
 };
 
@@ -55,6 +66,7 @@ export const logout = () => async dispatch => {
   await AsyncStorage.removeItem('authToken');
 
   dispatch({
-    type: LOGOUT
+    type: LOGOUT,
   });
+
 };

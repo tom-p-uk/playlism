@@ -192,6 +192,7 @@ export const MainNav = TabNavigator({
   swipeEnabled: false,
   navigationOptions: { tabBarVisible: false },
   lazy: true,
+  animationEnabled: false,
 });
 
 const MainNavWithNavigationState = ({ dispatch, nav }) => (

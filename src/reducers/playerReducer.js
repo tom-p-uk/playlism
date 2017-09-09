@@ -75,6 +75,7 @@ export default (state = initialState, action) => {
       };
 
     case (TOGGLE_PLAY_PAUSE):
+    console.log(action);
       return {
         ...state,
         isPlaying: !state.isPlaying,
