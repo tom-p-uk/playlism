@@ -65,9 +65,9 @@ class FriendsPlaylistScreen extends Component {
 
   renderSubtitle = song => `Added ${moment(song.dateAdded).fromNow()}`;
 
-  onSongListItemPress = videoId => {
+  onSongListItemPress = song => {
     const { previewSong } = this.props;
-    previewSong(videoId);
+    previewSong(song.videoId);
   };
 
   renderMessageOrSongList = (navigation, songsInFriendsPlaylist) => {

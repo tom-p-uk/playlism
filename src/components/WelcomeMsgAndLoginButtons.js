@@ -63,27 +63,30 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: -40,
+    marginBottom: -40,
   },
   logoImg: {
     width: SCREEN_WIDTH,
     height: 140,
   },
   header: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
-    margin: 50,
+    margin: 40,
     color: '#FFFFFF'
   },
   text: {
     textAlign: 'center',
     color: '#FFFFFF',
     marginBottom: 5,
+    fontSize: 14,
   },
   buttonContainer: {
-    // marginTop: -80,
+    marginBottom: 20,
   },
   button: {
-    width: 250,
+    width: 260,
     marginBottom: 40,
     // opacity: 0.7,
     height: 45,

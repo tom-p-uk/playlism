@@ -8,7 +8,7 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, Card } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
 
@@ -73,24 +73,27 @@ class AuthScreen extends Component {
     if (user === undefined) return <AppLoading />
 
     return (
-      <View style={{ flex: 1, }}>
-        <Image
-          source={require('../../assets/img/stack-vinyl.jpg')}
-          style={{ flex: 1, width: SCREEN_WIDTH }}
-        />
-        <View style={styles.overlay} />
-          { user
-            ?
-              <LoggedInUserMsgAndPic user={user} />
-            :
+      <Card  style={styles.container}>
+        <View>
+          <View style={{ flex: 1, }}>
+            <Image
+              source={require('../../assets/img/stack-vinyl.jpg')}
+              style={{ flex: 1, width: SCREEN_WIDTH }}
+            />
+            <View style={styles.overlay} />
+              { user
+                ?
+                  <LoggedInUserMsgAndPic user={user} />
+                :
+                  <WelcomeMsgAndLoginButtons
+                    onFacebookButtonPress={() =>this.startOAuth(`${URL}/auth/facebook`)}
+                    onGoogleButtonPress={() => this.startOAuth(`${URL}/auth/google`)}
+                  />
 
-                <WelcomeMsgAndLoginButtons
-                  onFacebookButtonPress={() =>this.startOAuth(`${URL}/auth/facebook`)}
-                  onGoogleButtonPress={() => this.startOAuth(`${URL}/auth/google`)}
-                />
-
-          }
-      </View>
+              }
+          </View>
+        </View>
+      </Card>
     );
   }
 };
@@ -114,8 +117,6 @@ const mapStateToProps = ({
   auth: { user, authToken, awaitingAuth, loggedInViaJWT },
   assets: { awaitingAssets }
 }) => {
-  console.log({ user });
-  console.log({ awaitingAuth });
   return {
     user,
     authToken,

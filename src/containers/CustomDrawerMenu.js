@@ -58,13 +58,14 @@ const styles = {
   container: {
     // flex: 1,
     justifyContent: 'center',
+    marginTop: -12,
     // backgroundColor: '#F26C4F'
   },
   profileImgContainer: {
     // backgroundColor: '#E9F2F9',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginTop: 60,
+    marginTop: 90,
     marginBottom: 30,
     // flex: 1
   },
