@@ -58,7 +58,7 @@ class FriendsScreen extends Component {
 
   renderMessage = () => {
     const { friends, friendsError, awaitingFriends } = this.props;
-    if (!awaitingFriends && friends && friends.length === 0) {
+    if (friends && friends.length === 0) {
       return (
         <Message
           text=""

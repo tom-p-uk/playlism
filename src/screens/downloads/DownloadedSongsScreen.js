@@ -10,7 +10,8 @@ import Player from '../../containers/Player';
 import BackgroundImage from '../../components/BackgroundImage';
 import SortPlaylistModal from '../../components/SortPlaylistModal';
 import PlaylistControls from '../../components/PlaylistControls';
-import { sortPlayerPlaylist, setCurrentlyPlayingSong } from '../../actions';
+import Message from '../../components/Message';
+import { sortPlayerPlaylist, setCurrentlyPlayingSong, deleteDownloadedSong } from '../../actions';
 
 class DownloadedSongsScreen extends Component {
   state = {
@@ -55,7 +56,11 @@ class DownloadedSongsScreen extends Component {
   onSongListItemPress = song => {
     const { setCurrentlyPlayingSong } = this.props;
     setCurrentlyPlayingSong(song);
-  }
+  };
+
+  onDeleteAllPress = songs => {
+    songs.forEach(song => this.props.deleteDownloadedSong(song));
+  };
 
   renderSubtitle = songs => `Downloaded ${moment(songs.downloadedOn).fromNow()}`;
 
@@ -69,6 +74,18 @@ class DownloadedSongsScreen extends Component {
       isPlaying
     } = this.props;
 
+    if (downloadedSongs.length === 0) {
+      return (
+        <BackgroundImage>
+          <Message color='#F26C4F'>
+            There are no songs currently available.{'\n\n'}
+
+            To download some, navigate to the the 'My Playlists' section of the app.
+          </Message>
+        </BackgroundImage>
+      );
+    }
+
     return (
       <BackgroundImage>
         <SortPlaylistModal
@@ -78,8 +95,16 @@ class DownloadedSongsScreen extends Component {
           onDoneButtonPress={() => this.toggleSortPlaylistModal()}
         />
         <PlaylistControls
-          firstButtonProps={{ title: ' Play All ', iconName: 'play-arrow', onPress: () => null }}
-          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
+          firstButtonProps={{
+            title: ' Delete All ',
+            iconName: 'delete-forever',
+            onPress: () => this.onDeleteAllPress(downloadedSongs)
+          }}
+          secondButtonProps={{
+            title: 'Sort Playlist',
+            iconName: 'swap-vert',
+            onPress: () => this.toggleSortPlaylistModal()
+          }}
         />
         <View style={{ flex: 5 }}>
           <SongsList
@@ -119,4 +144,4 @@ const mapStateToProps = ({
   };
 };
 
-export default connect(mapStateToProps, { sortPlayerPlaylist, setCurrentlyPlayingSong })(DownloadedSongsScreen);
+export default connect(mapStateToProps, { sortPlayerPlaylist, setCurrentlyPlayingSong, deleteDownloadedSong })(DownloadedSongsScreen);

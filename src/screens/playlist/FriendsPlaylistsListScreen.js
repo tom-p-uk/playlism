@@ -24,9 +24,15 @@ class FriendsPlaylistsListScreen extends Component {
   };
 
   componentDidMount() {
-    const { getFriendsPlaylists, user, authToken, navigation, awaitingFriendsPlaylists } = this.props;
+    const { getFriendsPlaylists, authToken } = this.props;
     getFriendsPlaylists(authToken);
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentRoute === 'friendsPlaylistsList') {
+      const { getFriendsPlaylists, authToken } = this.props;
+      getFriendsPlaylists(authToken);
+    }
   }
 
   renderSpinner() {
@@ -70,13 +76,18 @@ class FriendsPlaylistsListScreen extends Component {
   }
 };
 
-const mapStateToProps = ({ playlist: { friendsPlaylists, friendsPlaylistsError, awaitingFriendsPlaylists }, auth: { user, authToken } }) => {
+const mapStateToProps = ({
+  playlist: { friendsPlaylists, friendsPlaylistsError, awaitingFriendsPlaylists },
+  auth: { user, authToken },
+  nav: { currentRoute },
+}) => {
   return {
     friendsPlaylists,
     friendsPlaylistsError,
     awaitingFriendsPlaylists,
     user,
     authToken,
+    currentRoute,
   };
 };
 

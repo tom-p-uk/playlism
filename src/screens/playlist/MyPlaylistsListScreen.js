@@ -24,9 +24,15 @@ class MyPlaylistsListScreen extends Component {
   };
 
   componentDidMount() {
-    const { getMyPlaylists, user, authToken, navigation, awaitingMyPlaylists } = this.props;
+    const { getMyPlaylists, authToken } = this.props;
     getMyPlaylists(authToken);
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentRoute === 'myPlayliststList') {
+      const { getMyPlaylists, authToken } = this.props;
+      getMyPlaylists(authToken);
+    }
   }
 
   renderSpinner() {
@@ -72,15 +78,18 @@ class MyPlaylistsListScreen extends Component {
   }
 };
 
-const mapStateToProps = state => {
-  const { playlist: { myPlaylists, myPlaylistsError, awaitingMyPlaylists } , auth: { user, authToken } } = state;
-
+const mapStateToProps = ({
+  playlist: { myPlaylists, myPlaylistsError, awaitingMyPlaylists },
+  auth: { user, authToken },
+  nav: { currentRoute },
+}) => {
   return {
     myPlaylists,
     myPlaylistsError,
     awaitingMyPlaylists,
     user,
     authToken,
+    currentRoute,
   };
 };
 

@@ -3,24 +3,23 @@ import { Constants, WebBrowser, AppLoading } from 'expo';
 import {
   Image,
   Linking,
-  StyleSheet,
   Platform,
   Text,
-  View
+  View,
+  Dimensions,
 } from 'react-native';
-import { Button, Card, SocialIcon } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
-import * as actions from '../actions';
+import { loginStart, loginSuccess, jwtLogin } from '../actions';
 import registerForNotifications from '../services/push_notifications';
-import SpinnerOverlay from '../components/SpinnerOverlay';
+import WelcomeMsgAndLoginButtons from '../components/WelcomeMsgAndLoginButtons';
+import LoggedInUserMsgAndPic from '../components/LoggedInUserMsgAndPic';
+import OAuthButtons from '../components/OAuthButtons';
 
-const URL = 'https://playlism.herokuapp.com/api';
-const FACEBOOK_AUTH_URL = `${URL}/auth/facebook`;
-const GOOGLE_AUTH_URL = `${URL}/auth/google`;
-
+const URL = 'https://playlism.herokuapp.com/api';;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class AuthScreen extends Component {
   componentDidMount() {
@@ -28,14 +27,6 @@ class AuthScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({ routeName: 'dashboard' }),
-        ],
-        key: null
-    });
-
     if (nextProps.user && nextProps.loggedInViaJWT) {
       // setTimeout(() => this.props.navigation.dispatch(resetAction), 2000);
       this.props.navigation.navigate('dashboard');
@@ -44,10 +35,8 @@ class AuthScreen extends Component {
     }
   }
 
-
-
   // Opens browser internally in order to access the backend OAuth routes
-  openWebBrowserAsync = async authUrl => {
+  startOAuth = async authUrl => {
     this.props.loginStart();
     this.addLinkingListener();
     await WebBrowser.default.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
@@ -71,74 +60,36 @@ class AuthScreen extends Component {
 
     let { user, token } = data;
 
-    const authToken = token.split('#')[0]; // Strips authToken of erroneous # symbol
+    const authToken = token.split('#')[0]; // Removes redundant # symbol from authToken
     user = JSON.parse(decodeURI(user)); // Convert to object after decoding
 
     this.props.loginSuccess(user, authToken); //
     registerForNotifications(authToken);
   };
 
-  renderAppLoading = awaitingAuth => {
-    if (awaitingAuth) {
-      return <AppLoading />
-    }
-  };
-
   render() {
     const { user, awaitingAuth } = this.props;
 
-    // if (awaitingAuth) return <AppLoading />
+    if (user === undefined) return <AppLoading />
 
     return (
-      <View style={styles.container}>
-        { user
-          ?
-            <View style={styles.content}>
-              <Text style={styles.header}>
-                Welcome {user.firstName}!
-              </Text>
-              <View style={styles.profileImgContainer}>
-                <Image source={{ uri: decodeURIComponent(user.profileImg) }} style={styles.profileImg} />
-              </View>
-              {/* <Button title="Next" onPress={() => this.props.navigation.navigate('dashboard')} /> */}
-            </View>
-          :
-            <View>
-              <View style={styles.content}>
-                <Text style={styles.header}>
-                  Welcome to Playlism!
-                </Text>
-                <Text style={styles.text}>
-                  Log in using your Facebook{'\n'}
-                  or Google account to continue.
+      <View style={{ flex: 1, }}>
+        <Image
+          source={require('../../assets/img/stack-vinyl.jpg')}
+          style={{ flex: 1, width: SCREEN_WIDTH }}
+        />
+        <View style={styles.overlay} />
+          { user
+            ?
+              <LoggedInUserMsgAndPic user={user} />
+            :
 
-                </Text>
-              </View>
-              <View style={styles.buttonsContainer}>
-                <Button
-                  style={styles.buttons}
-                  // raised
-                  fontSize={15}
-                  title="Log In With Facebook"
-                  icon={{ name: 'facebook-square', type: 'font-awesome' }}
-                  backgroundColor="#3b5998"
-                  onPress={() => this.openWebBrowserAsync(FACEBOOK_AUTH_URL)}
-                  borderRadius={6}
+                <WelcomeMsgAndLoginButtons
+                  onFacebookButtonPress={() =>this.startOAuth(`${URL}/auth/facebook`)}
+                  onGoogleButtonPress={() => this.startOAuth(`${URL}/auth/google`)}
                 />
-                <Button
-                  style={styles.buttons}
-                  // raised
-                  fontSize={15}
-                  title="Log In With Google"
-                  icon={{ name: 'google', type: 'font-awesome' }}
-                  backgroundColor="#DD4B39"
-                  onPress={() => this.openWebBrowserAsync(GOOGLE_AUTH_URL)}
-                  borderRadius={6}
-                />
-              </View>
-              <SpinnerOverlay visible={awaitingAuth} />
-            </View>
-        }
+
+          }
       </View>
     );
   }
@@ -146,48 +97,16 @@ class AuthScreen extends Component {
 
 const styles = {
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileImgContainer: {
-    margin: 20,
-  },
-  profileImg: {
-    borderRadius: 50,
-    height: 100,
-    width: 100,
-  },
-  header: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 50,
-  },
-  text: {
-    textAlign: 'center',
-    color: '#333',
-    marginBottom: 5,
-  },
-  buttonsContainer: {
-    justifyContent: 'space-between',
-    // flexDirection: 'row',
-    // margin: 20,
-    marginBottom: 30,
-    // borderRadius: 6
-  },
-  buttons: {
-    // padding: 10,
-    marginTop: 30
-  },
-  icon: {
-    borderRadius: 10,
-    iconStyle: { paddingVertical: 5 },
+  overlay: {
+   position: 'absolute',
+   top: 0,
+   left: 0,
+   right: 0,
+   bottom: 0,
+   backgroundColor: 'rgba(40,40,40, 0.8)'
   },
 };
 
@@ -195,6 +114,8 @@ const mapStateToProps = ({
   auth: { user, authToken, awaitingAuth, loggedInViaJWT },
   assets: { awaitingAssets }
 }) => {
+  console.log({ user });
+  console.log({ awaitingAuth });
   return {
     user,
     authToken,
@@ -204,4 +125,4 @@ const mapStateToProps = ({
   };
 };
 
-export default connect(mapStateToProps, actions)(AuthScreen);
+export default connect(mapStateToProps, { loginStart, loginSuccess, jwtLogin })(AuthScreen);

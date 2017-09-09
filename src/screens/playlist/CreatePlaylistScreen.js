@@ -56,7 +56,7 @@ class CreatePlaylistScreen extends Component {
               title='Create Playlist'
               icon={{ name: 'playlist-plus', type: 'material-community' }}
               onPress={this.props.handleSubmit(this.onSubmit)}
-              style={styles.button}
+              buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
               disabled={awaitingCreatePlaylist}
               fontSize={13}
