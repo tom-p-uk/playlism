@@ -11,7 +11,8 @@ const initialState = {
   authToken: undefined,
   awaitingAuth: false,
   error: '',
-  loggedInViaJWT: null,
+  isLoggedIn: false,
+  loggedInViaJWT: false,
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +24,7 @@ export default (state = initialState, action) => {
         authToken: action.payload.authToken,
         awaitingAuth: false,
         error: '',
+        isLoggedIn: true,
         loggedInViaJWT: action.payload.loggedInViaJWT,
       };
 
@@ -47,6 +49,8 @@ export default (state = initialState, action) => {
         user: null,
         authToken: null,
         awaitingAuth: false,
+        isLoggedIn: false,
+        loggedInViaJWT: false,
       };
 
     default:

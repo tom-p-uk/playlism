@@ -273,9 +273,9 @@ export const deleteFriend = (userId, authToken) => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    // if (err.response.data.error) {
       dispatch(deletFriendFailure(err.response.data.error));
-    }
+    // }
   }
 };
 

@@ -29,8 +29,8 @@ class MyPlaylistsListScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentRoute === 'myPlayliststList') {
-      const { getMyPlaylists, authToken } = this.props;
+    const { currentRoute, getMyPlaylists, authToken } = this.props;
+    if (currentRoute !== 'myPlayliststList' && nextProps.currentRoute === 'myPlayliststList') {
       getMyPlaylists(authToken);
     }
   }

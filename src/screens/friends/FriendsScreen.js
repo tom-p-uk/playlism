@@ -29,8 +29,12 @@ class FriendsScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { getFriends, authToken, currentRoute } = this.props;
-    if (nextProps.currentRoute === 'friends') {
+    if (currentRoute !== 'friends' && nextProps.currentRoute === 'friends') {
       getFriends(authToken);
+    }
+
+    if (nextProps.isLoggedIn === false) {
+      // this.props.navigation.navigate('')
     }
   }
 

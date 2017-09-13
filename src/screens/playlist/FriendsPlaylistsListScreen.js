@@ -29,8 +29,8 @@ class FriendsPlaylistsListScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentRoute === 'friendsPlaylistsList') {
-      const { getFriendsPlaylists, authToken } = this.props;
+    const { currentRoute, getFriendsPlaylists, authToken } = this.props;
+    if (currentRoute !== 'friendsPlaylistsList' && nextProps.currentRoute === 'friendsPlaylistsList') {
       getFriendsPlaylists(authToken);
     }
   }

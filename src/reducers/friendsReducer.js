@@ -21,6 +21,7 @@ import {
   DELETE_FRIEND_START,
   DELETE_FRIEND_SUCCESS,
   DELETE_FRIEND_FAILURE,
+  LOGOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -185,6 +186,9 @@ export default (state = initialState, action) => {
         ...state,
         awaitingDeleteFriend: false,
       };
+
+    case (LOGOUT):
+      return { ...initialState };
 
     default:
       return state;

@@ -7,6 +7,7 @@ import {
   DELETE_DOWNLOADED_SONG_SUCCESS,
   DELETE_DOWNLOADED_SONG_FAILURE,
   UPDATE_DOWNLOAD_PROGRESS,
+  LOGOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -78,6 +79,9 @@ export default (state = initialState, action) => {
         currentlyDeleting: state.currentlyDeleting.filter(songId => songId !== action.payload.songId),
         deleteDownloadedSongError: action.payload.error,
       };
+
+    case (LOGOUT):
+      return { ...initialState };
 
     default:
       return state;

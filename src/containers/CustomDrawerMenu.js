@@ -1,23 +1,46 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Divider, Icon } from 'react-native-elements';
-import { DrawerItems } from 'react-navigation';
+import { DrawerItems, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
-import { logout, setCurrentlyPlayingSong, setPlaybackObject, togglePlayPause } from '../actions';
+import { logout, setCurrentlyPlayingSong, setPlaybackObject, togglePlayPause, deleteDownloadedSong } from '../actions';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class CustomDrawerMenu extends Component {
+  state = {
+    isConfirmationModalVisible: false,
+  };
+
   onPressLogoutButton = () => {
-    const { navigation, logout, setCurrentlyPlayingSong, setPlaybackObject, playbackObject } = this.props;
+    this.props.navigation.navigate('DrawerClose');
+    this.toggleConfirmationModal();
+  };
+
+  onConfirmPress = () => {
+    const {
+      navigation,
+      logout,
+      setCurrentlyPlayingSong,
+      setPlaybackObject,
+      playbackObject,
+      downloadedSongs,
+      deleteDownloadedSong,
+    } = this.props;
+
+    if (downloadedSongs) downloadedSongs.forEach(song => deleteDownloadedSong(song));
+    this.toggleConfirmationModal();
     logout();
     if (playbackObject) playbackObject.unloadAsync();
     setCurrentlyPlayingSong(null);
     setPlaybackObject(null);
-    navigation.navigate('DrawerClose');
-    navigation.navigate('auth');
+    // this.resetNavigation();
+    // navigation.navigate('auth');
   };
+
+  toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });
 
   renderProfileImg = user => {
     if (!user) return <View />
@@ -39,16 +62,22 @@ class CustomDrawerMenu extends Component {
     return (
       <View style={styles.container}>
         {this.renderProfileImg(user)}
-        <Divider style={styles.divider} />
-        <DrawerItems style={styles.items} {...this.props} />
+        <Divider style={[styles.divider, { marginBottom: 0 }]} />
+        <DrawerItems {...this.props} />
         <Divider style={[styles.divider, { marginTop: 0 }]} />
         <TouchableOpacity
           style={{ flexDirection: 'row' }}
-          onPress={() => this.onPressLogoutButton()}
+          onPress={this.onPressLogoutButton}
         >
           <Icon name='power-settings-new' color='rgba(0, 0, 0, .87)' style={styles.icon} />
           <Text style={styles.label}>Log Out</Text>
         </TouchableOpacity>
+        <ConfirmationModal
+          isVisible={this.state.isConfirmationModalVisible}
+          onConfirmPress={this.onConfirmPress}
+          onCancelPress={this.toggleConfirmationModal}
+          text={'Logging out will remove all downloaded songs from your device.\n\nAre you sure you want to continue?'}
+        />
       </View>
     );
   }
@@ -58,7 +87,7 @@ const styles = {
   container: {
     // flex: 1,
     justifyContent: 'center',
-    marginTop: -12,
+    marginTop: 20,
     // backgroundColor: '#F26C4F'
   },
   profileImgContainer: {
@@ -75,20 +104,15 @@ const styles = {
     width: 80,
   },
   displayName: {
-    color: '#000000',
+    color: 'rgba(0, 0, 0, .87)',
     fontSize: 17,
     marginTop: 10
   },
   divider: {
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 10,
     marginLeft: 40,
     marginRight: 40,
-  },
-  items: {
-    paddingTop: 15,
-    alignSelf: 'center',
-    justifyContent: 'center',
   },
   label: {
     margin: 15,
@@ -105,9 +129,14 @@ const styles = {
 
 const mapStateToProps = ({
   auth: { user },
-  player: { playbackObject }
+  player: { playbackObject },
+  downloads: { downloadedSongs },
 }) => {
-  return { user, playbackObject };
+  return {
+    user,
+    playbackObject,
+    downloadedSongs,
+  };
 };
 
 export default connect(mapStateToProps, {
@@ -115,4 +144,5 @@ export default connect(mapStateToProps, {
   setCurrentlyPlayingSong,
   setPlaybackObject,
   togglePlayPause,
+  deleteDownloadedSong,
 })(CustomDrawerMenu);

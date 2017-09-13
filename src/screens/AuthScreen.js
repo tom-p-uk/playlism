@@ -16,7 +16,6 @@ import { loginStart, loginSuccess, jwtLogin } from '../actions';
 import registerForNotifications from '../services/push_notifications';
 import WelcomeMsgAndLoginButtons from '../components/WelcomeMsgAndLoginButtons';
 import LoggedInUserMsgAndPic from '../components/LoggedInUserMsgAndPic';
-import OAuthButtons from '../components/OAuthButtons';
 
 const URL = 'https://playlism.herokuapp.com/api';;
 const SCREEN_WIDTH = Dimensions.get('window').width;

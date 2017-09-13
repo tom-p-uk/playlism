@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
+
 import BackButton from '../components/BackButton';
 import UserCard from '../components/UserCard';
+import ConfirmationModal from '../components/ConfirmationModal';
 import {
   checkUserFriendStatus,
   sendFriendRequest,
@@ -13,6 +15,10 @@ import {
 } from '../actions';
 
 class UserScreen extends Component {
+  state = {
+    isConfirmationModalVisible: false,
+  };
+
   static navigationOptions = ({ navigation, tintColor }) => ({
     title: navigation.state.params.user.displayName,
     headerLeft: <BackButton color='#FFFFFF' navigation={navigation} />
@@ -32,6 +38,8 @@ class UserScreen extends Component {
 
     this.props.checkUserFriendStatus(user, friends, friendRequests, friendRequestsSent);
   }
+
+  toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });
 
   returnButtonProps = () => {
     const {
@@ -86,7 +94,6 @@ class UserScreen extends Component {
       respondToFriendRequest,
       friends,
       friendRequests,
-      deleteFriend,
       awaitingDeleteFriend,
     } = this.props;
     const { user } = this.props.navigation.state.params;
@@ -106,10 +113,18 @@ class UserScreen extends Component {
         title: "Delete Friend",
         disabled: awaitingDeleteFriend,
         // loading: awaitingDeleteFriend,
-        onPress: () => deleteFriend(user._id, authToken),
+        onPress: this.toggleConfirmationModal,
         backgroundColor: '#D13310',
       };
     }
+  };
+
+  onConfirmDeleteFriend = () => {
+    const { authToken, deleteFriend, navigation, } = this.props;
+    const { user } = this.props.navigation.state.params;
+    deleteFriend(user._id, authToken);
+    navigation.goBack();
+    this.toggleConfirmationModal();
   };
 
   render() {
@@ -125,6 +140,12 @@ class UserScreen extends Component {
           buttonProps={this.returnButtonProps()}
           showSecondButton={showSecondButton}
           secondButtonProps={this.returnSecondButtonProps()}
+        />
+        <ConfirmationModal
+          isVisible={this.state.isConfirmationModalVisible}
+          onConfirmPress={this.onConfirmDeleteFriend}
+          onCancelPress={this.toggleConfirmationModal}
+          text={'Are you sure you want to delete this friend?'}
         />
       </View>
     );

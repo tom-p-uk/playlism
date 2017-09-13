@@ -20,7 +20,7 @@ class UserCard extends Component {
           buttonStyle={styles.button}
           fontSize={13}
           borderRadius={60}
-          disabledStyle={styles.buttonDisabled}
+          disabledStyle={{ backgroundColor: '#D13310' }}
           {...secondButtonProps}
         />
       );
@@ -36,7 +36,7 @@ class UserCard extends Component {
         <View style={{ flex: 1, width: 400 }}>
           <BackgroundImage
             source={require('../../assets/img/vinyl-records.png')}
-            extraStyle={{ backgroundColor: 'rgba(242,108,79, 0.2)' }} 
+            extraStyle={{ backgroundColor: 'rgba(242,108,79, 0.2)' }}
           />
         </View>
         <View style={styles.profileImgContainer}>
@@ -46,29 +46,26 @@ class UserCard extends Component {
             source={{ uri: decodeURIComponent(user.profileImg) }}
           />
         </View>
-        {/* <View style={[styles.displayNameAndButtonContainer, { top } ]}>
-           */}
-          <View style={styles.buttonContainer}>
-            <View style={{ flex: 3, justifyContent: 'flex-end'}}>
-              <Text style={styles.displayName}>{user.displayName}</Text>
-            </View>
-            <View style={{ flex: 4, justifyContent: showSecondButton ? 'space-around' : 'flex-start' }}>
-
-              <Button
-                small
-                raised
-                buttonStyle={styles.button}
-                fontSize={13}
-                borderRadius={60}
-                backgroundColor='#98250B'
-                disabledStyle={styles.buttonDisabled}
-                // buttonStyle={{ height: 45 }}
-                {...buttonProps}
-              />
-              {this.renderSecondButton()}
-            </View>
+        <View style={styles.buttonContainer}>
+          <View style={{ flex: 3, justifyContent: 'flex-end'}}>
+            <Text style={styles.displayName}>{user.displayName}</Text>
           </View>
-        {/* </View> */}
+          <View style={{ flex: 4, justifyContent: showSecondButton ? 'space-around' : 'flex-start' }}>
+
+            <Button
+              small
+              raised
+              buttonStyle={styles.button}
+              fontSize={13}
+              borderRadius={60}
+              backgroundColor='#98250B'
+              disabledStyle={{ backgroundColor: '#98250B' }}
+              buttonStyle={{ height: 45 }}
+              {...buttonProps}
+            />
+            {this.renderSecondButton()}
+          </View>
+        </View>
       </Card>
     );
   }
@@ -127,9 +124,6 @@ const styles = {
     width: 215,
     height: 45,
     marginBottom: 20,
-  },
-  buttonDisabled: {
-    backgroundColor: '#98250B',
   },
   displayNameAndButtonContainer: {
     height: 300,

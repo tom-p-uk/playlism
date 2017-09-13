@@ -172,7 +172,7 @@ const DrawerNav = DrawerNavigator({
   friends: { screen: FriendsStack },
 }, {
   contentComponent: CustomDrawerMenu,
-  drawerWidth: 230,
+  drawerWidth: 220,
   drawerPosition: 'right',
   contentOptions: {
     activeTintColor: '#F26C4F',

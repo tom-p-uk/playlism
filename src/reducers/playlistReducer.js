@@ -39,6 +39,7 @@ import {
   UPDATE_LAST_SONG_PLAYED,
   SORT_FRIENDS_PLAYLIST,
   SORT_MY_PLAYLIST,
+  LOGOUT,
 } from '../actions/types';
 
 const initialState = {
@@ -296,6 +297,9 @@ export default (state = initialState, action) => {
         ...state,
         myPlaylistSortedBy: action.payload.index,
       };
+
+    case (LOGOUT):
+      return { ...initialState };
 
     default:
       return state;

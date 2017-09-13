@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { reduxForm, Field } from 'redux-form';
 
 import { editPlaylistTitle, deleteFriendsPlaylist } from '../../actions';
-import { reduxForm, Field } from 'redux-form';
 import Input from '../../components/Input';
 import Message from '../../components/Message';
 import BackgroundImage from '../../components/BackgroundImage';
+import ConfirmationModal from '../../components/ConfirmationModal';
 
 class EditPlaylistScreen extends Component {
+  state = {
+    isConfirmationModalVisible: false,
+  };
+
+
+  toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });
+
   onSaveChangesPress = ({ playlistTitle }) => {
     const { navigation, authToken, editPlaylistTitle, awaitingEditPlaylistTitle } = this.props;
     const { playlist, friendsPlaylists } = navigation.state.params;
@@ -22,14 +30,14 @@ class EditPlaylistScreen extends Component {
     editPlaylistTitle(playlist._id, playlistTitle, [...friendsPlaylists], authToken, navigationCallback);
   };
 
-  onDeletePlaylistPress = () => {
+  onConfirmDeletePlaylist = () => {
     const { navigation, authToken, deleteFriendsPlaylist, awaitingDeleteFriendsPlaylist } = this.props;
     const { playlist, friendsPlaylists } = navigation.state.params;
 
     if (awaitingDeleteFriendsPlaylist) {
       return console.log('Awaiting result of deleteFriendsPlaylist. Button disabled')
     }
-
+    this.toggleConfirmationModal();
     const navigationCallback = () => navigation.goBack();
     deleteFriendsPlaylist(playlist._id, friendsPlaylists, authToken, navigationCallback);
   };
@@ -60,7 +68,7 @@ class EditPlaylistScreen extends Component {
               raised
               title='Delete Playlist'
               icon={{ name: 'clear' }}
-              onPress={() => this.onDeletePlaylistPress()}
+              onPress={this.toggleConfirmationModal}
               buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
               disabled={awaitingCreatePlaylist}
@@ -83,6 +91,12 @@ class EditPlaylistScreen extends Component {
             />
           </View>
         </Card>
+        <ConfirmationModal
+          isVisible={this.state.isConfirmationModalVisible}
+          onConfirmPress={this.onConfirmDeletePlaylist}
+          onCancelPress={this.toggleConfirmationModal}
+          text={'Are you sure you want to delete this playlist?'}
+        />
       </BackgroundImage>
     );
   }
