@@ -14,7 +14,6 @@ const AddFriendStackNav = StackNavigator({
   user: { screen: UserScreen },
 }, {
   headerMode: 'none',
-  lazy: true,
   navigationOptions: {
     tabBarIcon: ({ tintColor }) => (
       <Icon

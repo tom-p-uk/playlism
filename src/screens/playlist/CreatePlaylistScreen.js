@@ -17,13 +17,6 @@ class CreatePlaylistScreen extends Component {
     const { user } = this.props.navigation.state.params;
 
     const navigationCallback = () => {
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'selectFriend' })
-        ],
-      });
-      navigation.dispatch(resetAction);
       navigation.navigate('friendsPlaylistsList');
     };
 

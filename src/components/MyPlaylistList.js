@@ -29,6 +29,7 @@ class FriendsPlaylistList extends Component {
           keyExtractor={item => item._id}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
+          removeClippedSubviews={false}
           renderItem={({ item }) => (
             <ListItem
               roundAvatar

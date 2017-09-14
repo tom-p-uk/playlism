@@ -19,6 +19,9 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.playlism.playlism"
+    },
+    "android": {
+      "package": "com.playlism.playlism"
     }
   }
 }

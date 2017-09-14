@@ -80,6 +80,7 @@ class AuthScreen extends Component {
               style={{ flex: 1, width: SCREEN_WIDTH }}
             />
             <View style={styles.overlay} />
+            <Text>{Constants.linkingUri}</Text>
               { user
                 ?
                   <LoggedInUserMsgAndPic user={user} />

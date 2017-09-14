@@ -40,6 +40,7 @@ class SongsList extends Component {
           keyExtractor={item => item.videoId}
           ListHeaderComponent={renderHeader}
           ItemSeparatorComponent={this.renderSeparator}
+          removeClippedSubviews={false}
           renderItem={({ item }) => (
             <ListItem
               title={item.title}

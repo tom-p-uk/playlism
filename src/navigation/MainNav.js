@@ -3,9 +3,10 @@ import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator } f
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { View, Platform, Text } from 'react-native';
+import { Constants } from 'expo';
 
 import AuthScreen from '../screens/AuthScreen';
-import DashboardScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/HomeScreen';
 import DownloadsTabNav from './downloads/DownloadsTabNav';
 import FriendsTabNav from './friends/FriendsTabNav';
 import PlaylistTabNav from './playlists/PlaylistTabNav';
@@ -14,32 +15,35 @@ import DrawerButton from '../components/DrawerButton';
 import CustomDrawerMenu from '../containers/CustomDrawerMenu';
 import BackButton from '../components/BackButton';
 
-const navigationOptions = ({ navigation, tintColor }) => ({
-  headerRight: (
-    <DrawerButton
-      navigation={navigation}
-      tintColor='#FFFFFF'
-    />
-  ),
-  headerStyle: {
-    backgroundColor: '#F26C4F',
-    marginTop: Platform.OS === 'android' ? 24 : 0
-   },
-   headerTitleStyle: {
-    alignSelf:'center',
-    color: '#FFFFFF'
-   },
-  headerTintColor: '#FFFFFF',
-});
+const stackNavigatorConfig = {
+  navigationOptions: ({ navigation, tintColor }) => ({
+    headerRight: (
+      <DrawerButton
+        navigation={navigation}
+        tintColor='#FFFFFF'
+      />
+    ),
+    headerLeft: (<BackButton color='#FFFFFF' navigation={navigation} />),
+    headerStyle: {
+      backgroundColor: '#F26C4F',
+      marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0
+     },
+     headerTitleStyle: {
+      alignSelf:'center',
+      color: '#FFFFFF'
+     },
+    headerTintColor: '#FFFFFF',
+  })
+};
 
-const DashboardStack = StackNavigator({
+// Home screen has to be a stack nav to show a header. Separate config to ensure back button isn't shown.
+const HomeStack = StackNavigator({
   dashboardStack: {
-    screen: DashboardScreen,
+    screen: HomeScreen,
     navigationOptions: {
       drawerLabel: 'Home',
       drawerIcon: ({ tintColor }) => (
         <Icon
-          // style={styles.icon}
           type='material-community'
           name='home'
           color={tintColor}
@@ -47,7 +51,25 @@ const DashboardStack = StackNavigator({
       ),
     }
   },
-}, { navigationOptions });
+}, {
+  navigationOptions: ({ navigation, tintColor }) => ({
+    headerRight: (
+      <DrawerButton
+        navigation={navigation}
+        tintColor='#FFFFFF'
+      />
+    ),
+    headerStyle: {
+      backgroundColor: '#F26C4F',
+      marginTop: Platform.OS === 'android' ? 24 : 0
+     },
+     headerTitleStyle: {
+      alignSelf:'center',
+      color: '#FFFFFF'
+     },
+    headerTintColor: '#FFFFFF',
+  })
+});
 
 const DownloadsStack = StackNavigator({
   downloadsStack: {
@@ -56,7 +78,6 @@ const DownloadsStack = StackNavigator({
       drawerLabel: 'Downloads',
       drawerIcon: ({ tintColor }) => (
         <Icon
-          // style={styles.icon}
           type='material'
           name='file-download'
           color={tintColor}
@@ -64,29 +85,7 @@ const DownloadsStack = StackNavigator({
       ),
     }
   }
-}, {
-  navigationOptions: ({ navigation, tintColor }) => ({
-    headerRight: (
-      <DrawerButton
-        navigation={navigation}
-        tintColor='#FFFFFF'
-      />
-    ),
-    headerLeft: (
-      <BackButton color='#FFFFFF' navigation={navigation} />
-    ),
-    // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
-    headerStyle: {
-      backgroundColor: '#F26C4F',
-      marginTop: Platform.OS === 'android' ? 24 : 0
-     },
-     headerTitleStyle: {
-      alignSelf:'center',
-      color: '#FFFFFF'
-     },
-    headerTintColor: '#FFFFFF',
-  })
-});
+}, stackNavigatorConfig);
 
 const PlaylistsStack = StackNavigator({
   playlistsStack: {
@@ -95,7 +94,6 @@ const PlaylistsStack = StackNavigator({
       drawerLabel: 'Playlists',
       drawerIcon: ({ tintColor }) => (
         <Icon
-          // style={styles.icon}
           type='material-community'
           name='playlist-play'
           color={tintColor}
@@ -103,29 +101,7 @@ const PlaylistsStack = StackNavigator({
       ),
     }
   }
-}, {
-  navigationOptions: ({ navigation, tintColor }) => ({
-    headerRight: (
-      <DrawerButton
-        navigation={navigation}
-        tintColor='#FFFFFF'
-      />
-    ),
-    headerLeft: (
-      <BackButton color='#FFFFFF' navigation={navigation} />
-    ),
-    // headerRight: navigation.state.routeName === 'searchFriends' ? <Text>Right</Text> : <View></View>,
-    headerStyle: {
-      backgroundColor: '#F26C4F',
-      marginTop: Platform.OS === 'android' ? 24 : 0
-     },
-     headerTitleStyle: {
-      alignSelf:'center',
-      color: '#FFFFFF'
-     },
-    headerTintColor: '#FFFFFF',
-  })
-});
+}, stackNavigatorConfig);
 
 const FriendsStack = StackNavigator({
   friendsStack: {
@@ -134,7 +110,6 @@ const FriendsStack = StackNavigator({
       drawerLabel: 'Friends',
       drawerIcon: ({ tintColor }) => (
         <Icon
-          // style={styles.icon}
           type='material-community'
           name='account-multiple'
           color={tintColor}
@@ -142,31 +117,10 @@ const FriendsStack = StackNavigator({
       ),
     }
   }
-}, {
-  navigationOptions: ({ navigation, tintColor }) => ({
-    headerRight: (
-      <DrawerButton
-        navigation={navigation}
-        tintColor='#FFFFFF'
-      />
-    ),
-    headerLeft: (
-      <BackButton color='#FFFFFF' navigation={navigation} />
-    ),
-    headerStyle: {
-      backgroundColor: '#F26C4F',
-      marginTop: Platform.OS === 'android' ? 24 : 0
-     },
-     headerTitleStyle: {
-      alignSelf:'center',
-      color: '#FFFFFF'
-     },
-    headerTintColor: '#FFFFFF',
-  })
-});
+}, stackNavigatorConfig);
 
 const DrawerNav = DrawerNavigator({
-  dashboard: { screen: DashboardStack },
+  dashboard: { screen: HomeStack },
   downloads: { screen: DownloadsStack },
   playlists: { screen: PlaylistsStack },
   friends: { screen: FriendsStack },
@@ -183,7 +137,6 @@ const DrawerNav = DrawerNavigator({
 });
 
 export const MainNav = TabNavigator({
-  // welcome: { screen: WelcomeScreen },
   auth: { screen: AuthScreen },
   main: {
     screen: DrawerNav,
@@ -195,12 +148,10 @@ export const MainNav = TabNavigator({
   animationEnabled: false,
 });
 
-const MainNavWithNavigationState = ({ dispatch, nav }) => (
-  <MainNav navigation={addNavigationHelpers({ dispatch, state: nav })} />
+const MainNavWithNavigationState = ({ dispatch, nav, state }) => (
+  <MainNav navigation={addNavigationHelpers({ dispatch, state: nav, reduxState: nav })} />
 );
 
-const mapStateToProps = ({ nav }) => ({
-  nav,
-});
+const mapStateToProps = ({ nav }) => ({ nav });
 
 export default connect(mapStateToProps)(MainNavWithNavigationState);

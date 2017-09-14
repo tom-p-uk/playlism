@@ -106,16 +106,16 @@ class FriendsPlaylistScreen extends Component {
           isVisible={this.state.isSortPlaylistModalVisible}
           sortedBy={friendsPlaylistSortedBy}
           onButtonGroupPress={sortFriendsPlaylist}
-          onDoneButtonPress={() => this.toggleSortPlaylistModal()}
+          onDoneButtonPress={this.toggleSortPlaylistModal}
         />
         <PreviewSongModal
           isVisible={isPreviewSongModalOpen}
-          onButtonPress={() => togglePreviewSongModal()}
+          onButtonPress={togglePreviewSongModal}
           videoId={songBeingPreviewed}
         />
         <PlaylistControls
           firstButtonProps={{ title: 'Add Songs', iconName: 'add', onPress: () => navigation.navigate('addSongs', { playlist }) }}
-          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
+          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: this.toggleSortPlaylistModal }}
         />
         {this.renderMessageOrSongList(navigation, songsInFriendsPlaylist)}
       </View>

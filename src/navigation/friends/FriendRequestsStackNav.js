@@ -8,7 +8,7 @@ const FriendRequestsStackNav = StackNavigator({
   friendRequests: {
     screen: FriendRequestsScreen,
     navigationOptions: {
-      title: 'FriendRequests'
+      title: 'Friend Requests'
     }
   },
   user: { screen: UserScreen },
