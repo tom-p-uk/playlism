@@ -13,7 +13,6 @@ import PreviewSongModal from '../../components/PreviewSongModal';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class AddSongsScreen extends Component {
-
   componentDidMount() {
     this.props.clearSearchSongsResults();
   }

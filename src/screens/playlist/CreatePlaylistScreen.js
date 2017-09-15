@@ -17,7 +17,18 @@ class CreatePlaylistScreen extends Component {
     const { user } = this.props.navigation.state.params;
 
     const navigationCallback = () => {
-      navigation.navigate('friendsPlaylistsList');
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'main' }),
+          NavigationActions.navigate({ routeName: 'home' }),
+          NavigationActions.navigate({ routeName: 'playlistsStack' }),
+          NavigationActions.navigate({ routeName: 'friendsPlaylists' }),
+        ],
+        key: null,
+      });
+      // this.props.navigation.dispatch(resetAction);
+      this.props.navigation.navigate('friendsPlaylistsList');
     };
 
     createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);

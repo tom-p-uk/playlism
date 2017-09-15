@@ -11,18 +11,6 @@ import Spinner from '../../components/Spinner';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class MyPlaylistsListScreen extends Component {
-  static navigationOptions = {
-    title: 'My Playlists',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        // style={styles.icon}
-        type='material-community'
-        name='playlist-play'
-        color={tintColor}
-      />
-    ),
-  };
-
   componentDidMount() {
     const { getMyPlaylists, authToken } = this.props;
     getMyPlaylists(authToken);

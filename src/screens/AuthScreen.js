@@ -11,6 +11,7 @@ import {
 import { Button, Card } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import { loginStart, loginSuccess, jwtLogin } from '../actions';
 import registerForNotifications from '../services/push_notifications';
@@ -27,12 +28,23 @@ class AuthScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.user && nextProps.loggedInViaJWT) {
-      // setTimeout(() => this.props.navigation.dispatch(resetAction), 2000);
-      this.props.navigation.navigate('dashboard');
+      this.resetNavigation();
     } else if (nextProps.user) {
-      setTimeout(() => this.props.navigation.navigate('dashboard'), 2000);
+      setTimeout(() => this.resetNavigation(), 2000);
     }
   }
+
+  resetNavigation = () => {
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'main'})
+      ],
+      key: null
+    });
+
+    this.props.navigation.dispatch(resetAction);
+  };
 
   // Opens browser internally in order to access the backend OAuth routes
   startOAuth = async authUrl => {
@@ -80,7 +92,7 @@ class AuthScreen extends Component {
               style={{ flex: 1, width: SCREEN_WIDTH }}
             />
             <View style={styles.overlay} />
-            <Text>{Constants.linkingUri}</Text>
+            {/* <Text>{Constants.linkingUri}</Text> */}
               { user
                 ?
                   <LoggedInUserMsgAndPic user={user} />
@@ -89,7 +101,6 @@ class AuthScreen extends Component {
                     onFacebookButtonPress={() =>this.startOAuth(`${URL}/auth/facebook`)}
                     onGoogleButtonPress={() => this.startOAuth(`${URL}/auth/google`)}
                   />
-
               }
           </View>
         </View>

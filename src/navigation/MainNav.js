@@ -1,8 +1,8 @@
-import React from 'react';
-import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
+import React, { Component } from 'react';
+import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation'
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { View, Platform, Text } from 'react-native';
+import { View, Platform, Text, BackHandler } from 'react-native';
 import { Constants } from 'expo';
 
 import AuthScreen from '../screens/AuthScreen';
@@ -38,7 +38,7 @@ const stackNavigatorConfig = {
 
 // Home screen has to be a stack nav to show a header. Separate config to ensure back button isn't shown.
 const HomeStack = StackNavigator({
-  dashboardStack: {
+  homeStack: {
     screen: HomeScreen,
     navigationOptions: {
       drawerLabel: 'Home',
@@ -120,7 +120,7 @@ const FriendsStack = StackNavigator({
 }, stackNavigatorConfig);
 
 const DrawerNav = DrawerNavigator({
-  dashboard: { screen: HomeStack },
+  home: { screen: HomeStack },
   downloads: { screen: DownloadsStack },
   playlists: { screen: PlaylistsStack },
   friends: { screen: FriendsStack },
@@ -136,21 +136,53 @@ const DrawerNav = DrawerNavigator({
   }
 });
 
-export const MainNav = TabNavigator({
+export const MainNav = StackNavigator({
   auth: { screen: AuthScreen },
   main: {
     screen: DrawerNav,
   }
 }, {
-  swipeEnabled: false,
-  navigationOptions: { tabBarVisible: false },
-  lazy: true,
-  animationEnabled: false,
+  // swipeEnabled: false,
+  // navigationOptions: { tabBarVisible: false },
+  // lazy: true,
+  // animationEnabled: false,
+  headerMode: 'none',
 });
 
-const MainNavWithNavigationState = ({ dispatch, nav, state }) => (
-  <MainNav navigation={addNavigationHelpers({ dispatch, state: nav, reduxState: nav })} />
-);
+class MainNavWithNavigationState extends Component {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+        const { dispatch, nav } = this.props
+        console.log(nav);
+        if (this.shouldCloseApp(nav)) return false
+        dispatch(NavigationActions.back({ key: null }));
+        return true
+      })
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress');
+  }
+
+  shouldCloseApp = nav => {
+    if (nav.index > 0) return false;
+
+    if (nav.routes) {
+      return nav.routes.every(this.shouldCloseApp);
+    }
+
+    return true;
+  };
+
+  render() {
+    const { dispatch, nav, state } = this.props;
+
+    return (
+      <MainNav navigation={addNavigationHelpers({ dispatch, state: nav, reduxState: nav })} />
+    );
+  }
+
+};
 
 const mapStateToProps = ({ nav }) => ({ nav });
 

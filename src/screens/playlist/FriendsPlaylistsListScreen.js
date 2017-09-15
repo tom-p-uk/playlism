@@ -11,18 +11,6 @@ import FriendsPlaylistList from '../../components/FriendsPlaylistList';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendsPlaylistsListScreen extends Component {
-  static navigationOptions = {
-    title: "Friends' Playlists",
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        // style={styles.icon}
-        type='material-community'
-        name='account-multiple'
-        color={tintColor}
-      />
-    ),
-  };
-
   componentDidMount() {
     const { getFriendsPlaylists, authToken } = this.props;
     getFriendsPlaylists(authToken);
