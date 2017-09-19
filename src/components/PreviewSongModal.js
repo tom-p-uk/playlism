@@ -19,7 +19,7 @@ class PreviewSongModal extends Component {
                     &showinfo=0&controls=1&modestbranding=0`,
               headers: { Referer: 'https://www.youtube.com' }
             }}
-            style={{ justifyContent: 'center', alignItems: 'center', backgroundColor: 'black' }}
+            style={{}}
             javaScriptEnabled={true}
             allowsInlineMediaPlayback={true}
           />
@@ -31,8 +31,7 @@ class PreviewSongModal extends Component {
               title='Close'
               icon={{ name: 'clear' }}
               onPress={onButtonPress}
-              style={styles.button}
-              disabledStyle={styles.buttonDisabled}
+              buttonStyle={styles.button}
               fontSize={13}
               borderRadius={30}
               backgroundColor='#98250B'
@@ -47,6 +46,10 @@ class PreviewSongModal extends Component {
 const styles = {
   webViewContainer: {
     flex: 2,
+  },
+  webView: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonOuterContainer: {
     flex: 1,

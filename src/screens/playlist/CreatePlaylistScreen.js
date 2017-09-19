@@ -17,17 +17,6 @@ class CreatePlaylistScreen extends Component {
     const { user } = this.props.navigation.state.params;
 
     const navigationCallback = () => {
-      const resetAction = NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: 'main' }),
-          NavigationActions.navigate({ routeName: 'home' }),
-          NavigationActions.navigate({ routeName: 'playlistsStack' }),
-          NavigationActions.navigate({ routeName: 'friendsPlaylists' }),
-        ],
-        key: null,
-      });
-      // this.props.navigation.dispatch(resetAction);
       this.props.navigation.navigate('friendsPlaylistsList');
     };
 
@@ -37,6 +26,7 @@ class CreatePlaylistScreen extends Component {
   render() {
     const { user } = this.props.navigation.state.params;
     const { handSubmit, awaitingCreatePlaylist} = this.props;
+    console.log(awaitingCreatePlaylist);
     return (
       <BackgroundImage>
         <Card containerStyle={{ opacity: 0.8 }}>
@@ -58,11 +48,12 @@ class CreatePlaylistScreen extends Component {
             <Button
               raised
               title='Create Playlist'
-              icon={{ name: 'playlist-plus', type: 'material-community' }}
+              icon={awaitingCreatePlaylist ? null : { name: 'playlist-plus', type: 'material-community' }}
               onPress={this.props.handleSubmit(this.onSubmit)}
               buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
               disabled={awaitingCreatePlaylist}
+              loading={awaitingCreatePlaylist}
               fontSize={13}
               borderRadius={60}
               backgroundColor='#98250B'
@@ -127,6 +118,7 @@ const Form = reduxForm({
 
 const mapStateToProps = ({ auth: { authToken }, playlist: { awaitingCreatePlaylist } }) => {
   return {
+    awaitingCreatePlaylist,
     authToken,
   };
 };

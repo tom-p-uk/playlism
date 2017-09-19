@@ -5,12 +5,8 @@ import moment from 'moment';
 
 class FriendsList extends Component {
   componentWillUpdate() {
-    // next line for Android compatiblity
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    // when LayoutAnimation.spring() is run, it tells the component that any updates
-    // to the layout of the component - which in this case will be the upward shift of the
-    // underlying card cascade - should be animated
-    LayoutAnimation.easeInEaseOut();
+    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    // LayoutAnimation.easeInEaseOut();
   }
 
   renderSeparator = () => {

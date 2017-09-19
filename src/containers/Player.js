@@ -207,7 +207,7 @@ class Player extends Component {
           }
           </Text>
           {
-            Platform === 'android'
+            Platform.OS === 'android'
             ?
               <SliderAndroid
                 thumbTintColor='#FFFFFF'
@@ -283,7 +283,8 @@ const styles = {
   songTitle: {
     alignSelf: 'center',
     color: '#FFFFFF',
-    marginBottom: Platform.OS === 'android' ? 10 : 5,
+    marginBottom: Platform.OS === 'android' ? 20 : 5,
+    marginTop: -5,
   },
   sliderContainer: {
     flexDirection: 'row',
@@ -309,7 +310,7 @@ const styles = {
   },
   minsAndSecsRight: {
     color: '#FFFFFF',
-    // paddingLeft: 4,
+    paddingLeft: 4,
     width: 40,
   },
   buttonsContainer: {

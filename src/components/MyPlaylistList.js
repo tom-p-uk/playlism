@@ -5,8 +5,8 @@ import moment from 'moment';
 
 class FriendsPlaylistList extends Component {
   componentWillUpdate() {
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    LayoutAnimation.spring();
+    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    // LayoutAnimation.spring();
   }
 
   renderSeparator = () => {
@@ -36,7 +36,6 @@ class FriendsPlaylistList extends Component {
               title={item.title}
               rightIcon={{ name: 'create' }}
               onPressRightIcon={() => navigation.navigate('editMyPlaylist', { playlist: item, friendsPlaylists: data })}
-              // rightTitle={item.forUser.displayName}
               rightTitleStyle={styles.rightTitle}
               subtitle={`Created on ${moment(item.dateAdded).format('MMM Do, YYYY')}`}
               avatar={{ uri: decodeURIComponent(item.byUser.profileImg) }}

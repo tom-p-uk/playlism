@@ -43,7 +43,7 @@ class EditPlaylistScreen extends Component {
   };
 
   render() {
-    const { handleSubmit, awaitingCreatePlaylist, navigation } = this.props;
+    const { handleSubmit, awaitingEditPlaylistTitle, awaitingDeleteFriendsPlaylist, navigation } = this.props;
     const { playlist: { byUser, forUser, title } } = navigation.state.params;
     const uri = navigation.state.routeName === 'editMyPlaylist' ? decodeURIComponent(byUser.profileImg) : decodeURIComponent(forUser.profileImg);
     return (
@@ -67,11 +67,12 @@ class EditPlaylistScreen extends Component {
             <Button
               raised
               title='Delete Playlist'
-              icon={{ name: 'clear' }}
+              icon={awaitingDeleteFriendsPlaylist ? null : { name: 'clear' }}
+              loading={awaitingDeleteFriendsPlaylist}
               onPress={this.toggleConfirmationModal}
               buttonStyle={styles.button}
               disabledStyle={styles.buttonDisabled}
-              disabled={awaitingCreatePlaylist}
+              disabled={awaitingDeleteFriendsPlaylist}
               fontSize={13}
               borderRadius={60}
               backgroundColor='#98250B'
@@ -80,11 +81,12 @@ class EditPlaylistScreen extends Component {
             <Button
               raised
               title='Save Changes'
-              icon={{ name: 'save' }}
+              icon={awaitingEditPlaylistTitle ? null : { name: 'save' }}
+              loading={awaitingEditPlaylistTitle}
               onPress={handleSubmit(this.onSaveChangesPress)}
               buttonStyle={styles.button}
-              disabledStyle={styles.buttonDisabled}
-              disabled={awaitingCreatePlaylist}
+              disabledStyle={{ backgroundColor: '#D13310' }}
+              disabled={awaitingEditPlaylistTitle}
               fontSize={13}
               borderRadius={60}
               backgroundColor='#D13310'

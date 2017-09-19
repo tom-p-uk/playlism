@@ -5,8 +5,8 @@ import moment from 'moment';
 
 class PlaylistList extends Component {
   componentWillUpdate() {
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    LayoutAnimation.spring();
+    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+    // LayoutAnimation.spring();
   }
 
   renderSeparator = () => {

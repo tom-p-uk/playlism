@@ -7,19 +7,6 @@ import CreatePlaylistStackNav from './CreatePlaylistStackNav';
 import FriendsPlaylistsStackNav from './FriendsPlaylistsStackNav';
 
 const PlaylistTabNav = TabNavigator({
-  createNewPlaylist: {
-    screen: CreatePlaylistStackNav,
-    navigationOptions: {
-      tabBarIcon: ({ tintColor }) => (
-        <Icon
-          // style={styles.icon}
-          type='material-community'
-          name='playlist-plus'
-          color={tintColor}
-        />
-      ),
-    }
-  },
   myPlaylists: {
     screen: MyPlaylistsStackNav,
     navigationOptions: {
@@ -42,6 +29,19 @@ const PlaylistTabNav = TabNavigator({
           // style={styles.icon}
           type='material-community'
           name='account-multiple'
+          color={tintColor}
+        />
+      ),
+    }
+  },
+  createNewPlaylist: {
+    screen: CreatePlaylistStackNav,
+    navigationOptions: {
+      tabBarIcon: ({ tintColor }) => (
+        <Icon
+          // style={styles.icon}
+          type='material-community'
+          name='playlist-plus'
           color={tintColor}
         />
       ),

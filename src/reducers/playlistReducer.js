@@ -115,6 +115,7 @@ export default (state = initialState, action) => {
       };
 
     case (CREATE_PLAYLIST_START):
+    console.log(action);
       return {
         ...state,
         awaitingCreatePlaylist: true,
