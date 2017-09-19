@@ -50,6 +50,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingSearchResults: true,
+        searchError: '',
       };
 
     case (SEARCH_FRIENDS_SUCCESS):
@@ -79,6 +80,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingFriends: true,
+        friendsError: '',
       };
 
     case (GET_FRIENDS_SUCCESS):
@@ -86,6 +88,7 @@ export default (state = initialState, action) => {
         ...state,
         friends: action.payload.friends,
         awaitingFriends: false,
+        friendsError: '',
       };
 
     case (GET_FRIENDS_FAILURE):
@@ -99,6 +102,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingFriendRequests: true,
+        friendRequestsError: '',
       };
 
     case (GET_FRIEND_REQUESTS_SUCCESS):
@@ -106,6 +110,7 @@ export default (state = initialState, action) => {
         ...state,
         friendRequests: action.payload.friendRequests,
         awaitingFriendRequests: false,
+        friendRequestsError: '',
       };
 
     case (GET_FRIEND_REQUESTS_FAILURE):
@@ -125,6 +130,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingSendFriendRequest: true,
+        sendFriendRequestError: '',
       };
 
     case (SEND_FRIEND_REQUEST_SUCCESS):
@@ -132,6 +138,7 @@ export default (state = initialState, action) => {
         ...state,
         friendRequestsSent: action.payload.friendRequestsSent,
         awaitingSendFriendRequest: false,
+        sendFriendRequestError: '',
       };
 
     case (SEND_FRIEND_REQUEST_FAILURE):
@@ -151,6 +158,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingRespondToFriendRequest: true,
+        respondToFriendRequestError: '',
+      };
+
+    case (RESPOND_TO_FRIEND_REQUEST_FAILURE):
+      return {
+        ...state,
+        awaitingRespondToFriendRequest: true,
+        respondToFriendRequestError: action.payload.error,
       };
 
     case (ACCEPT_FRIEND_REQUEST):
@@ -172,11 +187,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingDeleteFriend: true,
+        deleteFriendError: '',
       };
 
     case (DELETE_FRIEND_SUCCESS):
       return {
         ...state,
+        deleteFriendError: '',
         awaitingDeleteFriend: false,
         friends: action.payload.friends,
       };
@@ -184,6 +201,7 @@ export default (state = initialState, action) => {
     case (DELETE_FRIEND_FAILURE):
       return {
         ...state,
+        deleteFriendError: action.payload.error,
         awaitingDeleteFriend: false,
       };
 

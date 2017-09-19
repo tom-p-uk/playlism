@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { getMyPlaylists } from '../../actions';
 import MyPlaylistList from '../../components/MyPlaylistList';
@@ -51,15 +52,26 @@ class MyPlaylistsListScreen extends Component {
     }
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const { myPlaylists, navigation } = this.props;
 
     return (
-
         <BackgroundImage>
           <MyPlaylistList data={myPlaylists} navigation={navigation} navigationTarget='myPlaylist'/>
           {this.renderMessage()}
           {this.renderSpinner()}
+          {this.renderDropdownAlert()}
         </BackgroundImage>
 
     );

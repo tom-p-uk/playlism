@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { KeepAwake } from 'expo';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import SongsList from '../../components/SongsList';
 import Player from '../../containers/Player';
@@ -17,6 +18,12 @@ class DownloadedSongsScreen extends Component {
   state = {
     isSortPlaylistModalVisible: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.deleteDownloadedSongError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.deleteDownloadedSongError);
+    }
+  }
 
   toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
 
@@ -63,6 +70,17 @@ class DownloadedSongsScreen extends Component {
   };
 
   renderSubtitle = songs => `Downloaded ${moment(songs.downloadedOn).fromNow()}`;
+
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
 
   render() {
     const {
@@ -118,6 +136,7 @@ class DownloadedSongsScreen extends Component {
         </View>
         {currentRoute === 'downloadedSongs' && <Player songs={this.sortData(downloadedSongs)}/>}
         <KeepAwake />
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -132,7 +151,7 @@ const styles = {
 
 const mapStateToProps = ({
   nav: { currentRoute },
-  downloads: { downloadedSongs },
+  downloads: { downloadedSongs, deleteDownloadedSongError },
   player: { playerPlaylistSortedBy, isPlaying, currentlyPlayingSong },
 }) => {
   return {
@@ -141,6 +160,7 @@ const mapStateToProps = ({
     currentRoute,
     isPlaying,
     currentlyPlayingSong,
+    deleteDownloadedSongError,
   };
 };
 

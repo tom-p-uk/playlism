@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { Card, Button, ButtonGroup } from 'react-native-elements';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { getSongsInFriendsPlaylist, deleteSong, sortFriendsPlaylist, previewSong, togglePreviewSongModal } from '../../actions';
 import Message from '../../components/Message';
@@ -23,14 +24,20 @@ class FriendsPlaylistScreen extends Component {
     isSortPlaylistModalVisible: false,
   };
 
-  toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
-
   componentDidMount() {
     const { getSongsInFriendsPlaylist, user, authToken, navigation } = this.props;
     const { playlist } = navigation.state.params;
 
     getSongsInFriendsPlaylist(playlist._id, authToken);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.songsInFriendsPlaylistError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.songsInFriendsPlaylistError);
+    }
+  }
+
+  toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
 
   sortData = data => {
     if (!data) {
@@ -122,6 +129,17 @@ class FriendsPlaylistScreen extends Component {
     );
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const { awaitingSongsInFriendsPlaylist } = this.props;
     return (
@@ -133,6 +151,7 @@ class FriendsPlaylistScreen extends Component {
             :
               this.renderContent()
         }
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }

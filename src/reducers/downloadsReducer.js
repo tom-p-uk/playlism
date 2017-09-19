@@ -51,7 +51,6 @@ export default (state = initialState, action) => {
       };
 
     case (DOWNLOAD_SONG_FAILURE):
-    console.log(action.payload);
       return {
         ...state,
         downloadSongError: `${action.payload.song.title} failed to download. Please try again.`,
@@ -77,7 +76,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         currentlyDeleting: state.currentlyDeleting.filter(songId => songId !== action.payload.songId),
-        deleteDownloadedSongError: action.payload.error,
+        deleteDownloadedSongError: `Could not delete ${action.payload.song.title}`,
       };
 
     case (LOGOUT):

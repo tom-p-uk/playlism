@@ -57,8 +57,10 @@ export const getMyPlaylists = authToken => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error){
       dispatch(getMyPlaylistsFailure(err.response.data.error));
+    } else {
+      dispatch(getMyPlaylistsFailure('Could not fetch your playlists.'));
     }
   }
 };
@@ -93,8 +95,10 @@ export const getFriendsPlaylists = authToken => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getFriendsPlaylistsFailure(err.response.data.error));
+    } else {
+      dispatch(getFriendsPlaylistsFailure('Could not fetch your friends\' playlists.'));
     }
   }
 };
@@ -166,7 +170,7 @@ export const searchSongs = term => async dispatch => {
     });
   } catch (err) {
     console.log(err);
-    dispatch(searchSongsFailure())
+    dispatch(searchSongsFailure());
   }
 };
 
@@ -205,8 +209,10 @@ export const getSongsInFriendsPlaylist = (playlistId, authToken) => async dispat
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getSongsInFriendsPlaylistFailure(err.response.data.error));
+    } else {
+      dispatch(getSongsInFriendsPlaylistFailure('Could not fetch songs.'));
     }
   }
 };
@@ -240,8 +246,10 @@ export const getSongsInMyPlaylist = (playlistId, authToken) => async dispatch =>
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getSongsInMyPlaylistFailure(err.response.data.error));
+    } else {
+      dispatch(getSongsInMyPlaylistFailure('Could not fetch songs in playlist.'));
     }
   }
 };
@@ -283,8 +291,10 @@ export const addSong = (videoId, title, description, thumbnail, playlistId, auth
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(addSongFailure(err.response.data.error));
+    } else {
+      dispatch(addSongFailure('Could not add song.'));
     }
   }
 };
@@ -321,8 +331,10 @@ export const deleteSong = (songId, playlistId, songsInFriendsPlaylist, authToken
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(deleteSongFailure(err.response.data.error));
+    } else {
+      dispatch(deleteSongFailure('Could not delete song.'));
     }
   }
 };
@@ -360,8 +372,10 @@ export const likeSong = (songId, authToken) => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(likeSongFailure(err.response.data.error));
+    } else {
+      dispatch(likeSongFailure('Could not like song.'));
     }
   }
 };
@@ -397,8 +411,10 @@ export const unlikeSong = (songId, playlistId, songsInMyPlaylist, authToken) => 
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(unlikeSongFailure(err.response.data.error));
+    } else {
+      dispatch(unlikeSongFailure('Could not unlike song.'));
     }
   }
 };
@@ -440,8 +456,10 @@ export const editPlaylistTitle = (playlistId, title, friendsPlaylists, authToken
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(editPlaylistTitleFailure(err.response.data.error));
+    } else {
+      dispatch(editPlaylistTitleFailure('Could not edit playlist.'))
     }
   }
 };
@@ -481,8 +499,10 @@ export const deleteFriendsPlaylist = (playlistId, friendsPlaylists, authToken, n
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(deleteFriendsPlaylistFailure(err.response.data.error));
+    } else {
+      dispatch(deleteFriendsPlaylistFailure('Could not delete the playlist.'))
     }
   }
 };

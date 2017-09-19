@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { getFriendsPlaylists } from '../../actions';
 import Message from '../../components/Message';
@@ -20,6 +21,10 @@ class FriendsPlaylistsListScreen extends Component {
     const { currentRoute, getFriendsPlaylists, authToken } = this.props;
     if (currentRoute !== 'friendsPlaylistsList' && nextProps.currentRoute === 'friendsPlaylistsList') {
       getFriendsPlaylists(authToken);
+    }
+
+    if (nextProps.friendsPlaylistsError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.friendsPlaylistsError);
     }
   }
 
@@ -51,6 +56,17 @@ class FriendsPlaylistsListScreen extends Component {
     }
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const { friendsPlaylists, navigation } = this.props;
 
@@ -59,6 +75,7 @@ class FriendsPlaylistsListScreen extends Component {
         <FriendsPlaylistList data={friendsPlaylists} navigation={navigation}/>
         {this.renderMessage()}
         {this.renderSpinner()}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }

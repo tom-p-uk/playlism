@@ -53,8 +53,10 @@ export const jwtLogin = () => async dispatch => {
     } catch (err) {
       console.log(err);
 
-      if (err.response.data.error) {
+      if (err.response && err.response.data && err.response.data.error) {
         dispatch(loginFailure(err.response.data.error));
+      } else {
+        dispatch(loginFailure('Could not log user in at this time.'))
       }
     }
   } else {

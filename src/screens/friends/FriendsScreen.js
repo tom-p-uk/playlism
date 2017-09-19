@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 import { Icon, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { getFriends, loadFriendRequestsSent } from '../../actions';
 import FriendsList from '../../components/FriendsList';
@@ -33,8 +34,8 @@ class FriendsScreen extends Component {
       getFriends(authToken);
     }
 
-    if (nextProps.isLoggedIn === false) {
-      // this.props.navigation.navigate('')
+    if (nextProps.friendsError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.friendsError);
     }
   }
 
@@ -81,6 +82,17 @@ class FriendsScreen extends Component {
     }
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     let data;
      if (this.props.friends) {
@@ -102,6 +114,7 @@ class FriendsScreen extends Component {
         />
         {this.renderMessage()}
         {this.renderSpinner()}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -115,7 +128,7 @@ const styles = {
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 14,
-    color: '#F26C4F',
+    color: '#98250B',
   },
 };
 

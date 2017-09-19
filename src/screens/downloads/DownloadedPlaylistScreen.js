@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
@@ -21,6 +21,12 @@ class DownloadedPlaylistScreen extends Component {
   state = {
     isSortPlaylistModalVisible: false,
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.deleteDownloadedSongError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.deleteDownloadedSongError);
+    }
+  }
 
   toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
 
@@ -78,6 +84,17 @@ class DownloadedPlaylistScreen extends Component {
     songs.forEach(song => this.props.deleteDownloadedSong(song));
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const {
       downloadedSongs,
@@ -101,6 +118,7 @@ class DownloadedPlaylistScreen extends Component {
     }
     return (
       <BackgroundImage>
+        <KeepAwake />
         <SortPlaylistModal
           isVisible={this.state.isSortPlaylistModalVisible}
           sortedBy={playerPlaylistSortedBy}
@@ -129,8 +147,8 @@ class DownloadedPlaylistScreen extends Component {
             renderSubtitle={this.renderSubtitle}
           />
         </View>
-        {currentRoute === 'downloadedPlaylist' && <Player songs={this.filterAndSortData(downloadedSongs)}/>}
-        <KeepAwake />
+        {currentRoute === 'downloadedPlaylist' && <Player songs={this.filterAndSortData(downloadedSongs)} />}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -138,7 +156,7 @@ class DownloadedPlaylistScreen extends Component {
 
 const mapStateToProps = ({
   nav: { currentRoute },
-  downloads: { downloadedSongs },
+  downloads: { downloadedSongs, deleteDownloadedSongError },
   player: { playerPlaylistSortedBy, isPlaying, currentlyPlayingSong },
 }) => {
   return {
@@ -147,6 +165,7 @@ const mapStateToProps = ({
     currentRoute,
     isPlaying,
     currentlyPlayingSong,
+    deleteDownloadedSongError,
   };
 };
 

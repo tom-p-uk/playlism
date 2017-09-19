@@ -37,8 +37,10 @@ export const searchFriends = (searchTerm, authToken) => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(searchFriendsFailure(err.response.data.error));
+    } else {
+      dispatch(searchFriendsFailure('Could not return any search results.'))
     }
   }
 };
@@ -79,8 +81,10 @@ export const getFriends = authToken => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getFriendsFailure(err.response.data.error));
+    } else {
+      dispatch(getFriendsFailure('Could not fetch friends list.'))
     }
   }
 };
@@ -115,8 +119,10 @@ export const getFriendRequests = authToken => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getFriendRequestsFailure(err.response.data.error));
+    } else {
+      dispatch(getFriendRequestsFailure('Could not fetch friend requests.'))
     }
   }
 };
@@ -174,8 +180,10 @@ export const sendFriendRequest = (userId, authToken) => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(sendFriendRequestFailure(err.response.data.error));
+    } else {
+      dispatch(sendFriendRequestFailure('Could not send a friend request.'))
     }
   }
 };
@@ -222,8 +230,10 @@ export const respondToFriendRequest = (user, friends, friendRequests, authToken,
   } catch (err) {
     console.log(err);
 
-    if (err.response.data.error) {
-      dispatch(respondToFriendRequestFailure(err.response.data.error))
+    if (err.response && err.response.data && err.response.data.error) {
+      dispatch(respondToFriendRequestFailure(err.response.data.error));
+    } else {
+      dispatch(respondToFriendRequestFailure('Could not reply to friend request.'))
     }
   }
 };
@@ -273,9 +283,11 @@ export const deleteFriend = (userId, authToken) => async dispatch => {
   } catch (err) {
     console.log(err);
 
-    // if (err.response.data.error) {
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(deletFriendFailure(err.response.data.error));
-    // }
+    } else {
+      dispatch(deleteFriendFailure('Could not delete friend.'))
+    }
   }
 };
 

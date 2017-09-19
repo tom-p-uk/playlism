@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import SearchBar from '../../components/SearchBar';
 import SongResultsList from '../../containers/SongResultsList';
@@ -15,6 +16,12 @@ import BackgroundImage from '../../components/BackgroundImage';
 class AddSongsScreen extends Component {
   componentDidMount() {
     this.props.clearSearchSongsResults();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.searchError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.searchError);
+    }
   }
 
   renderHeader = () => {
@@ -52,6 +59,17 @@ class AddSongsScreen extends Component {
     previewSong(videoId);
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const {
       searchResults,
@@ -77,6 +95,7 @@ class AddSongsScreen extends Component {
           onSongListItemPress={this.onSongListItemPress}
         />
         {this.renderMessage()}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }

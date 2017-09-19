@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { getMyPlaylists } from '../../actions';
 import MyPlaylistList from '../../components/MyPlaylistList';
@@ -14,6 +15,12 @@ class DownloadedPlaylistsListScreen extends Component {
   componentDidMount() {
     const { getMyPlaylists, user, authToken, navigation, awaitingMyPlaylists } = this.props;
     getMyPlaylists(authToken);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.myPlaylistsError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.myPlaylistsError);
+    }
   }
 
   renderSpinner() {
@@ -61,6 +68,17 @@ class DownloadedPlaylistsListScreen extends Component {
     return dataFiltered;
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const { myPlaylists, navigation } = this.props;
 
@@ -69,6 +87,7 @@ class DownloadedPlaylistsListScreen extends Component {
           <MyPlaylistList data={this.filterPlaylists(myPlaylists)} navigation={navigation} navigationTarget='downloadedPlaylist' />
           {this.renderMessage()}
           {this.renderSpinner()}
+          {this.renderDropdownAlert()}
         </BackgroundImage>
     );
   }

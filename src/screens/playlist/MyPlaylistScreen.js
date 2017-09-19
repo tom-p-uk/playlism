@@ -30,7 +30,6 @@ class MyPlaylistScreen extends Component {
 
   state = {
     isSortPlaylistModalVisible: false,
-    fileIsDownloading: false,
   };
 
   toggleSortPlaylistModal = () => this.setState({ isSortPlaylistModalVisible: !this.state.isSortPlaylistModalVisible });
@@ -51,6 +50,10 @@ class MyPlaylistScreen extends Component {
 
     if (nextProps.downloadSongError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.downloadSongError);
+    } else if (nextProps.songsInMyPlaylistError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.songsInMyPlaylistError);
+    } else if (nextProps.deleteDownloadedSongError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.deleteDownloadedSongError);
     }
   }
 
@@ -174,6 +177,17 @@ class MyPlaylistScreen extends Component {
     previewSong(song.videoId);
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   renderContent = () => {
     const {
       songsInMyPlaylist,
@@ -218,13 +232,7 @@ class MyPlaylistScreen extends Component {
             :
               this.renderContent()
         }
-        <DropdownAlert
-          ref={ref => this.dropdown = ref}
-          // startDelta={-200}
-          errorColor='#F26C4F'
-          closeInterval={2000}
-          titleStyle={styles.dropdownAlertTitle}
-        />
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -254,21 +262,13 @@ const styles = {
   buttonDisabled: {
     backgroundColor: '#98250B',
   },
-  dropdownAlertTitle: {
-    marginTop: Platform.OS === 'android' ? 0 : -20,
-    fontSize: 16,
-    textAlign: 'left',
-    fontWeight: 'bold',
-    color: 'white',
-    backgroundColor: 'transparent'
-  },
 };
 
 const mapStateToProps = ({
   auth: { authToken },
   playlist: { awaitingSongsInMyPlaylist, songsInMyPlaylist, songsInMyPlaylistError, myPlaylistSortedBy },
   player: { isPreviewSongModalOpen, songBeingPreviewed },
-  downloads: { downloadedSongs, currentlyDownloading, pendingDownloads, downloadSongError }
+  downloads: { downloadedSongs, currentlyDownloading, pendingDownloads, downloadSongError, deleteDownloadedSongError }
 }) => {
   return {
     authToken,
@@ -282,6 +282,7 @@ const mapStateToProps = ({
     currentlyDownloading,
     pendingDownloads,
     downloadSongError,
+    deleteDownloadedSongError,
   };
 };
 

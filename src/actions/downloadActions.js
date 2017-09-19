@@ -26,17 +26,6 @@ export const downloadSong = (song, attemptNum) => async dispatch => {
     let { data: { streams } } = await axios.get(`https://getvideo.p.mashape.com?url=${youTubeUrl}`)
     let { url } = streams[streams.length - 2];
 
-    // const { data } = await axios.get(`https://madde22-youtube-v1.p.mashape.com/Youtube/GetDownloadUrls?Url=${youTubeUrl}`);
-    // const track = data[data.length - 3];
-    // console.log(track);
-
-    // API occasionally sends an HTML response rather than JSON. In those cases, make
-    // repeated requests until a JSON response is received
-    // if (JSON.stringify(data).indexOf('" />') !== -1) {
-    //   console.log(`Download attempt #${attemptNum} failed. Reattempting.`);
-    //   return dispatch(downloadSong(song, attemptNum + 1));
-    // }
-
     const callback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
       // Callback is called for old as well as present downloads for some reason,
       // so _id must be set to null after downloading, and callback only called for non-null _id values
@@ -128,7 +117,7 @@ export const deleteDownloadedSong = song => async dispatch => {
     dispatch(deleteDownloadedSongSuccess(song._id));
   } catch (err) {
     console.log(err);
-    dispatch(deleteDownloadedSongFailure(song._id, err));
+    dispatch(deleteDownloadedSongFailure(song._id, `Could not delete ${song.title}`));
   }
 };
 

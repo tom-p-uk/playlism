@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Image, Platform } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { createPlaylist } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
@@ -12,6 +13,12 @@ import BackButton from '../../components/BackButton';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class CreatePlaylistScreen extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.createPlaylistError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.createPlaylistError);
+    }
+  }
+
   onSubmit = ({ createPlaylistTitle }) => {
     const { navigation, createPlaylist, authToken } = this.props;
     const { user } = this.props.navigation.state.params;
@@ -23,10 +30,21 @@ class CreatePlaylistScreen extends Component {
     createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     const { user } = this.props.navigation.state.params;
     const { handSubmit, awaitingCreatePlaylist} = this.props;
-    console.log(awaitingCreatePlaylist);
+
     return (
       <BackgroundImage>
         <Card containerStyle={{ opacity: 0.8 }}>
@@ -60,6 +78,7 @@ class CreatePlaylistScreen extends Component {
             />
           </View>
         </Card>
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -116,10 +135,11 @@ const Form = reduxForm({
   form: 'createPlaylist',
 })(CreatePlaylistScreen);
 
-const mapStateToProps = ({ auth: { authToken }, playlist: { awaitingCreatePlaylist } }) => {
+const mapStateToProps = ({ auth: { authToken }, playlist: { awaitingCreatePlaylist, createPlaylistError } }) => {
   return {
     awaitingCreatePlaylist,
     authToken,
+    createPlaylistError,
   };
 };
 

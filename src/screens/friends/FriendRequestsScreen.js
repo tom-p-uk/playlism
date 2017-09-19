@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { getFriendRequests } from '../../actions';
 import { Icon } from 'react-native-elements';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
@@ -25,6 +26,10 @@ class FriendRequestsScreen extends Component {
     const { getFriendRequests, authToken, currentRoute } = this.props;
     if (currentRoute !== nextProps.currentRoute && nextProps.currentRoute === 'friendRequests') {
       getFriendRequests(authToken);
+    }
+
+    if (nextProps.friendRequestsError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.friendRequestsError);
     }
   }
 
@@ -56,6 +61,17 @@ class FriendRequestsScreen extends Component {
     }
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     let data;
      if (this.props.friendRequests) {
@@ -76,6 +92,7 @@ class FriendRequestsScreen extends Component {
         />
         {this.renderMessage()}
         {this.renderSpinner()}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }

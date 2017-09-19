@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Image, Platform } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { editPlaylistTitle, deleteFriendsPlaylist } from '../../actions';
 import Input from '../../components/Input';
@@ -15,6 +16,11 @@ class EditPlaylistScreen extends Component {
     isConfirmationModalVisible: false,
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.editPlaylistTitleError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.editPlaylistTitleError);
+    }
+  }
 
   toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });
 
@@ -40,6 +46,17 @@ class EditPlaylistScreen extends Component {
     this.toggleConfirmationModal();
     const navigationCallback = () => navigation.goBack();
     deleteFriendsPlaylist(playlist._id, friendsPlaylists, authToken, navigationCallback);
+  };
+
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
   };
 
   render() {
@@ -99,6 +116,7 @@ class EditPlaylistScreen extends Component {
           onCancelPress={this.toggleConfirmationModal}
           text={'Are you sure you want to delete this playlist?'}
         />
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
@@ -149,7 +167,11 @@ const validate = ({ playlistTitle }) => {
 };
 
 const mapStateToProps = (state, props) => {
-  const { auth: { authToken }, playlist: { awaitingEditPlaylistTitle, awaitingDeleteFriendsPlaylist } } = state;
+  const {
+    auth: { authToken },
+    playlist: { awaitingEditPlaylistTitle, awaitingDeleteFriendsPlaylist, editPlaylistTitleError }
+  } = state;
+
   return {
     authToken,
     awaitingEditPlaylistTitle,

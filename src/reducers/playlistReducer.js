@@ -78,6 +78,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingMyPlaylists: true,
+        myPlaylistsError: '',
       };
 
     case (GET_MY_PLAYLISTS_SUCCESS):
@@ -85,6 +86,7 @@ export default (state = initialState, action) => {
         ...state,
         awaitingMyPlaylists: false,
         myPlaylists: action.payload.myPlaylists,
+        myPlaylistsError: '',
       };
 
     case (GET_MY_PLAYLISTS_FAILURE):
@@ -98,6 +100,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingFriendsPlaylists: true,
+        friendsPlaylistsError: '',
       };
 
     case (GET_FRIENDS_PLAYLISTS_SUCCESS):
@@ -105,6 +108,7 @@ export default (state = initialState, action) => {
         ...state,
         awaitingFriendsPlaylists: false,
         friendsPlaylists: action.payload.friendsPlaylists,
+        friendsPlaylistsError: '',
       };
 
     case (GET_FRIENDS_PLAYLISTS_FAILURE):
@@ -115,18 +119,18 @@ export default (state = initialState, action) => {
       };
 
     case (CREATE_PLAYLIST_START):
-    console.log(action);
       return {
         ...state,
         awaitingCreatePlaylist: true,
+        createPlaylistError: '',
       };
 
     case (CREATE_PLAYLIST_SUCCESS):
-    // console.log(action);
       return {
         ...state,
         awaitingCreatePlaylist: false,
-        friendsPlaylists: [...state.friendsPlaylists, action.payload.playlist]
+        friendsPlaylists: [...state.friendsPlaylists, action.payload.playlist],
+        createPlaylistError: '',
       };
 
     case (CREATE_PLAYLIST_FAILURE):
@@ -140,6 +144,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingSearchResults: true,
+        searchError: '',
       };
 
     case (SEARCH_SONGS_SUCCESS):
@@ -167,13 +172,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingSongsInFriendsPlaylist: true,
+        songsInFriendsPlaylistError: '',
       };
 
     case (GET_SONGS_IN_FRIENDS_PLAYLIST_SUCCESS):
       return {
         ...state,
         awaitingSongsInFriendsPlaylist: false,
-        songsInFriendsPlaylist: action.payload.songsInFriendsPlaylist
+        songsInFriendsPlaylist: action.payload.songsInFriendsPlaylist,
+        songsInFriendsPlaylistError: '',
       };
 
     case (GET_SONGS_IN_FRIENDS_PLAYLIST_FAILURE):
@@ -187,13 +194,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingSongsInMyPlaylist: true,
+        songsInMyPlaylistError: '',
       };
 
     case (GET_SONGS_IN_MY_PLAYLIST_SUCCESS):
       return {
         ...state,
         awaitingSongsInMyPlaylist: false,
-        songsInMyPlaylist: action.payload.songsInMyPlaylist
+        songsInMyPlaylist: action.payload.songsInMyPlaylist,
+        songsInMyPlaylistError: '',
       };
 
     case (GET_SONGS_IN_MY_PLAYLIST_FAILURE):
@@ -207,6 +216,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingAddSong: true,
+        addSongError: '',
       };
 
     case (ADD_SONG_SUCCESS):
@@ -228,6 +238,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingDeleteSong: true,
+        deleteSongError: '',
       };
 
     case (DELETE_SONG_SUCCESS):
@@ -249,6 +260,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingEditPlaylistTitle: true,
+        editPlaylistTitleError: '',
       };
 
     case (EDIT_PLAYLIST_TITLE_SUCCESS):
@@ -270,6 +282,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         awaitingDeleteFriendsPlaylist: true,
+        deleteFriendsPlaylistError: '',
       };
 
     case (DELETE_FRIENDS_PLAYLIST_SUCCESS):

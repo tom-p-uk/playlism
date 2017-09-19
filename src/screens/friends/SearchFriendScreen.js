@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { debounce, isNull } from 'lodash';
 import { searchFriendsStart, searchFriends, clearSearchFriendsResults } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import SearchBar from '../../components/SearchBar';
 import FriendsList from '../../components/FriendsList';
@@ -13,12 +14,13 @@ import * as actions from '../../actions';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class SearchFriendScreen extends Component {
-  static navigationOptions = {
-    title: 'Search Friends'
-  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.searchError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.searchError);
+    }
+  }
 
   renderHeader = () => {
-    const { awaitingSearchResults } = this.props;
     return (
       <Field
         name={'friendsSearchBar'}
@@ -26,10 +28,6 @@ class SearchFriendScreen extends Component {
         showLoadingIcon={this.props.awaitingSearchResults}
       />
     );
-  };
-
-  renderNoSearchResults = () => {
-
   };
 
   renderMessage = () => {
@@ -50,6 +48,17 @@ class SearchFriendScreen extends Component {
     }
   };
 
+  renderDropdownAlert = () => {
+    return (
+      <DropdownAlert
+        ref={ref => this.dropdown = ref}
+        errorColor='#F26C4F'
+        closeInterval={2000}
+        titleStyle={{ marginTop: Platform.OS === 'android' ? 0 : -20, fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' }}
+      />
+    );
+  };
+
   render() {
     return (
       <BackgroundImage>
@@ -60,6 +69,7 @@ class SearchFriendScreen extends Component {
           opacity={0.9}
         />
         {this.renderMessage()}
+        {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
