@@ -34,6 +34,7 @@ const DownloadsTabNav = TabNavigator({
   },
 }, {
   tabBarPosition: 'bottom',
+  animationEnabled: false,
   swipeEnabled: false,
   lazy: true,
   tabBarOptions: {

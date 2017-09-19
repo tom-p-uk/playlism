@@ -9,6 +9,7 @@ class PreviewSongModal extends Component {
     const { isVisible, videoId, onButtonPress } = this.props;
     return (
       <Modal isVisible={isVisible}>
+        <View style={styles.container}>
         <View style={{ flex: 1 }} />
         <View style={styles.webViewContainer}>
           <WebView
@@ -19,7 +20,7 @@ class PreviewSongModal extends Component {
                     &showinfo=0&controls=1&modestbranding=0`,
               headers: { Referer: 'https://www.youtube.com' }
             }}
-            style={{}}
+            style={styles.webView}
             javaScriptEnabled={true}
             allowsInlineMediaPlayback={true}
           />
@@ -38,31 +39,42 @@ class PreviewSongModal extends Component {
             />
           </View>
         </View>
+        </View>
       </Modal>
     );
   }
 };
 
 const styles = {
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.01)',
+  },
   webViewContainer: {
     flex: 2,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   webView: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0)'
   },
   buttonOuterContainer: {
     flex: 1,
     justifyContent: 'center',
+    // backgroundColor: 'white',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    // backgroundColor: 'white'
   },
   button: {
     width: 140,
+    // backgroundColor: '#98250B'
   },
 };
 

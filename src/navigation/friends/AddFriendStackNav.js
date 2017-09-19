@@ -8,7 +8,7 @@ const AddFriendStackNav = StackNavigator({
   searchFriends: {
     screen: SearchFriendScreen,
     navigationOptions: {
-      title: 'Search Friends'
+      title: 'Add Friends'
     }
   },
   user: { screen: UserScreen },

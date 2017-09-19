@@ -50,6 +50,7 @@ const PlaylistTabNav = TabNavigator({
 }, {
   tabBarPosition: 'bottom',
   swipeEnabled: false,
+  animationEnabled: false,
   lazy: true,
   tabBarOptions: {
     labelStyle: { fontSize: 11, marginBottom: Platform.OS === 'android' ? -5 : 0 },

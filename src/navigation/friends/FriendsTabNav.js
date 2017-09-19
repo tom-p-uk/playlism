@@ -19,6 +19,7 @@ const FriendsTabNav = TabNavigator({
   },
 }, {
   tabBarPosition: 'bottom',
+  animationEnabled: false,
   swipeEnabled: false,
   lazy: false,
   tabBarOptions: {

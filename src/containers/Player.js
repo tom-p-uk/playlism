@@ -112,9 +112,11 @@ class Player extends Component {
     }
   };
 
-  handleSkipNext = () => {
-    const { songs, currentlyPlayingSong, repeatMode, shuffle, setCurrentlyPlayingSong } = this.props;
+  handleSkipNext = async () => {
+    const { songs, currentlyPlayingSong, repeatMode, shuffle, setCurrentlyPlayingSong, playbackObject } = this.props;
     const index = this.findIndexOfSongInSongsList(songs, currentlyPlayingSong);
+
+    await playbackObject.pauseAsync();
 
     if (shuffle) {
       const index = Math.floor(Math.random() * songs.length);
@@ -274,7 +276,7 @@ const styles = {
     backgroundColor: 'rgba(242,108,79, 0.7)',
     flex: 1,
     justifyContent: 'flex-end',
-    paddingTop: Platform.OS === 'android' ? 50 : 30,
+    paddingTop: Platform.OS === 'android' ? 40 : 30,
     paddingBottom: 15,
   },
   button: {
@@ -305,12 +307,12 @@ const styles = {
   },
   minsAndSecsLeft: {
     color: '#FFFFFF',
-    paddingLeft: 4,
+    paddingLeft: 7,
     width: 40,
   },
   minsAndSecsRight: {
     color: '#FFFFFF',
-    paddingLeft: 4,
+    paddingLeft: 7,
     width: 40,
   },
   buttonsContainer: {

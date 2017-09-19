@@ -153,7 +153,6 @@ class MainNavWithNavigationState extends Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
         const { dispatch, nav } = this.props
-        console.log(nav);
         if (this.shouldCloseApp(nav)) return false
         dispatch(NavigationActions.back({ key: null }));
         return true

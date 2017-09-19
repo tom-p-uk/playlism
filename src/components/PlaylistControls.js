@@ -12,7 +12,7 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
           title={firstButtonProps.title}
           icon={{ name: firstButtonProps.iconName, style: styles.buttonIcon }}
           onPress={firstButtonProps.onPress}
-          style={styles.button}
+          buttonStyle={styles.button}
           disabledStyle={styles.buttonDisabled}
           fontSize={12}
           borderRadius={30}
@@ -24,7 +24,7 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
           title={secondButtonProps.title}
           icon={{ name: secondButtonProps.iconName, style: styles.buttonIcon }}
           onPress={secondButtonProps.onPress}
-          style={styles.button}
+          buttonStyle={styles.button}
           disabledStyle={styles.buttonDisabled}
           fontSize={12}
           borderRadius={30}
@@ -37,11 +37,11 @@ const PlaylistControls = ({ firstButtonProps, secondButtonProps }) => {
 
 const styles = {
   buttonCard: {
-    opacity: 0.8,
     marginTop: 20,
     marginBottom: 0,
     marginLeft: 30,
     marginRight: 30,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
   },
   buttonIcon: {
     marginRight: 3,
@@ -55,7 +55,7 @@ const styles = {
   },
   button: {
     // width: 115,
-    // opacity: 0.9,
+    opacity: 0.9,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',
