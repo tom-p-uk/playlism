@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import moment from 'moment';
 import { KeepAwake } from 'expo';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import SongsList from '../../components/SongsList';
 import Player from '../../containers/Player';
