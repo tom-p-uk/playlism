@@ -23,7 +23,7 @@ class FriendsPlaylistsListScreen extends Component {
       getFriendsPlaylists(authToken);
     }
 
-    if (nextProps.friendsPlaylistsError) {
+    if (!this.props.friendsPlaylistsError && nextProps.friendsPlaylistsError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.friendsPlaylistsError);
     }
   }
@@ -46,12 +46,6 @@ class FriendsPlaylistsListScreen extends Component {
         >
           You haven't created any playlists yet.
         </Message>
-      );
-    } else if (friendsPlaylistsError) {
-      return (
-        <Message
-          text={friendsPlaylistsError}
-        />
       );
     }
   };

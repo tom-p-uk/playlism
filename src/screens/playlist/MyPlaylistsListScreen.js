@@ -22,6 +22,10 @@ class MyPlaylistsListScreen extends Component {
     if (currentRoute !== 'myPlayliststList' && nextProps.currentRoute === 'myPlayliststList') {
       getMyPlaylists(authToken);
     }
+
+    if (this.props.myPlaylistsError && nextProps.myPlaylistsError) {
+      this.dropdown.alertWithType('error', 'Error', nextProps.myPlaylistsError);
+    }
   }
 
   renderSpinner() {
@@ -42,12 +46,6 @@ class MyPlaylistsListScreen extends Component {
         >
           You don't have any playlists yet.
         </Message>
-      );
-    } else if (myPlaylistsError) {
-      return (
-        <Message
-          text={myPlaylistsError}
-        />
       );
     }
   };

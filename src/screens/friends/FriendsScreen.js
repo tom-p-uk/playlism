@@ -34,7 +34,7 @@ class FriendsScreen extends Component {
       getFriends(authToken);
     }
 
-    if (nextProps.friendsError) {
+    if (!this.props.friendsError && nextProps.friendsError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.friendsError);
     }
   }
@@ -72,12 +72,6 @@ class FriendsScreen extends Component {
           You currently have no friends.{'\n'}
           Check the 'Search Friends' tab to add some.
         </Message>
-      );
-    } else if (friendsError) {
-      return (
-        <Message
-          text={friendsError}
-        />
       );
     }
   };

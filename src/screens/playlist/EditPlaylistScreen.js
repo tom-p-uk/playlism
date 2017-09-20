@@ -17,7 +17,7 @@ class EditPlaylistScreen extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.editPlaylistTitleError) {
+    if (!this.props.editPlaylistTitleError && nextProps.editPlaylistTitleError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.editPlaylistTitleError);
     }
   }

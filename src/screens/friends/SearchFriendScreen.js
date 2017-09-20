@@ -15,7 +15,7 @@ import BackgroundImage from '../../components/BackgroundImage';
 
 class SearchFriendScreen extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.searchError) {
+    if (!this.props.searchError && nextProps.searchError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.searchError);
     }
   }
@@ -37,12 +37,6 @@ class SearchFriendScreen extends Component {
       return (
         <Message color='#F26C4F'>
           No search results found.
-        </Message>
-      );
-    } else if (searchError) {
-      return (
-        <Message>
-          {searchError}
         </Message>
       );
     }

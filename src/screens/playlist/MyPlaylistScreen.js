@@ -48,11 +48,11 @@ class MyPlaylistScreen extends Component {
       console.log(nextProps.currentlyDownloading);
     }
 
-    if (nextProps.downloadSongError) {
+    if (!this.props.downloadSongError && nextProps.downloadSongError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.downloadSongError);
-    } else if (nextProps.songsInMyPlaylistError) {
+    } else if (!this.props.songsInMyPlaylistError && nextProps.songsInMyPlaylistError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.songsInMyPlaylistError);
-    } else if (nextProps.deleteDownloadedSongError) {
+    } else if (!this.props.deleteDownloadedSongError && nextProps.deleteDownloadedSongError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.deleteDownloadedSongError);
     }
   }

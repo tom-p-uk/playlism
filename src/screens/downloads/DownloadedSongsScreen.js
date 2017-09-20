@@ -20,7 +20,7 @@ class DownloadedSongsScreen extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.deleteDownloadedSongError) {
+    if (!this.props.deleteDownloadedSongError && nextProps.deleteDownloadedSongError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.deleteDownloadedSongError);
     }
   }

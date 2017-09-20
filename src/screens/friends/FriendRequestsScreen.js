@@ -28,7 +28,7 @@ class FriendRequestsScreen extends Component {
       getFriendRequests(authToken);
     }
 
-    if (nextProps.friendRequestsError) {
+    if (!this.props.friendRequestsError && nextProps.friendRequestsError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.friendRequestsError);
     }
   }
@@ -50,12 +50,6 @@ class FriendRequestsScreen extends Component {
           color='#F26C4F'
         >
           You don't have any friend requests.
-        </Message>
-      );
-    } else if (friendRequestsError) {
-      return (
-        <Message>
-          {friendRequestsError}
         </Message>
       );
     }

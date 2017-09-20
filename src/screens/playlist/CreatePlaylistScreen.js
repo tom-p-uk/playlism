@@ -14,7 +14,7 @@ import BackgroundImage from '../../components/BackgroundImage';
 
 class CreatePlaylistScreen extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.createPlaylistError) {
+    if (!this.props.createPlaylistError && nextProps.createPlaylistError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.createPlaylistError);
     }
   }
@@ -23,8 +23,18 @@ class CreatePlaylistScreen extends Component {
     const { navigation, createPlaylist, authToken } = this.props;
     const { user } = this.props.navigation.state.params;
 
+
+
     const navigationCallback = () => {
-      this.props.navigation.navigate('friendsPlaylistsList');
+      const resetAction = NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'selectFriend' }),
+        ],
+        key: 'createNewPlaylist'
+      });
+
+      navigation.dispatch(resetAction);
     };
 
     createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);

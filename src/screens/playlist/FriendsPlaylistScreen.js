@@ -32,7 +32,7 @@ class FriendsPlaylistScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.songsInFriendsPlaylistError) {
+    if (!this.props.songsInFriendsPlaylistError && nextProps.songsInFriendsPlaylistError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.songsInFriendsPlaylistError);
     }
   }

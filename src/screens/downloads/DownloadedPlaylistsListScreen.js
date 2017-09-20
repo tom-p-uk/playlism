@@ -18,7 +18,7 @@ class DownloadedPlaylistsListScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.myPlaylistsError) {
+    if (!this.props.myPlaylistsError && nextProps.myPlaylistsError) {
       this.dropdown.alertWithType('error', 'Error', nextProps.myPlaylistsError);
     }
   }
@@ -43,12 +43,6 @@ class DownloadedPlaylistsListScreen extends Component {
         >
           You haven't downloaded any songs or playlists yet.
         </Message>
-      );
-    } else if (myPlaylistsError) {
-      return (
-        <Message
-          text={myPlaylistsError}
-        />
       );
     }
   };
