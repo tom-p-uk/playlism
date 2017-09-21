@@ -17,12 +17,10 @@ const Message = ({ color, children }) => {
 const styles = {
   card: {
     opacity: 0.8,
-    // marginTop: 40,
   },
   container: {
     alignSelf: 'center',
     width: 250,
-    // height: 65,
     marginTop: 20,
     marginBottom: 20,
   },

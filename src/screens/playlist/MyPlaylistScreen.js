@@ -258,6 +258,7 @@ const styles = {
   },
   button: {
     // width: 115,
+    height: 44,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

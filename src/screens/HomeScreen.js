@@ -89,13 +89,11 @@ const styles = {
     justifyContent: 'flex-end',
     alignItems: 'center',
     borderRadius: 60,
-    // opacity: 0.7,
   },
   button: {
     width: 250,
     marginBottom: 40,
-    // opacity: 0.7,
-    height: 45,
+    height: 44,
   },
   img: {
     position: 'absolute',

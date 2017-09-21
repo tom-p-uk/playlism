@@ -45,11 +45,11 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: -40,
     height: 50,
   },
   button: {
     width: 140,
+    height: 44,
   },
 };
 

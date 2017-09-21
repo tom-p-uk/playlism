@@ -96,9 +96,9 @@ class DownloadedSongsScreen extends Component {
       return (
         <BackgroundImage>
           <Message color='#F26C4F'>
-            There are no songs currently available.{'\n\n'}
+            No songs currently available.{'\n\n'}
 
-            To download some, navigate to the the 'My Playlists' section of the app.
+            To download some, go to the the {'\n'}'My Playlists' section of the app.
           </Message>
         </BackgroundImage>
       );

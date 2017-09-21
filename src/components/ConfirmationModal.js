@@ -8,37 +8,35 @@ class ConfirmationModal extends Component {
     const { isVisible, onConfirmPress, onCancelPress, text } = this.props;
 
     return (
-      // <View style={styles.container}>
-        <Modal isVisible={isVisible}>
-          <Card containerStyle={{ opacity: 0.9 }}>
-            <Text style={styles.text}>
-              {text}
-            </Text>
-            <View style={styles.buttonContainer}>
-              <Button
-                raised
-                title='Confirm'
-                icon={{ name: 'done' }}
-                onPress={onConfirmPress}
-                buttonStyle={styles.button}
-                fontSize={13}
-                borderRadius={30}
-                backgroundColor='#98250B'
-              />
-              <Button
-                raised
-                title='Cancel'
-                icon={{ name: 'clear' }}
-                onPress={onCancelPress}
-                buttonStyle={styles.button}
-                fontSize={13}
-                borderRadius={30}
-                backgroundColor='#D13310'
-              />
-            </View>
-          </Card>
-        </Modal>
-      // </View>
+      <Modal isVisible={isVisible}>
+        <Card containerStyle={{ opacity: 0.9 }}>
+          <Text style={styles.text}>
+            {text}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              raised
+              title='Confirm'
+              icon={{ name: 'done' }}
+              onPress={onConfirmPress}
+              buttonStyle={styles.button}
+              fontSize={13}
+              borderRadius={30}
+              backgroundColor='#98250B'
+            />
+            <Button
+              raised
+              title='Cancel'
+              icon={{ name: 'clear' }}
+              onPress={onCancelPress}
+              buttonStyle={styles.button}
+              fontSize={13}
+              borderRadius={30}
+              backgroundColor='#D13310'
+            />
+          </View>
+        </Card>
+      </Modal>
     );
   }
 };
@@ -66,6 +64,7 @@ const styles = {
   button: {
     width: 110,
     marginBottom: 10,
+    height: 44,
   },
 };
 

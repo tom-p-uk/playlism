@@ -21,7 +21,7 @@ const FriendsTabNav = TabNavigator({
   tabBarPosition: 'bottom',
   animationEnabled: false,
   swipeEnabled: false,
-  lazy: false,
+  lazy: true,
   tabBarOptions: {
     labelStyle: { fontSize: 11, marginBottom: Platform.OS === 'android' ? -5 : 0 },
     iconStyle: {

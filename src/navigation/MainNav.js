@@ -10,7 +10,6 @@ import HomeScreen from '../screens/HomeScreen';
 import DownloadsTabNav from './downloads/DownloadsTabNav';
 import FriendsTabNav from './friends/FriendsTabNav';
 import PlaylistTabNav from './playlists/PlaylistTabNav';
-import Hamburger from '../components/Hamburger';
 import DrawerButton from '../components/DrawerButton';
 import CustomDrawerMenu from '../containers/CustomDrawerMenu';
 import BackButton from '../components/BackButton';

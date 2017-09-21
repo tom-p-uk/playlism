@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { debounce, isNull } from 'lodash';
 import { searchFriendsStart, searchFriends, clearSearchFriendsResults } from '../../actions';

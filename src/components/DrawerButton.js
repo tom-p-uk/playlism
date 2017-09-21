@@ -9,13 +9,12 @@ class DrawerButton extends Component {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('DrawerOpen')}
-        style={styles.button}
+        style={styles.opacity}
       >
         <Icon
           type='material-community'
           name="menu"
           color={tintColor}
-          // style={styles.iconStyle}
         />
       </TouchableOpacity>
     );
@@ -23,7 +22,7 @@ class DrawerButton extends Component {
 };
 
 const styles = {
-  button: {
+  opacity: {
     paddingRight: 10,
   }
 };

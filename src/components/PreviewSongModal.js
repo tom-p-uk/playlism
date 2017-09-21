@@ -62,7 +62,6 @@ const styles = {
   buttonOuterContainer: {
     flex: 1,
     justifyContent: 'center',
-    // backgroundColor: 'white',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -70,11 +69,10 @@ const styles = {
     alignItems: 'center',
     height: 50,
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    // backgroundColor: 'white'
   },
   button: {
     width: 140,
-    // backgroundColor: '#98250B'
+    height: 44,
   },
 };
 

@@ -16,7 +16,6 @@ class FriendsScreen extends Component {
     title: 'Friends',
     tabBarIcon: ({ tintColor }) => (
       <Icon
-        // style={styles.icon}
         type='material-community'
         name='account-multiple'
         color={tintColor}

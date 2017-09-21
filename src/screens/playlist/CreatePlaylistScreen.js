@@ -34,7 +34,8 @@ class CreatePlaylistScreen extends Component {
         key: 'createNewPlaylist'
       });
 
-      navigation.dispatch(resetAction);
+      // navigation.dispatch(resetAction);
+      navigation.navigate('friendsPlaylistsList');
     };
 
     createPlaylist(createPlaylistTitle, user, authToken, navigationCallback);
@@ -106,10 +107,8 @@ const styles = {
     marginBottom: 8,
   },
   text: {
-    // fontSize: 19,
     alignSelf: 'center',
     justifyContent: 'center',
-    // marginBottom: 15,
   },
   buttonContainer: {
     justifyContent: 'center',
@@ -119,6 +118,7 @@ const styles = {
     width: 215,
     marginTop: 30,
     marginBottom: 30,
+    height: 44,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

@@ -50,12 +50,12 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: -40,
     height: 50,
   },
   button: {
     // width: 115,
     opacity: 0.9,
+    height: 44,
   },
   buttonDisabled: {
     backgroundColor: '#98250B',

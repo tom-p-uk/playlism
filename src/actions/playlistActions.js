@@ -138,7 +138,12 @@ export const createPlaylist = (title, forUser, authToken, navigationCallback) =>
     }
   } catch (err) {
     console.log(err);
-    dispatch(createPlaylistFailure(err));
+
+    if (err.response && err.response.data && err.response.data.error) {
+      dispatch(createPlaylistFailure(err.response.data.error));
+    } else {
+      dispatch(createPlaylistFailure('Could not create the playlist.'));
+    }
   }
 };
 

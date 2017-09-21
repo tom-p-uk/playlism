@@ -169,7 +169,6 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: -40,
     height: 50,
     opacity: 0.9,
   },

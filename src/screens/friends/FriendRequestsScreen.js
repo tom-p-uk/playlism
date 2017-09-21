@@ -22,6 +22,11 @@ class FriendRequestsScreen extends Component {
     ),
   };
 
+  componentDidMount() {
+    const { getFriendRequests, authToken } = this.props;
+    getFriendRequests(authToken);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { getFriendRequests, authToken, currentRoute } = this.props;
     if (currentRoute !== nextProps.currentRoute && nextProps.currentRoute === 'friendRequests') {

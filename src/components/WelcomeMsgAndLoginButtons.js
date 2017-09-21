@@ -88,7 +88,6 @@ const styles = {
   button: {
     width: 260,
     marginBottom: 40,
-    // opacity: 0.7,
     height: 45,
   },
 };

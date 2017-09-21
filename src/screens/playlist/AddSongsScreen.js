@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal } from '../../actions';
@@ -99,10 +98,7 @@ const onChange = _.debounce(({ songsSearchBar }, dispatch, props) => {
   const { searchSongs } = props;
 
   if (songsSearchBar) {
-    // searchFriendsStart();
     searchSongs(songsSearchBar);
-  } else if (!songsSearchBar) {
-    // clearSearchFriendsResults();
   }
 }, 400);
 

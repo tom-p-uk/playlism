@@ -3,7 +3,7 @@ import { View, Text, Image, Dimensions } from 'react-native';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-const startOAuthLoggedInUserMsgAndPic = ({ user }) => {
+const LoggedInUserMsgAndPic = ({ user }) => {
   if (!user) return <View />
 
   return (
@@ -25,7 +25,7 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: - SCREEN_HEIGHT,
+    marginTop: -SCREEN_HEIGHT,
   },
   profileImgContainer: {
     margin: 20,
@@ -43,4 +43,4 @@ const styles = {
   },
 };
 
-export default startOAuthLoggedInUserMsgAndPic;
+export default LoggedInUserMsgAndPic;

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 import BackButton from '../components/BackButton';
@@ -57,10 +56,10 @@ class UserScreen extends Component {
 
     if (userFriendStatus === 'notFriends') {
       return {
-        icon: { name: 'account-plus', type: 'material-community' },
+        icon: awaitingSendFriendRequest ? null : { name: 'account-plus', type: 'material-community' },
         title: 'Send Friend Request',
         disabled: awaitingSendFriendRequest,
-        // loading: awaitingSendFriendRequest,
+        loading: awaitingSendFriendRequest,
         onPress: () => sendFriendRequest(user._id, authToken),
       };
     } else if (userFriendStatus === 'friendRequestSent') {
@@ -71,10 +70,10 @@ class UserScreen extends Component {
       };
     } else if (userFriendStatus === 'friendRequestReceived') {
       return {
-        icon: { name: 'done' },
+        icon: awaitingRespondToFriendRequest ? null : { name: 'done' },
         title: 'Accept Friend Request',
         disabled: awaitingRespondToFriendRequest,
-        // loading: awaitingRespondToFriendRequest,
+        loading: awaitingRespondToFriendRequest,
         onPress: () => respondToFriendRequest(user, friends, friendRequests, authToken, true)
       };
     } else {
@@ -100,19 +99,19 @@ class UserScreen extends Component {
 
     if (userFriendStatus === 'friendRequestReceived') {
       return {
-        icon: { name: 'block' },
+        icon: awaitingRespondToFriendRequest ? null : { name: 'block' },
         title: 'Reject Friend Request',
         disabled: awaitingRespondToFriendRequest,
-        // loading: awaitingRespondToFriendRequest,
+        loading: awaitingRespondToFriendRequest,
         onPress: () => respondToFriendRequest(user, friends, friendRequests, authToken),
         backgroundColor: '#D13310',
       };
     } else if (userFriendStatus === 'friends') {
       return {
-        icon: { name: 'clear' },
+        icon: awaitingDeleteFriend ? null : { name: 'clear' },
         title: "Delete Friend",
         disabled: awaitingDeleteFriend,
-        // loading: awaitingDeleteFriend,
+        loading: awaitingDeleteFriend,
         onPress: this.toggleConfirmationModal,
         backgroundColor: '#D13310',
       };

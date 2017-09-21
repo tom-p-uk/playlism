@@ -40,7 +40,6 @@ class SortPlaylistButtonGroup extends Component {
         selectedIndex={sortedBy}
         buttons={buttonss}
         containerStyle={{height: 40}}
-        // selectedBackgroundColor='#F26C4F'
         selectedTextStyle={{ color: '#F26C4F' }}
       />
     )
