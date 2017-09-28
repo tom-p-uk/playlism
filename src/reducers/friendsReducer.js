@@ -38,7 +38,8 @@ const initialState = {
   awaitingSendFriendRequest: false,
   sendFriendRequestError: '',
   friendRequestsSent: null,
-  awaitingRespondToFriendRequest: false,
+  awaitingAcceptFriendRequest: false,
+  awaitingRejectFriendRequest: false,
   respondToFriendRequestError: '',
   awaitingDeleteFriend: false,
   deleteFriendError: '',
@@ -157,21 +158,24 @@ export default (state = initialState, action) => {
     case (RESPOND_TO_FRIEND_REQUEST_START):
       return {
         ...state,
-        awaitingRespondToFriendRequest: true,
+        awaitingAcceptFriendRequest: action.payload.accept,
+        awaitingRejectFriendRequest: !action.payload.accept,
         respondToFriendRequestError: '',
       };
 
     case (RESPOND_TO_FRIEND_REQUEST_FAILURE):
       return {
         ...state,
-        awaitingRespondToFriendRequest: true,
+        awaitingAcceptFriendRequest: false,
+        awaitingRejectFriendRequest: false,
         respondToFriendRequestError: action.payload.error,
       };
 
     case (ACCEPT_FRIEND_REQUEST):
       return {
         ...state,
-        awaitingRespondToFriendRequest: false,
+        awaitingAcceptFriendRequest: false,
+        awaitingRejectFriendRequest: false,
         friends: action.payload.friends,
         friendRequests: action.payload.friendRequests,
       };
@@ -179,7 +183,8 @@ export default (state = initialState, action) => {
     case (REJECT_FRIEND_REQUEST):
       return {
         ...state,
-        awaitingRespondToFriendRequest: false,
+        awaitingAcceptFriendRequest: false,
+        awaitingRejectFriendRequest: false,
         friendRequests: action.payload.friendRequests,
       };
 

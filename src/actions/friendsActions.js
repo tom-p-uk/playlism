@@ -216,7 +216,7 @@ export const loadFriendRequestsSent = friendRequestsSent => {
 };
 
 export const respondToFriendRequest = (user, friends, friendRequests, authToken, accept) => async dispatch => {
-  dispatch(respondToFriendRequestStart());
+  dispatch(respondToFriendRequestStart(accept));
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.put(`${URL}/user/friend/acceptreject`, { accept, userId: user._id });
@@ -238,9 +238,10 @@ export const respondToFriendRequest = (user, friends, friendRequests, authToken,
   }
 };
 
-const respondToFriendRequestStart = () => {
+const respondToFriendRequestStart = accept => {
   return {
-    type: RESPOND_TO_FRIEND_REQUEST_START
+    type: RESPOND_TO_FRIEND_REQUEST_START,
+    payload: { accept }
   };
 };
 
@@ -304,7 +305,7 @@ const deleteFriendSuccess = friends => {
   };
 };
 
-const deletFriendFailure = error => {
+const deleteFriendFailure = error => {
   return {
     type: DELETE_FRIEND_FAILURE,
     payload: { error }

@@ -49,7 +49,8 @@ class UserScreen extends Component {
       authToken,
       friends,
       friendRequests,
-      awaitingRespondToFriendRequest,
+      awaitingRejectFriendRequest,
+      awaitingAcceptFriendRequest,
       navigation,
     } = this.props;
     const { user } = this.props.navigation.state.params;
@@ -70,10 +71,10 @@ class UserScreen extends Component {
       };
     } else if (userFriendStatus === 'friendRequestReceived') {
       return {
-        icon: awaitingRespondToFriendRequest ? null : { name: 'done' },
+        icon: awaitingAcceptFriendRequest ? null : { name: 'done' },
         title: 'Accept Friend Request',
-        disabled: awaitingRespondToFriendRequest,
-        loading: awaitingRespondToFriendRequest,
+        disabled: awaitingAcceptFriendRequest || awaitingRejectFriendRequest,
+        loading: awaitingAcceptFriendRequest,
         onPress: () => respondToFriendRequest(user, friends, friendRequests, authToken, true)
       };
     } else {
@@ -88,7 +89,8 @@ class UserScreen extends Component {
   returnSecondButtonProps = () => {
     const {
       userFriendStatus,
-      awaitingRespondToFriendRequest,
+      awaitingAcceptFriendRequest,
+      awaitingRejectFriendRequest,
       authToken,
       respondToFriendRequest,
       friends,
@@ -99,11 +101,11 @@ class UserScreen extends Component {
 
     if (userFriendStatus === 'friendRequestReceived') {
       return {
-        icon: awaitingRespondToFriendRequest ? null : { name: 'block' },
+        icon: awaitingRejectFriendRequest ? null : { name: 'block' },
         title: 'Reject Friend Request',
-        disabled: awaitingRespondToFriendRequest,
-        loading: awaitingRespondToFriendRequest,
-        onPress: () => respondToFriendRequest(user, friends, friendRequests, authToken),
+        disabled: awaitingAcceptFriendRequest || awaitingRejectFriendRequest,
+        loading: awaitingRejectFriendRequest,
+        onPress: () => respondToFriendRequest(user, friends, friendRequests, authToken, false),
         backgroundColor: '#D13310',
       };
     } else if (userFriendStatus === 'friends') {
@@ -158,7 +160,8 @@ const mapStateToProps = ({
     awaitingSendFriendRequest,
     friendRequestsSent,
     friendRequests,
-    awaitingRespondToFriendRequest,
+    awaitingAcceptFriendRequest,
+    awaitingRejectFriendRequest,
     awaitingDeleteFriend,
   },
   auth: { authToken, user },
@@ -170,7 +173,8 @@ const mapStateToProps = ({
     authToken,
     friendRequestsSent,
     friendRequests,
-    awaitingRespondToFriendRequest,
+    awaitingAcceptFriendRequest,
+    awaitingRejectFriendRequest,
     awaitingDeleteFriend,
     loggedInUser: user,
   };
