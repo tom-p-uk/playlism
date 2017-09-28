@@ -9,10 +9,10 @@ export default async authToken => {
 
   if (previousToken) return;
   else {
-    let { status } = await Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS);
+    const { status } = await Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS);
     if (status !== 'granted') return;
 
-    let pushToken = await Notifications.getExponentPushTokenAsync();
+    const pushToken = await Notifications.getExponentPushTokenAsync();
 
     axios.defaults.headers.common['Authorization'] = authToken;
     const result = await axios.put(PUSH_ENDPOINT, { pushToken });
