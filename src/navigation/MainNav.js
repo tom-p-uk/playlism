@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { addNavigationHelpers, TabNavigator, StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation'
+import { addNavigationHelpers, StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { View, Platform, Text, BackHandler } from 'react-native';
+import { Platform, BackHandler } from 'react-native';
 import { Constants } from 'expo';
 
 import AuthScreen from '../screens/AuthScreen';
@@ -15,7 +15,7 @@ import CustomDrawerMenu from '../containers/CustomDrawerMenu';
 import BackButton from '../components/BackButton';
 
 const stackNavigatorConfig = {
-  navigationOptions: ({ navigation, tintColor }) => ({
+  navigationOptions: ({ navigation }) => ({
     headerRight: (
       <DrawerButton
         navigation={navigation}
@@ -28,7 +28,7 @@ const stackNavigatorConfig = {
       marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0
      },
      headerTitleStyle: {
-      alignSelf:'center',
+      alignSelf: 'center',
       color: '#FFFFFF'
      },
     headerTintColor: '#FFFFFF',
@@ -51,7 +51,7 @@ const HomeStack = StackNavigator({
     }
   },
 }, {
-  navigationOptions: ({ navigation, tintColor }) => ({
+  navigationOptions: ({ navigation }) => ({
     headerRight: (
       <DrawerButton
         navigation={navigation}
@@ -63,7 +63,7 @@ const HomeStack = StackNavigator({
       marginTop: Platform.OS === 'android' ? 24 : 0
      },
      headerTitleStyle: {
-      alignSelf:'center',
+      alignSelf: 'center',
       color: '#FFFFFF'
      },
     headerTintColor: '#FFFFFF',
@@ -151,11 +151,11 @@ export const MainNav = StackNavigator({
 class MainNavWithNavigationState extends Component {
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', () => {
-        const { dispatch, nav } = this.props
-        if (this.shouldCloseApp(nav)) return false
+        const { dispatch, nav } = this.props;
+        if (this.shouldCloseApp(nav)) return false;
         dispatch(NavigationActions.back({ key: null }));
-        return true
-      })
+        return true;
+      });
   }
 
   componentWillUnmount() {
@@ -173,13 +173,12 @@ class MainNavWithNavigationState extends Component {
   };
 
   render() {
-    const { dispatch, nav, state } = this.props;
+    const { dispatch, nav } = this.props;
 
     return (
       <MainNav navigation={addNavigationHelpers({ dispatch, state: nav, reduxState: nav })} />
     );
   }
-
 };
 
 const mapStateToProps = ({ nav }) => ({ nav });

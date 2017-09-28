@@ -39,7 +39,6 @@ import {
   DELETE_FRIENDS_PLAYLIST_START,
   DELETE_FRIENDS_PLAYLIST_SUCCESS,
   DELETE_FRIENDS_PLAYLIST_FAILURE,
-  UPDATE_LAST_SONG_PLAYED,
   SORT_FRIENDS_PLAYLIST,
   SORT_MY_PLAYLIST,
 } from './types';
@@ -53,11 +52,11 @@ export const getMyPlaylists = authToken => async dispatch => {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/playlist/foruser`);
 
-    dispatch(getMyPlaylistsSuccess(success.playlists))
+    dispatch(getMyPlaylistsSuccess(success.playlists));
   } catch (err) {
     console.log(err);
 
-    if (err.response && err.response.data && err.response.data.error){
+    if (err.response && err.response.data && err.response.data.error) {
       dispatch(getMyPlaylistsFailure(err.response.data.error));
     } else {
       dispatch(getMyPlaylistsFailure('Could not fetch your playlists.'));
@@ -91,7 +90,7 @@ export const getFriendsPlaylists = authToken => async dispatch => {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/playlist/byuser`);
 
-    dispatch(getFriendsPlaylistsSuccess(success.playlists))
+    dispatch(getFriendsPlaylistsSuccess(success.playlists));
   } catch (err) {
     console.log(err);
 
@@ -210,7 +209,7 @@ export const getSongsInFriendsPlaylist = (playlistId, authToken) => async dispat
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/song/playlist/${playlistId}`);
 
-    dispatch(getSongsInFriendsPlaylistSuccess(success.songs))
+    dispatch(getSongsInFriendsPlaylistSuccess(success.songs));
   } catch (err) {
     console.log(err);
 
@@ -247,7 +246,7 @@ export const getSongsInMyPlaylist = (playlistId, authToken) => async dispatch =>
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/song/playlist/${playlistId}`);
-    dispatch(getSongsInMyPlaylistSuccess(success.songs))
+    dispatch(getSongsInMyPlaylistSuccess(success.songs));
   } catch (err) {
     console.log(err);
 
@@ -292,7 +291,7 @@ export const addSong = (videoId, title, description, thumbnail, playlistId, auth
       playlistId,
     });
 
-    dispatch(addSongSuccess(success.song))
+    dispatch(addSongSuccess(success.song));
   } catch (err) {
     console.log(err);
 
@@ -328,10 +327,10 @@ export const deleteSong = (songId, playlistId, songsInFriendsPlaylist, authToken
   dispatch(deleteSongStart());
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
-    const { data: { success } } = await axios.delete(`${URL}/song/${playlistId}/${songId}`);
-    console.log({songsInFriendsPlaylist});
+    await axios.delete(`${URL}/song/${playlistId}/${songId}`);
+
     const songsInFriendsPlaylistFiltered = _.filter(songsInFriendsPlaylist, song => song._id !== songId);
-    console.log({songsInFriendsPlaylist});
+
     dispatch(deleteSongSuccess(songsInFriendsPlaylistFiltered))
   } catch (err) {
     console.log(err);
@@ -364,7 +363,7 @@ const deleteSongFailure = error => {
   };
 };
 
-export const likeSong = (songId, authToken) => async dispatch => {
+export const likeSong = (songId, authToken, songsInFriendsPlaylist) => async dispatch => {
   dispatch(likeSongStart());
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
@@ -373,7 +372,7 @@ export const likeSong = (songId, authToken) => async dispatch => {
     const index = _.findIndex(songsInFriendsPlaylist, song => song._id === songId);
     songsInFriendsPlaylist[index] = success.song;
 
-    dispatch(likeSongSuccess(songsInFriendsPlaylistFiltered))
+    dispatch(likeSongSuccess(songsInFriendsPlaylist));
   } catch (err) {
     console.log(err);
 
@@ -412,7 +411,7 @@ export const unlikeSong = (songId, playlistId, songsInMyPlaylist, authToken) => 
     const { data: { success } } = await axios.unlike(`${URL}/song/${playlistId}/${songId}`);
 
     const songsInMyPlaylistFiltered = _.filter(songsInMyPlaylist, song => song._id !== songId);
-    dispatch(unlikeSongSuccess(songsInMyPlaylistFiltered))
+    dispatch(unlikeSongSuccess(songsInMyPlaylistFiltered));
   } catch (err) {
     console.log(err);
 
@@ -464,7 +463,7 @@ export const editPlaylistTitle = (playlistId, title, friendsPlaylists, authToken
     if (err.response && err.response.data && err.response.data.error) {
       dispatch(editPlaylistTitleFailure(err.response.data.error));
     } else {
-      dispatch(editPlaylistTitleFailure('Could not edit playlist.'))
+      dispatch(editPlaylistTitleFailure('Could not edit playlist.'));
     }
   }
 };

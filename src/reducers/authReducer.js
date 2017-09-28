@@ -2,7 +2,6 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGIN_START,
-  UPDATE_LAST_LOGIN,
   LOGOUT,
 } from '../actions/types';
 
@@ -16,7 +15,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case (LOGIN_SUCCESS):
       return {
         ...state,

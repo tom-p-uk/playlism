@@ -46,9 +46,10 @@ export const searchFriends = (searchTerm, authToken) => async dispatch => {
 };
 
 export const searchFriendsStart = () => {
-return {
-  type: SEARCH_FRIENDS_START
-}};
+  return {
+    type: SEARCH_FRIENDS_START
+  };
+};
 
 const searchFriendsSuccess = users => {
   return {
@@ -77,14 +78,14 @@ export const getFriends = authToken => async dispatch => {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/user/friends`);
 
-    dispatch(getFriendsSuccess(success.friends))
+    dispatch(getFriendsSuccess(success.friends));
   } catch (err) {
     console.log(err);
 
     if (err.response && err.response.data && err.response.data.error) {
       dispatch(getFriendsFailure(err.response.data.error));
     } else {
-      dispatch(getFriendsFailure('Could not fetch friends list.'))
+      dispatch(getFriendsFailure('Could not fetch friends list.'));
     }
   }
 };
@@ -115,14 +116,14 @@ export const getFriendRequests = authToken => async dispatch => {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.get(`${URL}/user/friendrequests`);
 
-    dispatch(getFriendRequestsSuccess(success.friendRequests))
+    dispatch(getFriendRequestsSuccess(success.friendRequests));
   } catch (err) {
     console.log(err);
 
     if (err.response && err.response.data && err.response.data.error) {
       dispatch(getFriendRequestsFailure(err.response.data.error));
     } else {
-      dispatch(getFriendRequestsFailure('Could not fetch friend requests.'))
+      dispatch(getFriendRequestsFailure('Could not fetch friend requests.'));
     }
   }
 };
@@ -226,14 +227,13 @@ export const respondToFriendRequest = (user, friends, friendRequests, authToken,
     } else {
       dispatch(rejectFriendRequest(user, friendRequests));
     }
-
   } catch (err) {
     console.log(err);
 
     if (err.response && err.response.data && err.response.data.error) {
       dispatch(respondToFriendRequestFailure(err.response.data.error));
     } else {
-      dispatch(respondToFriendRequestFailure('Could not reply to friend request.'))
+      dispatch(respondToFriendRequestFailure('Could not reply to friend request.'));
     }
   }
 };
@@ -274,20 +274,19 @@ const respondToFriendRequestFailure = error => {
 };
 
 export const deleteFriend = (userId, authToken) => async dispatch => {
-  dispatch(deleteFriendStart())
+  dispatch(deleteFriendStart());
   try {
     axios.defaults.headers.common['Authorization'] = authToken;
     const { data: { success } } = await axios.put(`${URL}/user/friend/delete`, { userId });
 
-    dispatch(deleteFriendSuccess(success.friends))
-
+    dispatch(deleteFriendSuccess(success.friends));
   } catch (err) {
     console.log(err);
 
     if (err.response && err.response.data && err.response.data.error) {
-      dispatch(deletFriendFailure(err.response.data.error));
+      dispatch(deleteFriendFailure(err.response.data.error));
     } else {
-      dispatch(deleteFriendFailure('Could not delete friend.'))
+      dispatch(deleteFriendFailure('Could not delete friend.'));
     }
   }
 };

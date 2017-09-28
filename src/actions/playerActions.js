@@ -1,4 +1,3 @@
-import { Audio } from 'expo';
 import { Platform } from 'react-native';
 import {
   PREVIEW_SONG,
@@ -42,7 +41,7 @@ export const setPlaybackObject = sound => async dispatch => {
   dispatch({
     type: SET_PLAYBACK_OBJECT,
     payload: { sound },
-  })
+  });
 };
 
 export const clearPlaybackObject = () => {
@@ -53,7 +52,7 @@ export const clearPlaybackObject = () => {
 
 export const onPlaybackStatusUpdate = ({ durationMillis, positionMillis, volume, isPlaying, didJustFinish }) => {
   // iOS reads the downloaded m4a as being double the length that they are
-  durationMilles = Platform.OS === 'ios' ? durationMillis /= 2 : durationMillis;
+  durationMillis = Platform.OS === 'ios' ? durationMillis /= 2 : durationMillis;
   return {
     type: ON_PLAYBACK_STATUS_UPDATE,
     payload: {

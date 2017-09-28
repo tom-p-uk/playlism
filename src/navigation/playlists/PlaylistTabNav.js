@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabNavigator } from 'react-navigation'
+import { TabNavigator } from 'react-navigation';
 import { Platform } from 'react-native';
 import { Icon } from 'react-native-elements';
 import MyPlaylistsStackNav from './MyPlaylistsStackNav';
@@ -60,7 +60,7 @@ const PlaylistTabNav = TabNavigator({
     },
     upperCaseLabel: false,
     activeTintColor: '#F26C4F',
-    inactiveTintColor:'#999999',
+    inactiveTintColor: '#999999',
     showIcon: true,
     style: {
         backgroundColor: '#FFFFFF',

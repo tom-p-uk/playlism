@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigator } from 'react-navigation'
+import { StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import UserScreen from '../../screens/UserScreen';
 import SearchFriendScreen from '../../screens/friends/SearchFriendScreen';

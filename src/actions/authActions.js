@@ -46,7 +46,7 @@ export const jwtLogin = () => async dispatch => {
       const { data: { success } } = await axios.get(`${URL}/user`);
 
       if (success) {
-        dispatch(loginSuccess(success.user, authToken, true))
+        dispatch(loginSuccess(success.user, authToken, true));
       } else {
         dispatch(loginSuccess({}, ''));
       }
@@ -56,7 +56,7 @@ export const jwtLogin = () => async dispatch => {
       if (err.response && err.response.data && err.response.data.error) {
         dispatch(loginFailure(err.response.data.error));
       } else {
-        dispatch(loginFailure('Could not log user in at this time.'))
+        dispatch(loginFailure('Could not log user in at this time.'));
       }
     }
   } else {
@@ -70,5 +70,4 @@ export const logout = () => async dispatch => {
   dispatch({
     type: LOGOUT,
   });
-
 };

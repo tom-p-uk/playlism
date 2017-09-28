@@ -1,6 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
-import { createFilter, createBlacklistFilter } from 'redux-persist-transform-filter';
+import { createFilter } from 'redux-persist-transform-filter';
 import { AsyncStorage } from 'react-native';
 import thunk from 'redux-thunk';
 import reducers from '../reducers';

@@ -6,7 +6,7 @@ import {
   DOWNLOAD_ASSETS_FAILURE,
 } from './types';
 
-export const downloadAssets = async () => {
+export const downloadAssets = async () => { // TODO cache all assets during app loading
   const img = [
     { 'playlism-logo.png': { url: 'http://i.imgur.com/uhA492C.png' } },
     { 'record-shop-hand.jpg': { url: 'http://i.imgur.com/6VKBGhs.jpg'} },

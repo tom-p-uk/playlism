@@ -12,19 +12,14 @@ import {
   UPDATE_DOWNLOAD_PROGRESS
 } from './types';
 
-export const downloadSong = (song, attemptNum) => async dispatch => {
+export const downloadSong = song => async dispatch => {
   let { youTubeUrl, _id, title } = song;
   dispatch(downloadSongStart(_id));
 
-  // // Download fails after 7 unsuccessful download attempts
-  // if (attemptNum >= 7) {
-  //   return dispatch(downloadSongFailure(song));
-  // }
-
   try {
     axios.defaults.headers.common['X-Mashape-Key'] = 'y6v4sUl94Omsh0mnCYY8N3Jy32Dvp10ZvbdjsnO8IrEINXBJB2';
-    let { data: { streams } } = await axios.get(`https://getvideo.p.mashape.com?url=${youTubeUrl}`)
-    let { url } = streams[streams.length - 2];
+    const { data: { streams } } = await axios.get(`https://getvideo.p.mashape.com?url=${youTubeUrl}`)
+    const { url } = streams[streams.length - 2];
 
     const callback = ({ totalBytesWritten, totalBytesExpectedToWrite }) => {
       // Callback is called for old as well as present downloads for some reason,
@@ -42,7 +37,7 @@ export const downloadSong = (song, attemptNum) => async dispatch => {
 
     const downloadResumable = FileSystem.createDownloadResumable(
       url,
-      FileSystem.documentDirectory + `${_id}.m4a`,
+      `${FileSystem.documentDirectory}${_id}.m4a`,
       {},
       _.throttle(callback, 50), // Throttle for performance reaons (esp. on Android)
     );
@@ -50,20 +45,24 @@ export const downloadSong = (song, attemptNum) => async dispatch => {
     const { uri } = await downloadResumable.downloadAsync();
     const { size } = await FileSystem.getInfoAsync(uri);
 
-    _id = null;
     if (!size || size < 100000) {
       return dispatch(downloadSongFailure(song));
     }
 
     console.log('Finished downloading to ', uri);
 
-    const updatedSong = {...song, localUri: uri, downloadedOn: Date.now() };
+    const updatedSong = { ...song, localUri: uri, downloadedOn: Date.now() };
     return dispatch(downloadSongSuccess(updatedSong));
-
   } catch (err) {
     console.log(err);
     dispatch(downloadSongFailure(song));
-    FileSystem.deleteAsync(FileSystem.documentDirectory + `${_id}.mp3`);
+
+    try {
+      await FileSystem.deleteAsync(`${FileSystem.documentDirectory}${_id}.m4a`);
+    } catch (deleteErr) {
+      console.log(deleteErr);
+    }
+
     _id = null;
   }
 };
@@ -83,14 +82,6 @@ const downloadSongStart = songId => {
   return {
     type: DOWNLOAD_SONG_START,
     payload: { songId }
-  };
-};
-
-const downloadSongBeginWriting = (songId, downloadResumable) => {
-
-  return {
-    type: DOWNLOAD_SONG_BEGIN_WRITING,
-    payload: { songId, downloadResumable }
   };
 };
 

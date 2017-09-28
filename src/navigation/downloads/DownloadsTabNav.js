@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 import { Platform } from 'react-native';
 import DownloadedPlaylistsStackNav from './DownloadedPlaylistsStackNav';
