@@ -8,7 +8,7 @@ const BackButton = ({ navigation, color }) => {
       onPress={() => navigation.goBack(null)}
       style={styles.opacity}
     >
-      <Icon name='keyboard-arrow-left' color={color}/>
+      <Icon name='keyboard-arrow-left' color={color} />
     </TouchableOpacity>
   );
 };

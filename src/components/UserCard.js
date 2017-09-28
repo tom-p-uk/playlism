@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
+import { Card, Button } from 'react-native-elements';
 import BackgroundImage from './BackgroundImage';
 
-import Spinner from './Spinner';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class UserCard extends Component {
@@ -28,11 +25,9 @@ class UserCard extends Component {
   }
 
   render() {
-    const { user, coverImgSource, buttonProps, showSecondButton, secondButtonProps } = this.props;
-    const top = showSecondButton ? SCREEN_HEIGHT * 0.75 - 210 : SCREEN_HEIGHT * 0.75 - 240;
-
+    const { user, buttonProps, showSecondButton } = this.props;
     return (
-      <Card  style={styles.container}>
+      <Card style={styles.container}>
         <View style={{ flex: 1, width: 400 }}>
           <BackgroundImage
             source={require('../../assets/img/vinyl-records.png')}
@@ -47,7 +42,7 @@ class UserCard extends Component {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <View style={{ flex: 3, justifyContent: 'flex-end'}}>
+          <View style={{ flex: 3, justifyContent: 'flex-end' }}>
             <Text style={styles.displayName}>{user.displayName}</Text>
           </View>
           <View style={{ flex: 4, justifyContent: showSecondButton ? 'space-around' : 'flex-start' }}>
@@ -97,9 +92,6 @@ const styles = {
     borderRadius: 65,
     height: 130,
     width: 130,
-  },
-  displayNameAndButtonContainer: {
-    flex: 1,
   },
   displayNameContainer: {
     alignSelf: 'center',

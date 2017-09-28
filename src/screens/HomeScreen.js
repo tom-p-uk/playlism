@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
+import { View, Image, Dimensions } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class HomeScreen extends Component {
   render() {
     const { navigation: { navigate } } = this.props;
     return (
-      <Card  style={styles.container}>
+      <Card style={styles.container}>
         <View>
           <View style={{ flex: 1, }}>
             <Image
@@ -104,8 +103,6 @@ const styles = {
     width: SCREEN_WIDTH,
     height: 140,
   },
-
-
 };
 
 export default HomeScreen;

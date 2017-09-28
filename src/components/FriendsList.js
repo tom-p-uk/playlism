@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList, LayoutAnimation, UIManager } from 'react-native';
+import { View, FlatList } from 'react-native';
 import moment from 'moment';
 
 class FriendsList extends Component {
-  componentWillUpdate() {
-    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    // LayoutAnimation.easeInEaseOut();
-  }
-
   renderSeparator = () => {
     return (
       <View
@@ -22,13 +17,13 @@ class FriendsList extends Component {
       return `Friends since ${moment(item.friendsSince).format('MMM Do, YYYY')}`;
     } else if (item.dateReceived) {
       return `Received on ${moment(item.dateReceived).format('MMM Do, YYYY')}`;
-    } else {
-      return `Member since ${moment(item.dateJoined).format('MMM Do, YYYY')}`;
     }
+
+    return `Member since ${moment(item.dateJoined).format('MMM Do, YYYY')}`;
   };
 
   render() {
-    const { data, renderHeader, subtitle, navigate } = this.props;
+    const { data, renderHeader } = this.props;
 
     return (
       <List

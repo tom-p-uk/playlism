@@ -1,18 +1,27 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList, LayoutAnimation, UIManager, Text } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import _ from 'lodash';
 
 import { addSong } from '../actions';
 
 class SongResultsList extends Component {
-  componentWillUpdate() {
-    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    // LayoutAnimation.spring();
-  }
+  handleOnPressRightIcon = item => {
+    const { id: { videoId }, snippet: { title, description, thumbnails } } = item;
+    const { awaitingAddSong, authToken, navigation, addSong } = this.props;
+    const { playlist } = navigation.state.params;
+    const index = this.findIndexOfSongInFriendsPlaylist(videoId);
 
+    if (awaitingAddSong) {
+      console.log('Awaiting results of addSong function. Button disabled.');
+    } else if (index !== -1) {
+      console.log('Song already added. Button disabled.');
+    } else {
+      addSong(videoId, title, description, thumbnails.default.url, playlist._id, authToken);
+    }
+  };
+  
   renderIcon = videoId => {
     const index = this.findIndexOfSongInFriendsPlaylist(videoId);
     return index === -1 ? { name: 'add' } : { name: 'done' };
@@ -30,21 +39,6 @@ class SongResultsList extends Component {
         style={styles.separator}
       />
     );
-  };
-
-  handleOnPressRightIcon = item => {
-    const { id: { videoId }, snippet: { title, description, thumbnails } } = item;
-    const { awaitingAddSong, authToken, navigation, addSong } = this.props;
-    const { playlist } = navigation.state.params;
-    const index = this.findIndexOfSongInFriendsPlaylist(videoId);
-
-    if (awaitingAddSong) {
-      console.log('Awaiting results of addSong function. Button disabled.');
-    } else if (index !== -1) {
-      console.log('Song already added. Button disabled.');
-    } else {
-      addSong(videoId, title, description, thumbnails.default.url, playlist._id, authToken);
-    }
   };
 
   render() {

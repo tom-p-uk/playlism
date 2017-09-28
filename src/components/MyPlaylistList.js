@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList, LayoutAnimation, UIManager } from 'react-native';
+import { View, FlatList } from 'react-native';
 import moment from 'moment';
 
 class FriendsPlaylistList extends Component {
-  componentWillUpdate() {
-    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    // LayoutAnimation.spring();
-  }
-
   renderSeparator = () => {
     return (
       <View
@@ -18,7 +13,7 @@ class FriendsPlaylistList extends Component {
   };
 
   render() {
-    const { data, renderHeader, subtitle, navigation, navigationTarget } = this.props;
+    const { data, renderHeader, navigation, navigationTarget } = this.props;
 
     return (
       <List

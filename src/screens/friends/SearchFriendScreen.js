@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { debounce, isNull } from 'lodash';
+import _ from 'lodash';
 import { searchFriendsStart, searchFriends, clearSearchFriendsResults } from '../../actions';
 import { reduxForm, Field } from 'redux-form';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -9,7 +9,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 import SearchBar from '../../components/SearchBar';
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
-import * as actions from '../../actions';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class SearchFriendScreen extends Component {
@@ -68,7 +67,7 @@ class SearchFriendScreen extends Component {
   }
 };
 
-const onChange = debounce(({ friendsSearchBar }, dispatch, props) => {
+const onChange = _.debounce(({ friendsSearchBar }, dispatch, props) => {
   const { searchFriends, searchFriendsStart, clearSearchFriendsResults, authToken } = props;
 
   if (friendsSearchBar) {
@@ -93,4 +92,4 @@ const mapStateToProps = ({ friends: { searchResults, searchError, awaitingSearch
   };
 };
 
-export default connect(mapStateToProps, actions)(Form);
+export default connect(mapStateToProps, { searchFriendsStart, searchFriends, clearSearchFriendsResults })(Form);

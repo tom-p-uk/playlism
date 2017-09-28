@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 
 import BackButton from '../components/BackButton';
@@ -14,14 +14,14 @@ import {
 } from '../actions';
 
 class UserScreen extends Component {
-  state = {
-    isConfirmationModalVisible: false,
-  };
-
   static navigationOptions = ({ navigation, tintColor }) => ({
     title: navigation.state.params.user.displayName,
     headerLeft: <BackButton color='#FFFFFF' navigation={navigation} />
   });
+
+  state = {
+    isConfirmationModalVisible: false,
+  };
 
   componentDidMount() {
     const { friends, loadFriendRequestsSent, loggedInUser, friendRequests, friendRequestsSent, checkUserFriendStatus } = this.props;
@@ -111,7 +111,7 @@ class UserScreen extends Component {
     } else if (userFriendStatus === 'friends') {
       return {
         icon: awaitingDeleteFriend ? null : { name: 'clear' },
-        title: "Delete Friend",
+        title: 'Delete Friend',
         disabled: awaitingDeleteFriend,
         loading: awaitingDeleteFriend,
         onPress: this.toggleConfirmationModal,

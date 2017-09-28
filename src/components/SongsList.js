@@ -1,16 +1,8 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'react-native-elements';
-import { View, FlatList, LayoutAnimation, UIManager, Text, ActivityIndicator } from 'react-native';
-import { connect } from 'react-redux';
-import moment from 'moment';
-import _ from 'lodash';
+import { View, FlatList } from 'react-native';
 
 class SongsList extends Component {
-  componentWillUpdate() {
-    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
-    // LayoutAnimation.spring();
-  }
-
   renderSeparator = () => {
     return (
       <View

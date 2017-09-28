@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Divider, Icon } from 'react-native-elements';
-import { DrawerItems, NavigationActions } from 'react-navigation';
+import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { logout, setCurrentlyPlayingSong, setPlaybackObject, togglePlayPause, deleteDownloadedSong } from '../actions';
 import ConfirmationModal from '../components/ConfirmationModal';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class CustomDrawerMenu extends Component {
   state = {
@@ -36,14 +34,12 @@ class CustomDrawerMenu extends Component {
     if (playbackObject) playbackObject.unloadAsync();
     setCurrentlyPlayingSong(null);
     setPlaybackObject(null);
-    // this.resetNavigation();
-    // navigation.navigate('auth');
   };
 
   toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });
 
   renderProfileImg = user => {
-    if (!user) return <View />
+    if (!user) return <View />;
 
     return (
       <View style={styles.profileImgContainer}>

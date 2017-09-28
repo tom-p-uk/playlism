@@ -58,8 +58,6 @@ class DownloadedSongsScreen extends Component {
     }
   };
 
-  handleOnPressRightIcon = () => {};
-
   onSongListItemPress = song => {
     const { setCurrentlyPlayingSong } = this.props;
     setCurrentlyPlayingSong(song);
@@ -134,19 +132,12 @@ class DownloadedSongsScreen extends Component {
             renderSubtitle={this.renderSubtitle}
           />
         </View>
-        {currentRoute === 'downloadedSongs' && <Player songs={this.sortData(downloadedSongs)}/>}
+        {currentRoute === 'downloadedSongs' && <Player songs={this.sortData(downloadedSongs)} />}
         <KeepAwake />
         {this.renderDropdownAlert()}
       </BackgroundImage>
     );
   }
-};
-
-const styles = {
-  playerContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
 };
 
 const mapStateToProps = ({

@@ -23,12 +23,12 @@ class Player extends Component {
     isPlayerMounted: false,
   };
 
-  componentDidMount() {
-    this.setState({ isPlayerMounted: true });
-  }
-
   componentWillMount() {
     this.setState({ isPlayerMounted: false });
+  }
+
+  componentDidMount() {
+    this.setState({ isPlayerMounted: true });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,6 +40,12 @@ class Player extends Component {
       this.handleSkipNext();
     }
   }
+
+  onSongEnd = ({ didJustFinish }) => {
+    if (didJustFinish) {
+      this.handleSkipNext();
+    }
+  };
 
   loadSong = async song => {
     const { playbackObject, setPlaybackObject, clearPlaybackObject, onPlaybackStatusUpdate, isPlaying } = this.props;
@@ -54,7 +60,7 @@ class Player extends Component {
       shouldPlay: isPlaying || true,
     };
 
-    const { sound, status } = await Audio.Sound.create(
+    const { sound } = await Audio.Sound.create(
       source,
       initialStatus,
       onPlaybackStatusUpdate,
@@ -82,7 +88,7 @@ class Player extends Component {
     const minutes = Math.floor(millis / 60000);
     const seconds = ((millis % 60000) / 1000).toFixed(0);
 
-    const output = (seconds == 60 ? (minutes + 1) + ':00' : minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
+    const output = (seconds === 60 ? (minutes + 1) + ':00' : minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
     return (output.indexOf('NaN') === -1) ? output : ''; // To prevent 'NaN' text appearing immediately after track loads
   };
 
@@ -119,8 +125,8 @@ class Player extends Component {
     await playbackObject.pauseAsync();
 
     if (shuffle) {
-      const index = Math.floor(Math.random() * songs.length);
-      return setCurrentlyPlayingSong(songs[index]);
+      const playingIndex = Math.floor(Math.random() * songs.length);
+      return setCurrentlyPlayingSong(songs[playingIndex]);
     }
 
     if (index === songs.length - 1) { // If song is last in playlist
@@ -133,12 +139,6 @@ class Player extends Component {
       }
     } else {
       setCurrentlyPlayingSong(songs[index + 1]); // else play the next song
-    }
-  };
-
-  onSongEnd = ({ didJustFinish }) => {
-    if (didJustFinish) {
-      this.handleSkipNext();
     }
   };
 
@@ -167,10 +167,10 @@ class Player extends Component {
     };
 
     if (repeatMode === 'one') {
-      icon.name = 'repeat-one',
-      icon.color = '#FFFFFF'
+      icon.name = 'repeat-one';
+      icon.color = '#FFFFFF';
     } else if (repeatMode === 'all') {
-      icon.color = '#FFFFFF'
+      icon.color = '#FFFFFF';
     }
 
     return icon;

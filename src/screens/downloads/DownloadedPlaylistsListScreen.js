@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Platform } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -13,7 +12,7 @@ import BackgroundImage from '../../components/BackgroundImage';
 
 class DownloadedPlaylistsListScreen extends Component {
   componentDidMount() {
-    const { getMyPlaylists, user, authToken, navigation, awaitingMyPlaylists } = this.props;
+    const { authToken } = this.props;
     getMyPlaylists(authToken);
   }
 
@@ -22,6 +21,21 @@ class DownloadedPlaylistsListScreen extends Component {
       this.dropdown.alertWithType('error', 'Error', nextProps.myPlaylistsError);
     }
   }
+
+  filterPlaylists = data => { // Filter out playlists that don't contain any downloaded songs
+    if (!data) return;
+    const { downloadedSongs } = this.props;
+
+    const dataFiltered = data.filter(playlist => {
+      const indexOfPlaylistInDownloadedSongs = _.findIndex(downloadedSongs, downloadedSong => {
+        return downloadedSong.inPlaylists.indexOf(playlist._id) !== -1;
+      });
+      return indexOfPlaylistInDownloadedSongs !== -1;
+    });
+
+
+    return dataFiltered;
+  };
 
   renderSpinner() {
     const { myPlaylists, awaitingMyPlaylists } = this.props;
@@ -45,21 +59,6 @@ class DownloadedPlaylistsListScreen extends Component {
         </Message>
       );
     }
-  };
-
-  filterPlaylists = data => { // Filter out playlists that don't contain any downloaded songs
-    if (!data) return;
-    const { downloadedSongs } = this.props;
-
-    const dataFiltered = data.filter(playlist => {
-      const indexOfPlaylistInDownloadedSongs = _.findIndex(downloadedSongs, downloadedSong => {
-        return downloadedSong.inPlaylists.indexOf(playlist._id) !== -1;
-      });
-      return indexOfPlaylistInDownloadedSongs !== -1;
-    });
-
-
-    return dataFiltered;
   };
 
   renderDropdownAlert = () => {

@@ -205,16 +205,16 @@ class MyPlaylistScreen extends Component {
           isVisible={this.state.isSortPlaylistModalVisible}
           sortedBy={myPlaylistSortedBy}
           onButtonGroupPress={sortMyPlaylist}
-          onDoneButtonPress={() => this.toggleSortPlaylistModal()}
+          onDoneButtonPress={this.toggleSortPlaylistModal}
         />
         <PreviewSongModal
           isVisible={isPreviewSongModalOpen}
-          onButtonPress={() => togglePreviewSongModal()}
+          onButtonPress={togglePreviewSongModal}
           videoId={songBeingPreviewed}
         />
         <PlaylistControls
-          firstButtonProps={{ title: 'Delete Downloads', iconName: 'delete-forever', onPress: () => this.onDeleteAllPress() }}
-          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: () => this.toggleSortPlaylistModal() }}
+          firstButtonProps={{ title: 'Delete Downloads', iconName: 'delete-forever', onPress: this.onDeleteAllPress }}
+          secondButtonProps={{ title: 'Sort Playlist', iconName: 'swap-vert', onPress: this.toggleSortPlaylistModal }}
         />
         {this.renderMessageOrSongList(navigation, songsInMyPlaylist)}
       </View>

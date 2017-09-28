@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { getFriendRequests } from '../../actions';
 import { Icon } from 'react-native-elements';
 import DropdownAlert from 'react-native-dropdownalert';
 
+import { getFriendRequests } from '../../actions';
 import FriendsList from '../../components/FriendsList';
 import Message from '../../components/Message';
 import Spinner from '../../components/Spinner';
@@ -42,12 +42,12 @@ class FriendRequestsScreen extends Component {
     const { friendRequests, awaitingFriendRequests } = this.props;
 
     if ((friendRequests === null || friendRequests === undefined) && awaitingFriendRequests) {
-      return <Spinner size='large'/>;
+      return <Spinner size='large' />;
     }
   }
 
   renderMessage = () => {
-    const { friendRequests, friendRequestsError, awaitingFriendRequests } = this.props;
+    const { friendRequests } = this.props;
     if (friendRequests && friendRequests.length === 0) {
       return (
         <Message

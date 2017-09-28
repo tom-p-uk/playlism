@@ -15,7 +15,7 @@ import Message from '../../components/Message';
 import { sortPlayerPlaylist, setCurrentlyPlayingSong, deleteDownloadedSong } from '../../actions';
 
 class DownloadedPlaylistScreen extends Component {
-  static navigationOptions = ({ navigation}) => ({
+  static navigationOptions = ({ navigation }) => ({
     title: navigation.state.params.playlist.title,
   });
 

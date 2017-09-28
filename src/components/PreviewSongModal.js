@@ -21,8 +21,8 @@ class PreviewSongModal extends Component {
               headers: { Referer: 'https://www.youtube.com' }
             }}
             style={styles.webView}
-            javaScriptEnabled={true}
-            allowsInlineMediaPlayback={true}
+            javaScriptEnabled
+            allowsInlineMediaPlayback
           />
         </View>
         <View style={styles.buttonOuterContainer}>

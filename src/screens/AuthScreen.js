@@ -1,13 +1,6 @@
 import React, { Component } from 'react';
 import { Constants, WebBrowser, AppLoading } from 'expo';
-import {
-  Image,
-  Linking,
-  Platform,
-  Text,
-  View,
-  Dimensions,
-} from 'react-native';
+import { Image, Linking, View, Dimensions } from 'react-native';
 import { Card } from 'react-native-elements';
 import qs from 'qs';
 import { connect } from 'react-redux';
@@ -18,7 +11,7 @@ import registerForNotifications from '../services/push_notifications';
 import WelcomeMsgAndLoginButtons from '../components/WelcomeMsgAndLoginButtons';
 import LoggedInUserMsgAndPic from '../components/LoggedInUserMsgAndPic';
 
-const URL = 'https://playlism.herokuapp.com/api';;
+const URL = 'https://playlism.herokuapp.com/api';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class AuthScreen extends Component {
@@ -38,7 +31,7 @@ class AuthScreen extends Component {
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [
-        NavigationActions.navigate({ routeName: 'main'})
+        NavigationActions.navigate({ routeName: 'main' })
       ],
       key: null
     });
@@ -50,7 +43,7 @@ class AuthScreen extends Component {
   startOAuth = async authUrl => {
     this.props.loginStart();
     this.addLinkingListener();
-    await WebBrowser.default.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
+    await WebBrowser.openBrowserAsync(`${authUrl}?linkingUri=${encodeURIComponent(Constants.linkingUri)}`);
     this.removeLinkingListener();
   }
 
@@ -64,7 +57,7 @@ class AuthScreen extends Component {
 
   // Pull user object and JWT from url following redirect from backend
   handleRedirect = event => {
-    WebBrowser.default.dismissBrowser();
+    WebBrowser.dismissBrowser();
 
     const query = event.url.replace(`${Constants.linkingUri}?`, ''); // Pull data from redirect URL
     const data = qs.parse(query);
@@ -79,12 +72,12 @@ class AuthScreen extends Component {
   };
 
   render() {
-    const { user, awaitingAuth } = this.props;
+    const { user } = this.props;
 
-    if (user === undefined) return <AppLoading />
+    if (user === undefined) return <AppLoading />;
 
     return (
-      <Card  style={styles.container}>
+      <Card style={styles.container}>
         <View>
           <View style={{ flex: 1, }}>
             <Image

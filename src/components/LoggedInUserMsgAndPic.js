@@ -4,7 +4,7 @@ import { View, Text, Image, Dimensions } from 'react-native';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const LoggedInUserMsgAndPic = ({ user }) => {
-  if (!user) return <View />
+  if (!user) return <View />;
 
   return (
     <View>

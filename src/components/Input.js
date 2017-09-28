@@ -22,13 +22,13 @@ const Input = props => {
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         autoCorrect={false}
-        onChangeText={value => onChange(value)}
+        onChangeText={text => onChange(text)}
         value={value}
         {...otherProps}
       />
       {touched && error &&
         <View style={styles.errorContainer}>
-          <Icon name='error' color='#98250B'/>
+          <Icon name='error' color='#98250B' />
           <Text style={styles.errorText}>{error}</Text>
         </View>}
     </View>

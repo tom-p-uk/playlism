@@ -12,16 +12,6 @@ import Spinner from '../../components/Spinner';
 import BackgroundImage from '../../components/BackgroundImage';
 
 class FriendsScreen extends Component {
-  static navigationOptions = {
-    title: 'Friends',
-    tabBarIcon: ({ tintColor }) => (
-      <Icon
-        type='material-community'
-        name='account-multiple'
-        color={tintColor}
-      />
-    ),
-  };
   componentDidMount() {
     const { getFriends, authToken } = this.props;
     getFriends(authToken);
@@ -40,7 +30,7 @@ class FriendsScreen extends Component {
 
   renderSelectFriendText = () => {
     const { routeName } = this.props.navigation.state;
-    const { friends, friendsError, awaitingFriends } = this.props;
+    const { friends } = this.props;
     if (friends && friends.length !== 0 && routeName === 'selectFriend') {
       return (
         <Card containerStyle={styles.selectFriendMessageCard}>
@@ -56,12 +46,12 @@ class FriendsScreen extends Component {
     const { friends, awaitingFriends } = this.props;
 
     if ((_.isNull(friends) || friends === undefined) && awaitingFriends) {
-      return <Spinner size='large'/>;
+      return <Spinner size='large' />;
     }
   };
 
   renderMessage = () => {
-    const { friends, friendsError, awaitingFriends } = this.props;
+    const { friends } = this.props;
     if (friends && friends.length === 0) {
       return (
         <Message
