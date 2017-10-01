@@ -55,7 +55,6 @@ class FriendsScreen extends Component {
     if (friends && friends.length === 0) {
       return (
         <Message
-          text=""
           color='#F26C4F'
         >
           You currently have no friends.{'\n'}
@@ -93,7 +92,6 @@ class FriendsScreen extends Component {
         <FriendsList
           data={data}
           navigation={this.props.navigation}
-          // renderHeader=
         />
         {this.renderMessage()}
         {this.renderSpinner()}

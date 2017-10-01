@@ -12,7 +12,7 @@ import BackgroundImage from '../../components/BackgroundImage';
 
 class DownloadedPlaylistsListScreen extends Component {
   componentDidMount() {
-    const { authToken } = this.props;
+    const { getMyPlaylists, authToken } = this.props;
     getMyPlaylists(authToken);
   }
 

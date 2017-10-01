@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { searchSongs, clearSearchSongsResults, previewSong, togglePreviewSongModal } from '../../actions';

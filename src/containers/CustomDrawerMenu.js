@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Divider, Icon } from 'react-native-elements';
 import { DrawerItems } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -17,7 +17,7 @@ class CustomDrawerMenu extends Component {
     this.toggleConfirmationModal();
   };
 
-  onConfirmPress = () => {
+  onConfirmPress = async () => {
     const {
       navigation,
       logout,
@@ -31,9 +31,10 @@ class CustomDrawerMenu extends Component {
     if (downloadedSongs) downloadedSongs.forEach(song => deleteDownloadedSong(song));
     this.toggleConfirmationModal();
     logout();
-    if (playbackObject) playbackObject.unloadAsync();
+    if (playbackObject) await playbackObject.unloadAsync();
     setCurrentlyPlayingSong(null);
     setPlaybackObject(null);
+    await AsyncStorage.removeItem('pushToken');
   };
 
   toggleConfirmationModal = () => this.setState({ isConfirmationModalVisible: !this.state.isConfirmationModalVisible });

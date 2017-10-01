@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Expo, { Notifications } from 'expo';
-import AuthScreen from './src/screens/AuthScreen';
-import { Provider } from 'react-redux'
-import { Font } from 'expo';
+import { Alert } from 'react-native';
+import Expo, { Notifications, Font } from 'expo';
+import { Provider } from 'react-redux';
 
 import store from './src/store';
 import MainNavWithNavigationState from './src/navigation/MainNav';

@@ -17,7 +17,7 @@ $ npm install
 ```
 Download and install the Expo XDE from https://expo.io/. Open the XDE, navigate to the cloned repo and open it as an Expo project, then view it using an iOS/Android emulator or a mobile device.
 
-To view the production version of the app, Android users can install it as a standalone application using the .apk file hosted[here](https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40tom-p-uk%2Fplaylism-2b382e26-9dfa-11e7-92f4-0a580a780122-signed.apk). iOS and Android users can also run the app by first installing Expo on their mobile device from the App Store/Play Store and scanning the QR code shown [here](https://expo.io/@tom-p-uk/Playlism).
+To view the production version of the app, Android users can install it as a standalone application using the .apk file hosted [here](https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40tom-p-uk%2Fplaylism-2f1b7cfd-a43a-11e7-8342-0a580a780144-signed.apk). iOS and Android users can also run the app by first installing Expo on their mobile device from the App Store/Play Store and scanning the QR code shown [here](https://expo.io/@tom-p-uk/Playlism).
 
 ### Usage:
 
