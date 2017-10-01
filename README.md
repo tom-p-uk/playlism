@@ -28,11 +28,13 @@ To view the production version of the app, Android users can install it as a sta
 * Songs saved locally can be played back within the application using the player component.
 
 ### Demo Screens:
-![OAuth](https://i.imgur.com/zT4lTAn.png)
-![Add Friends](https://i.imgur.com/WH5asrR.png)
-![User](https://i.imgur.com/a9PY6qg.png)
-![Create Playlist](https://i.imgur.com/Ar7p79l.png)
-![Add Song](https://i.imgur.com/vgEOTDG.png)
-![Playlist](https://i.imgur.com/mWCdst3.png)
-![Preview](https://i.imgur.com/YOPUafK.png)
-![Play](https://i.imgur.com/J57THbt.png)
+
+<img src="https://i.imgur.com/zT4lTAn.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/WH5asrR.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/a9PY6qg.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/AfrXLHG.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/Ar7p79l.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/vgEOTDG.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/mWCdst3.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/YOPUafK.png" style="max-width: 340px" alt="OAuth">
+<img src="https://i.imgur.com/J57THbt.png" style="max-width: 340px" alt="OAuth">
