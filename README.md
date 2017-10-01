@@ -11,13 +11,19 @@ A mobile app that lets users create playlists for friends, and download/listen t
 
 ### Installation:
 
-To run the app in development mode, and provided Node and NPM are installed, enter the following CLI command to install dependencies:
+To run the app in development mode, and provided Node and NPM are installed, clone the repo and enter the following CLI command to install dependencies:
 ```
 $ npm install
 ```
+Create a directory named 'config' in /src and then create an index.js file in the new directory. Add the following code, and enter a YouTube API key between the quotation marks.
+```
+export const API_KEY = '';
+```
 Download and install the Expo XDE from https://expo.io/. Open the XDE, navigate to the cloned repo and open it as an Expo project, then view it using an iOS/Android emulator or a mobile device.
 
-To view the production version of the app, Android users can install it as a standalone application using the .apk file hosted [here](https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40tom-p-uk%2Fplaylism-2444acec-a66f-11e7-a861-0a580a78025d-signed.apk). iOS and Android users can also run the app by first installing Expo on their mobile device from the App Store/Play Store and scanning the QR code shown [here](https://expo.io/@tom-p-uk/Playlism).
+To view the production version of the app, Android users can install it as a standalone application by downloading this [.apk file](https://exp-shell-app-assets.s3-us-west-1.amazonaws.com/android%2F%40tom-p-uk%2Fplaylism-2444acec-a66f-11e7-a861-0a580a78025d-signed.apk). Users may have to change their phone's security settings to allow installation of non-Play Store apps.
+
+iOS and Android users can also run the app by first installing Expo on their mobile device from the App Store/Play Store and then scanning this [QR code](https://expo.io/@tom-p-uk/Playlism) with their phone.
 
 ### Usage:
 
@@ -29,12 +35,12 @@ To view the production version of the app, Android users can install it as a sta
 
 ### Demo Screens:
 
-<img src="https://i.imgur.com/zT4lTAn.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/WH5asrR.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/a9PY6qg.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/AfrXLHG.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/Ar7p79l.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/vgEOTDG.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/mWCdst3.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/YOPUafK.png" style="max-width: 340px" alt="OAuth">
-<img src="https://i.imgur.com/J57THbt.png" style="max-width: 340px" alt="OAuth">
+![OAuth](https://i.imgur.com/oaph29A.png)
+![Add Friends](https://i.imgur.com/bdAhJgB.png)
+![User](https://i.imgur.com/EP0dfKr.png)
+![User](https://i.imgur.com/kMt9lxN.png)
+![Create Playlist](https://i.imgur.com/a62khAm.png)
+![Add Song](https://i.imgur.com/WM2tKSn.png)
+![Playlist](https://i.imgur.com/kzVNCCk.png)
+![Preview](https://i.imgur.com/oG4p0fl.png)
+![Playback](https://i.imgur.com/2ozDR4F.png)
